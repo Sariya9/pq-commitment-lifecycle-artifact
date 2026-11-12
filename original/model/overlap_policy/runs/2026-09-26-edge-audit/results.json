@@ -1,0 +1,27 @@
+{
+  "scope": "Independent edge predicates over the primary finite graph; not a TLS proof",
+  "explorer_sha256": "4c0fc0e9a6ec11dfaae6a4a0d5a5115dc243d23aba1134e9d9198bf4afead78a",
+  "observer_sha256": "db0b02208c2c3d2ea0f47aaa5a757ad905d1e2d355d5344ab25280ca1a09a2f1",
+  "profiles": {
+    "start": {
+      "states": 43713,
+      "checked_edges": 96273,
+      "status": "MATCH"
+    },
+    "split": {
+      "states": 32383,
+      "checked_edges": 70425,
+      "status": "MATCH"
+    },
+    "atomic": {
+      "states": 27253,
+      "checked_edges": 59223,
+      "status": "MATCH"
+    },
+    "restore-abort": {
+      "states": 43663,
+      "checked_edges": 82873,
+      "status": "MATCH"
+    }
+  }
+}

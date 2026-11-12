@@ -1,0 +1,13 @@
+{
+  "command": [
+    "/opt/homebrew/opt/python@3.14/bin/python3.14",
+    "/Users/sammo/Downloads/Research/thesis_pqc_tls/pq_auth_negotiation/model/overlap_policy/runs/2026-09-26-lifecycle-response-control/lifecycle_check.py",
+    "--self-test",
+    "--enforce-start-offer",
+    "--no-pq-omission",
+    "--out",
+    "/Users/sammo/Downloads/Research/thesis_pqc_tls/pq_auth_negotiation/model/overlap_policy/runs/2026-09-26-lifecycle-response-control/results.json"
+  ],
+  "returncode": 0,
+  "source_sha256": "acb510e10a7c203a009efc18a8a62f295c011b40b02c1990151ee097648cd729"
+}

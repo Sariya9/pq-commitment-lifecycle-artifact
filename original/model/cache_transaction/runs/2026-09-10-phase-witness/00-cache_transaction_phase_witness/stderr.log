@@ -1,0 +1,1086 @@
+maude tool: 'maude'
+ checking version: 3.5.1. OK.
+ checking installation: OK.
+[Theory CacheTransaction] Theory loaded
+[Theory CacheTransaction] Theory translated
+[Theory CacheTransaction] Derivation checks started
+[Theory CacheTransaction] Derivation checks ended
+[Theory CacheTransaction] Theory closed
+[Saturating Sources] Step 1 (Max 5)
+[Saturating Sources] Done
+Simplifier iteration 11:
+
+The reduction-rules for
+were applied to the following constraint system.
+
+  nodes:
+    #a: instance (modulo AC) Start:
+           [
+           Cache( 'client', 'server', 'empty', 'initial' ),
+           !Next( 'initial', 'probe' ), Fr( ~n )
+           ]
+          --[
+          Opened( 'client', 'server', ~n, 'empty' ),
+          OpenedPhase( 'client', 'server', ~n, 'empty', 'initial' )
+          ]->
+           [
+           Waiting( 'client', 'server', ~n, 'empty', 'initial' ),
+           Out( <'hello', 'server', ~n> )
+           ]
+    #b: instance (modulo AC) Start:
+           [
+           Cache( 'client', 'server', 'pq', 'probe' ),
+           !Next( 'probe', 'reconnect' ), Fr( ~n.1 )
+           ]
+          --[
+          Opened( 'client', 'server', ~n.1, 'pq' ),
+          OpenedPhase( 'client', 'server', ~n.1, 'pq', 'probe' )
+          ]->
+           [
+           Waiting( 'client', 'server', ~n.1, 'pq', 'probe' ),
+           Out( <'hello', 'server', ~n.1> )
+           ]
+    #c: instance (modulo AC) Start:
+           [
+           Cache( 'client', 'server', 'pq', 'reconnect' ),
+           !Next( 'reconnect', 'done' ), Fr( ~n.2 )
+           ]
+          --[
+          Opened( 'client', 'server', ~n.2, 'pq' ),
+          OpenedPhase( 'client', 'server', ~n.2, 'pq', 'reconnect' )
+          ]->
+           [
+           Waiting( 'client', 'server', ~n.2, 'pq', 'reconnect' ),
+           Out( <'hello', 'server', ~n.2> )
+           ]
+    #i: instance (modulo AC) CommitPositive:
+           [
+           ReadyCommit( 'client', 'server', ~n, 'empty', 'initial', 'nonzero',
+                        pk(x), sign(<'cert', 'server', pk(x)>, ~ca)
+           ),
+           !Next( 'initial', 'probe' )
+           ]
+          --[
+          Completed( 'client', 'server', ~n, 'nonzero' ),
+          CacheEstablished( 'client', 'server', ~n )
+          ]->
+           [ Cache( 'client', 'server', 'pq', 'probe' ) ]
+    #j: instance (modulo AC) ParseDeferred:
+           [
+           Waiting( 'client', 'server', ~n.1, 'pq', 'probe' ),
+           !Policy( 'defer' ),
+           In( <'response', 'server', ~n.1, 'zero', key, 
+                sign(<'cert', 'server', key>, ~ca), sig>
+           )
+           ]
+          --[ Parsed( 'client', 'server', ~n.1, 'zero' ) ]->
+           [
+           Pending( 'client', 'server', ~n.1, 'pq', 'probe', 'zero', key,
+                    sign(<'cert', 'server', key>, ~ca), sig
+           )
+           ]
+    #k: instance (modulo AC) AbortAfterChain:
+           [
+           Validated( 'client', 'server', ~n.1, 'pq', 'probe', 'zero', key,
+                      sign(<'cert', 'server', key>, ~ca), sig
+           ),
+           !Next( 'probe', 'reconnect' ), In( <'cancel', ~n.1> )
+           ]
+          --[ Aborted( 'client', 'server', ~n.1, 'pq' ) ]->
+           [ Cache( 'client', 'server', 'pq', 'reconnect' ) ]
+    #l: instance (modulo AC) CommitPositive:
+           [
+           ReadyCommit( 'client', 'server', ~n.2, 'pq', 'reconnect',
+                        'nonzero', pk(x.1), sign(<'cert', 'server', pk(x.1)>, ~ca)
+           ),
+           !Next( 'reconnect', 'done' )
+           ]
+          --[
+          Completed( 'client', 'server', ~n.2, 'nonzero' ),
+          CacheEstablished( 'client', 'server', ~n.2 )
+          ]->
+           [ Cache( 'client', 'server', 'pq', 'done' ) ]
+    #vf: instance (modulo AC) Fresh:
+            [ ] --> [ Fr( ~n ) ]
+    #vr: instance (modulo AC) Setup:
+            [ Fr( ~ca ), Fr( ~sk ) ]
+           --[ Initialised( 'client', 'server' ) ]->
+            [
+            !Trust( 'client', 'server', pk(~ca) ),
+            !Server( 'server', ~sk, sign(<'cert', 'server', pk(~sk)>, ~ca) ),
+            Out( <pk(~ca), pk(~sk), sign(<'cert', 'server', pk(~sk)>, ~ca)> ),
+            Cache( 'client', 'server', 'empty', 'initial' ),
+            !Next( 'initial', 'probe' ), !Next( 'probe', 'reconnect' ),
+            !Next( 'reconnect', 'done' ), !Keep( 'empty', 'zero' ),
+            !Keep( 'empty', 'nonzero' ), !Keep( 'pq', 'nonzero' )
+            ]
+    #vf.1: instance (modulo AC) Fresh:
+              [ ] --> [ Fr( ~n.1 ) ]
+    #vr.1: instance (modulo AC) CheckCV:
+              [
+              Validated( 'client', 'server', ~n, 'empty', 'initial', 'nonzero',
+                         pk(x), sign(<'cert', 'server', pk(x)>, ~ca),
+                         sign(<'cv', 'server', ~n, 'nonzero', pk(x), 
+                               sign(<'cert', 'server', pk(x)>, ~ca)>,
+                              x)
+              )
+              ]
+             --[
+             Eq( true, true ),
+             Authenticated( 'client', 'server', ~n, 'nonzero', pk(x),
+                            sign(<'cert', 'server', pk(x)>, ~ca)
+             )
+             ]->
+              [
+              ReadyCommit( 'client', 'server', ~n, 'empty', 'initial', 'nonzero',
+                           pk(x), sign(<'cert', 'server', pk(x)>, ~ca)
+              )
+              ]
+    #vf.2: instance (modulo AC) Fresh:
+              [ ] --> [ Fr( ~n.2 ) ]
+    #vr.2: instance (modulo AC) ValidateCertificate:
+              [
+              Pending( 'client', 'server', ~n, 'empty', 'initial', 'nonzero',
+                       pk(x), sign(<'cert', 'server', pk(x)>, ~ca),
+                       sign(<'cv', 'server', ~n, 'nonzero', pk(x), 
+                             sign(<'cert', 'server', pk(x)>, ~ca)>,
+                            x)
+              ),
+              !Trust( 'client', 'server', pk(~ca) )
+              ]
+             --[ Eq( true, true ), ChainValidated( 'client', 'server', ~n ) ]->
+              [
+              Validated( 'client', 'server', ~n, 'empty', 'initial', 'nonzero',
+                         pk(x), sign(<'cert', 'server', pk(x)>, ~ca),
+                         sign(<'cv', 'server', ~n, 'nonzero', pk(x), 
+                               sign(<'cert', 'server', pk(x)>, ~ca)>,
+                              x)
+              )
+              ]
+    #vf.3: instance (modulo AC) Fresh:
+              [ ] --> [ Fr( ~ca ) ]
+    #vr.3: instance (modulo AC) ParseDeferred:
+              [
+              Waiting( 'client', 'server', ~n, 'empty', 'initial' ),
+              !Policy( 'defer' ),
+              In( <'response', 'server', ~n, 'nonzero', pk(x), 
+                   sign(<'cert', 'server', pk(x)>, ~ca), 
+                   sign(<'cv', 'server', ~n, 'nonzero', pk(x), 
+                         sign(<'cert', 'server', pk(x)>, ~ca)>,
+                        x)
+                  >
+              )
+              ]
+             --[ Parsed( 'client', 'server', ~n, 'nonzero' ) ]->
+              [
+              Pending( 'client', 'server', ~n, 'empty', 'initial', 'nonzero',
+                       pk(x), sign(<'cert', 'server', pk(x)>, ~ca),
+                       sign(<'cv', 'server', ~n, 'nonzero', pk(x), 
+                             sign(<'cert', 'server', pk(x)>, ~ca)>,
+                            x)
+              )
+              ]
+    #vf.4: instance (modulo AC) Fresh:
+              [ ] --> [ Fr( ~sk ) ]
+    #vr.4: instance (modulo AC) Policy:
+              [ ] --> [ !Policy( 'defer' ) ]
+    #vf.5: instance (modulo AC) isend:
+              [
+              !KU( <'response', 'server', ~n, 'nonzero', pk(x), 
+                    sign(<'cert', 'server', pk(x)>, ~ca), 
+                    sign(<'cv', 'server', ~n, 'nonzero', pk(x), 
+                          sign(<'cert', 'server', pk(x)>, ~ca)>,
+                         x)
+                   >
+              )
+              ]
+             --[
+             K( <'response', 'server', ~n, 'nonzero', pk(x), 
+                 sign(<'cert', 'server', pk(x)>, ~ca), 
+                 sign(<'cv', 'server', ~n, 'nonzero', pk(x), 
+                       sign(<'cert', 'server', pk(x)>, ~ca)>,
+                      x)
+                >
+             )
+             ]->
+              [
+              In( <'response', 'server', ~n, 'nonzero', pk(x), 
+                   sign(<'cert', 'server', pk(x)>, ~ca), 
+                   sign(<'cv', 'server', ~n, 'nonzero', pk(x), 
+                         sign(<'cert', 'server', pk(x)>, ~ca)>,
+                        x)
+                  >
+              )
+              ]
+    #vf.6: instance (modulo AC) isend:
+              [ !KU( <'cancel', ~n.1> ) ]
+             --[ K( <'cancel', ~n.1> ) ]->
+              [ In( <'cancel', ~n.1> ) ]
+    #vr.6: instance (modulo AC) ValidateCertificate:
+              [
+              Pending( 'client', 'server', ~n.1, 'pq', 'probe', 'zero', key,
+                       sign(<'cert', 'server', key>, ~ca), sig
+              ),
+              !Trust( 'client', 'server', pk(~ca) )
+              ]
+             --[ Eq( true, true ), ChainValidated( 'client', 'server', ~n.1 )
+             ]->
+              [
+              Validated( 'client', 'server', ~n.1, 'pq', 'probe', 'zero', key,
+                         sign(<'cert', 'server', key>, ~ca), sig
+              )
+              ]
+    #vf.7: instance (modulo AC) isend:
+              [
+              !KU( <'response', 'server', ~n.1, 'zero', key, 
+                    sign(<'cert', 'server', key>, ~ca), sig>
+              )
+              ]
+             --[
+             K( <'response', 'server', ~n.1, 'zero', key, 
+                 sign(<'cert', 'server', key>, ~ca), sig>
+             )
+             ]->
+              [
+              In( <'response', 'server', ~n.1, 'zero', key, 
+                   sign(<'cert', 'server', key>, ~ca), sig>
+              )
+              ]
+    #vr.8: instance (modulo AC) Policy:
+              [ ] --> [ !Policy( 'defer' ) ]
+    #vf.9: instance (modulo AC) isend:
+              [ !KU( <'cancel', ~n.1> ) ]
+             --[ K( <'cancel', ~n.1> ) ]->
+              [ In( <'cancel', ~n.1> ) ]
+    #vf.10: instance (modulo AC) isend:
+               [
+               !KU( <'response', 'server', ~n.2, 'nonzero', pk(x.1), 
+                     sign(<'cert', 'server', pk(x.1)>, ~ca), 
+                     sign(<'cv', 'server', ~n.2, 'nonzero', pk(x.1), 
+                           sign(<'cert', 'server', pk(x.1)>, ~ca)>,
+                          x.1)
+                    >
+               )
+               ]
+              --[
+              K( <'response', 'server', ~n.2, 'nonzero', pk(x.1), 
+                  sign(<'cert', 'server', pk(x.1)>, ~ca), 
+                  sign(<'cv', 'server', ~n.2, 'nonzero', pk(x.1), 
+                        sign(<'cert', 'server', pk(x.1)>, ~ca)>,
+                       x.1)
+                 >
+              )
+              ]->
+               [
+               In( <'response', 'server', ~n.2, 'nonzero', pk(x.1), 
+                    sign(<'cert', 'server', pk(x.1)>, ~ca), 
+                    sign(<'cv', 'server', ~n.2, 'nonzero', pk(x.1), 
+                          sign(<'cert', 'server', pk(x.1)>, ~ca)>,
+                         x.1)
+                   >
+               )
+               ]
+    #vr.11: instance (modulo AC) CheckCV:
+               [
+               Validated( 'client', 'server', ~n.2, 'pq', 'reconnect', 'nonzero',
+                          pk(x.1), sign(<'cert', 'server', pk(x.1)>, ~ca),
+                          sign(<'cv', 'server', ~n.2, 'nonzero', pk(x.1), 
+                                sign(<'cert', 'server', pk(x.1)>, ~ca)>,
+                               x.1)
+               )
+               ]
+              --[
+              Eq( true, true ),
+              Authenticated( 'client', 'server', ~n.2, 'nonzero', pk(x.1),
+                             sign(<'cert', 'server', pk(x.1)>, ~ca)
+              )
+              ]->
+               [
+               ReadyCommit( 'client', 'server', ~n.2, 'pq', 'reconnect',
+                            'nonzero', pk(x.1), sign(<'cert', 'server', pk(x.1)>, ~ca)
+               )
+               ]
+    #vr.12: instance (modulo AC) ValidateCertificate:
+               [
+               Pending( 'client', 'server', ~n.2, 'pq', 'reconnect', 'nonzero',
+                        pk(x.1), sign(<'cert', 'server', pk(x.1)>, ~ca),
+                        sign(<'cv', 'server', ~n.2, 'nonzero', pk(x.1), 
+                              sign(<'cert', 'server', pk(x.1)>, ~ca)>,
+                             x.1)
+               ),
+               !Trust( 'client', 'server', pk(~ca) )
+               ]
+              --[ Eq( true, true ), ChainValidated( 'client', 'server', ~n.2 )
+              ]->
+               [
+               Validated( 'client', 'server', ~n.2, 'pq', 'reconnect', 'nonzero',
+                          pk(x.1), sign(<'cert', 'server', pk(x.1)>, ~ca),
+                          sign(<'cv', 'server', ~n.2, 'nonzero', pk(x.1), 
+                                sign(<'cert', 'server', pk(x.1)>, ~ca)>,
+                               x.1)
+               )
+               ]
+    #vr.13: instance (modulo AC) ParseDeferred:
+               [
+               Waiting( 'client', 'server', ~n.2, 'pq', 'reconnect' ),
+               !Policy( 'defer' ),
+               In( <'response', 'server', ~n.2, 'nonzero', pk(x.1), 
+                    sign(<'cert', 'server', pk(x.1)>, ~ca), 
+                    sign(<'cv', 'server', ~n.2, 'nonzero', pk(x.1), 
+                          sign(<'cert', 'server', pk(x.1)>, ~ca)>,
+                         x.1)
+                   >
+               )
+               ]
+              --[ Parsed( 'client', 'server', ~n.2, 'nonzero' ) ]->
+               [
+               Pending( 'client', 'server', ~n.2, 'pq', 'reconnect', 'nonzero',
+                        pk(x.1), sign(<'cert', 'server', pk(x.1)>, ~ca),
+                        sign(<'cv', 'server', ~n.2, 'nonzero', pk(x.1), 
+                              sign(<'cert', 'server', pk(x.1)>, ~ca)>,
+                             x.1)
+               )
+               ]
+    #vr.14: instance (modulo AC) Policy:
+               [ ] --> [ !Policy( 'defer' ) ]
+  actions:
+    !KU( <'response', 'server', ~n, 'nonzero', pk(x), 
+          sign(<'cert', 'server', pk(x)>, ~ca), 
+          sign(<'cv', 'server', ~n, 'nonzero', pk(x), 
+                sign(<'cert', 'server', pk(x)>, ~ca)>,
+               x)
+         >
+    ) @ #vk,
+    !KU( 'response' ) @ #vk.1,
+    !KU( <'response', 'server', ~n.1, 'zero', key, 
+          sign(<'cert', 'server', key>, ~ca), sig>
+    ) @ #vk.2,
+    !KU( <'response', 'server', ~n.2, 'nonzero', pk(x.1), 
+          sign(<'cert', 'server', pk(x.1)>, ~ca), 
+          sign(<'cv', 'server', ~n.2, 'nonzero', pk(x.1), 
+                sign(<'cert', 'server', pk(x.1)>, ~ca)>,
+               x.1)
+         >
+    ) @ #vk.4,
+    !KU( <'server', ~n, 'nonzero', pk(x), 
+          sign(<'cert', 'server', pk(x)>, ~ca), 
+          sign(<'cv', 'server', ~n, 'nonzero', pk(x), 
+                sign(<'cert', 'server', pk(x)>, ~ca)>,
+               x)
+         >
+    ) @ #vk.6,
+    !KU( 'server' ) @ #vk.7,
+    !KU( <'server', ~n.1, 'zero', key, 
+          sign(<'cert', 'server', key>, ~ca), sig>
+    ) @ #vk.8,
+    !KU( <'server', ~n.2, 'nonzero', pk(x.1), 
+          sign(<'cert', 'server', pk(x.1)>, ~ca), 
+          sign(<'cv', 'server', ~n.2, 'nonzero', pk(x.1), 
+                sign(<'cert', 'server', pk(x.1)>, ~ca)>,
+               x.1)
+         >
+    ) @ #vk.10,
+    !KU( <~n, 'nonzero', pk(x), sign(<'cert', 'server', pk(x)>, ~ca), 
+          sign(<'cv', 'server', ~n, 'nonzero', pk(x), 
+                sign(<'cert', 'server', pk(x)>, ~ca)>,
+               x)
+         >
+    ) @ #vk.12,
+    !KU( ~n ) @ #vk.13,
+    !KU( <'nonzero', pk(x), sign(<'cert', 'server', pk(x)>, ~ca), 
+          sign(<'cv', 'server', ~n, 'nonzero', pk(x), 
+                sign(<'cert', 'server', pk(x)>, ~ca)>,
+               x)
+         >
+    ) @ #vk.14,
+    !KU( 'nonzero' ) @ #vk.15,
+    !KU( <'nonzero', pk(x.1), sign(<'cert', 'server', pk(x.1)>, ~ca), 
+          sign(<'cv', 'server', ~n.2, 'nonzero', pk(x.1), 
+                sign(<'cert', 'server', pk(x.1)>, ~ca)>,
+               x.1)
+         >
+    ) @ #vk.16,
+    !KU( <~n.2, 'nonzero', pk(x.1), 
+          sign(<'cert', 'server', pk(x.1)>, ~ca), 
+          sign(<'cv', 'server', ~n.2, 'nonzero', pk(x.1), 
+                sign(<'cert', 'server', pk(x.1)>, ~ca)>,
+               x.1)
+         >
+    ) @ #vk.18,
+    !KU( <pk(x), sign(<'cert', 'server', pk(x)>, ~ca), 
+          sign(<'cv', 'server', ~n, 'nonzero', pk(x), 
+                sign(<'cert', 'server', pk(x)>, ~ca)>,
+               x)
+         >
+    ) @ #vk.20,
+    !KU( pk(x) ) @ #vk.21,
+    !KU( <sign(<'cert', 'server', pk(x)>, ~ca), 
+          sign(<'cv', 'server', ~n, 'nonzero', pk(x), 
+                sign(<'cert', 'server', pk(x)>, ~ca)>,
+               x)
+         >
+    ) @ #vk.22,
+    !KU( sign(<'cert', 'server', pk(x)>, ~ca) ) @ #vk.23,
+    !KU( sign(<'cv', 'server', ~n, 'nonzero', pk(x), 
+               sign(<'cert', 'server', pk(x)>, ~ca)>,
+              x)
+    ) @ #vk.24,
+    !KU( <'cancel', ~n.1> ) @ #vk.25, !KU( 'cancel' ) @ #vk.26,
+    !KU( ~n.1 ) @ #vk.28,
+    !KU( <~n.1, 'zero', key, sign(<'cert', 'server', key>, ~ca), sig>
+    ) @ #vk.29,
+    !KU( <'zero', key, sign(<'cert', 'server', key>, ~ca), sig>
+    ) @ #vk.30,
+    !KU( 'zero' ) @ #vk.31,
+    !KU( <key, sign(<'cert', 'server', key>, ~ca), sig> ) @ #vk.32,
+    !KU( key ) @ #vk.33,
+    !KU( <sign(<'cert', 'server', key>, ~ca), sig> ) @ #vk.34,
+    !KU( sign(<'cert', 'server', key>, ~ca) ) @ #vk.35,
+    !KU( sig ) @ #vk.36, !KU( ~n.2 ) @ #vk.46,
+    !KU( <pk(x.1), sign(<'cert', 'server', pk(x.1)>, ~ca), 
+          sign(<'cv', 'server', ~n.2, 'nonzero', pk(x.1), 
+                sign(<'cert', 'server', pk(x.1)>, ~ca)>,
+               x.1)
+         >
+    ) @ #vk.47,
+    !KU( pk(x.1) ) @ #vk.48,
+    !KU( <sign(<'cert', 'server', pk(x.1)>, ~ca), 
+          sign(<'cv', 'server', ~n.2, 'nonzero', pk(x.1), 
+                sign(<'cert', 'server', pk(x.1)>, ~ca)>,
+               x.1)
+         >
+    ) @ #vk.49,
+    !KU( sign(<'cert', 'server', pk(x.1)>, ~ca) ) @ #vk.50,
+    !KU( sign(<'cv', 'server', ~n.2, 'nonzero', pk(x.1), 
+               sign(<'cert', 'server', pk(x.1)>, ~ca)>,
+              x.1)
+    ) @ #vk.51
+  edges:
+    (#a, 0) >--> (#vr.3, 0), (#b, 0) >--> (#j, 0),
+    (#c, 0) >--> (#vr.13, 0), (#i, 0) >--> (#b, 0),
+    (#j, 0) >--> (#vr.6, 0), (#k, 0) >--> (#c, 0),
+    (#vf, 0) >--> (#a, 2), (#vr, 0) >--> (#vr.2, 1),
+    (#vr, 0) >--> (#vr.6, 1), (#vr, 0) >--> (#vr.12, 1),
+    (#vr, 3) >--> (#a, 0), (#vr, 4) >--> (#a, 1),
+    (#vr, 4) >--> (#i, 1), (#vr, 5) >--> (#b, 1),
+    (#vr, 5) >--> (#k, 1), (#vr, 6) >--> (#c, 1),
+    (#vr, 6) >--> (#l, 1), (#vf.1, 0) >--> (#b, 2),
+    (#vr.1, 0) >--> (#i, 0), (#vf.2, 0) >--> (#c, 2),
+    (#vr.2, 0) >--> (#vr.1, 0), (#vf.3, 0) >--> (#vr, 0),
+    (#vr.3, 0) >--> (#vr.2, 0), (#vf.4, 0) >--> (#vr, 1),
+    (#vr.4, 0) >--> (#vr.3, 1), (#vf.5, 0) >--> (#vr.3, 2),
+    (#vf.6, 0) >--> (#k, 2), (#vr.6, 0) >--> (#k, 0),
+    (#vf.7, 0) >--> (#j, 2), (#vr.8, 0) >--> (#j, 1),
+    (#vf.9, 0) >--> (#k, 2), (#vf.10, 0) >--> (#vr.13, 2),
+    (#vr.11, 0) >--> (#l, 0), (#vr.12, 0) >--> (#vr.11, 0),
+    (#vr.13, 0) >--> (#vr.12, 0), (#vr.14, 0) >--> (#vr.13, 1)
+  less:
+    #a < #i: induced by fresh value,
+    #a < #vr.1: induced by fresh value,
+    #a < #vr.2: induced by fresh value,
+    #a < #vr.3: induced by fresh value,
+    #a < #vf.5: induced by fresh value,
+    #b < #j: induced by fresh value, #b < #k: induced by fresh value,
+    #b < #vf.6: induced by fresh value,
+    #b < #vr.6: induced by fresh value,
+    #b < #vf.7: induced by fresh value,
+    #b < #vf.9: induced by fresh value,
+    #c < #l: induced by fresh value,
+    #c < #vf.10: induced by fresh value,
+    #c < #vr.11: induced by fresh value,
+    #c < #vr.12: induced by fresh value,
+    #c < #vr.13: induced by fresh value, #i < #b: induced by formula,
+    #j < #k: induced by formula, #k < #c: induced by formula,
+    #vk < #vf.5: induced by adversary,
+    #vr < #i: induced by fresh value, #vr < #j: induced by fresh value,
+    #vr < #k: induced by fresh value, #vr < #l: induced by fresh value,
+    #vr < #vr.1: induced by fresh value,
+    #vr < #vr.2: induced by fresh value,
+    #vr < #vr.3: induced by fresh value,
+    #vr < #vf.5: induced by fresh value,
+    #vr < #vr.6: induced by fresh value,
+    #vr < #vf.7: induced by fresh value,
+    #vr < #vf.10: induced by fresh value,
+    #vr < #vr.11: induced by fresh value,
+    #vr < #vr.12: induced by fresh value,
+    #vr < #vr.13: induced by fresh value,
+    #vk.1 < #vk: induced by adversary,
+    #vk.1 < #vk.2: induced by adversary,
+    #vk.1 < #vk.4: induced by adversary,
+    #vk.2 < #vf.7: induced by adversary,
+    #vk.4 < #vf.10: induced by adversary,
+    #vk.6 < #vk: induced by adversary,
+    #vk.7 < #vk.6: induced by adversary,
+    #vk.7 < #vk.8: induced by adversary,
+    #vk.7 < #vk.10: induced by adversary,
+    #vk.8 < #vk.2: induced by adversary,
+    #vk.10 < #vk.4: induced by adversary,
+    #vk.12 < #vk.6: induced by adversary,
+    #vk.13 < #vk.12: induced by adversary,
+    #vk.14 < #vk.12: induced by adversary,
+    #vk.15 < #vk.14: induced by adversary,
+    #vk.15 < #vk.16: induced by adversary,
+    #vk.16 < #vk.18: induced by adversary,
+    #vk.18 < #vk.10: induced by adversary,
+    #vk.20 < #vk.14: induced by adversary,
+    #vk.21 < #vk.20: induced by adversary,
+    #vk.22 < #vk.20: induced by adversary,
+    #vk.23 < #vk.22: induced by adversary,
+    #vk.24 < #vk.22: induced by adversary,
+    #vk.25 < #vf.6: induced by adversary,
+    #vk.25 < #vf.9: induced by adversary,
+    #vk.26 < #vk.25: induced by adversary,
+    #vk.28 < #vk.25: induced by adversary,
+    #vk.28 < #vk.29: induced by adversary,
+    #vk.29 < #vk.8: induced by adversary,
+    #vk.30 < #vk.29: induced by adversary,
+    #vk.31 < #vk.30: induced by adversary,
+    #vk.32 < #vk.30: induced by adversary,
+    #vk.33 < #vk.32: induced by adversary,
+    #vk.34 < #vk.32: induced by adversary,
+    #vk.35 < #vk.34: induced by adversary,
+    #vk.36 < #vk.34: induced by adversary,
+    #vk.46 < #vk.18: induced by adversary,
+    #vk.47 < #vk.16: induced by adversary,
+    #vk.48 < #vk.47: induced by adversary,
+    #vk.49 < #vk.47: induced by adversary,
+    #vk.50 < #vk.49: induced by adversary,
+    #vk.51 < #vk.49: induced by adversary
+  unsolved constraints:
+    !KU( <'response', 'server', ~n, 'nonzero', pk(x), 
+          sign(<'cert', 'server', pk(x)>, ~ca), 
+          sign(<'cv', 'server', ~n, 'nonzero', pk(x), 
+                sign(<'cert', 'server', pk(x)>, ~ca)>,
+               x)
+         >
+    ) @ #vk // nr: 21" (useful2)"
+    
+    !KU( 'response' ) @ #vk.1 // nr: 22" (currently deducible)"
+    
+    !KU( <'response', 'server', ~n.1, 'zero', key, 
+          sign(<'cert', 'server', key>, ~ca), sig>
+    ) @ #vk.2 // nr: 67" (useful2)"
+    
+    !KU( <'response', 'server', ~n.2, 'nonzero', pk(x.1), 
+          sign(<'cert', 'server', pk(x.1)>, ~ca), 
+          sign(<'cv', 'server', ~n.2, 'nonzero', pk(x.1), 
+                sign(<'cert', 'server', pk(x.1)>, ~ca)>,
+               x.1)
+         >
+    ) @ #vk.4 // nr: 132" (useful2)"
+    
+    !KU( <'server', ~n, 'nonzero', pk(x), 
+          sign(<'cert', 'server', pk(x)>, ~ca), 
+          sign(<'cv', 'server', ~n, 'nonzero', pk(x), 
+                sign(<'cert', 'server', pk(x)>, ~ca)>,
+               x)
+         >
+    ) @ #vk.6 // nr: 23" (useful2)"
+    
+    !KU( 'server' ) @ #vk.7 // nr: 24" (currently deducible)"
+    
+    !KU( <'server', ~n.1, 'zero', key, 
+          sign(<'cert', 'server', key>, ~ca), sig>
+    ) @ #vk.8 // nr: 69" (useful2)"
+    
+    !KU( <'server', ~n.2, 'nonzero', pk(x.1), 
+          sign(<'cert', 'server', pk(x.1)>, ~ca), 
+          sign(<'cv', 'server', ~n.2, 'nonzero', pk(x.1), 
+                sign(<'cert', 'server', pk(x.1)>, ~ca)>,
+               x.1)
+         >
+    ) @ #vk.10 // nr: 134" (useful2)"
+    
+    !KU( <~n, 'nonzero', pk(x), sign(<'cert', 'server', pk(x)>, ~ca), 
+          sign(<'cv', 'server', ~n, 'nonzero', pk(x), 
+                sign(<'cert', 'server', pk(x)>, ~ca)>,
+               x)
+         >
+    ) @ #vk.12 // nr: 25" (useful2)"
+    
+    !KU( ~n ) @ #vk.13 // nr: 26" (currently deducible)"
+    
+    !KU( <'nonzero', pk(x), sign(<'cert', 'server', pk(x)>, ~ca), 
+          sign(<'cv', 'server', ~n, 'nonzero', pk(x), 
+                sign(<'cert', 'server', pk(x)>, ~ca)>,
+               x)
+         >
+    ) @ #vk.14 // nr: 27" (useful2)"
+    
+    !KU( 'nonzero' ) @ #vk.15 // nr: 28" (currently deducible)"
+    
+    !KU( <'nonzero', pk(x.1), sign(<'cert', 'server', pk(x.1)>, ~ca), 
+          sign(<'cv', 'server', ~n.2, 'nonzero', pk(x.1), 
+                sign(<'cert', 'server', pk(x.1)>, ~ca)>,
+               x.1)
+         >
+    ) @ #vk.16 // nr: 138" (useful2)"
+    
+    !KU( <~n.2, 'nonzero', pk(x.1), 
+          sign(<'cert', 'server', pk(x.1)>, ~ca), 
+          sign(<'cv', 'server', ~n.2, 'nonzero', pk(x.1), 
+                sign(<'cert', 'server', pk(x.1)>, ~ca)>,
+               x.1)
+         >
+    ) @ #vk.18 // nr: 136" (useful2)"
+    
+    !KU( <pk(x), sign(<'cert', 'server', pk(x)>, ~ca), 
+          sign(<'cv', 'server', ~n, 'nonzero', pk(x), 
+                sign(<'cert', 'server', pk(x)>, ~ca)>,
+               x)
+         >
+    ) @ #vk.20 // nr: 29" (useful2)"
+    
+    !KU( pk(x) ) @ #vk.21 // nr: 30" (probably constructible)"
+    
+    !KU( <sign(<'cert', 'server', pk(x)>, ~ca), 
+          sign(<'cv', 'server', ~n, 'nonzero', pk(x), 
+                sign(<'cert', 'server', pk(x)>, ~ca)>,
+               x)
+         >
+    ) @ #vk.22 // nr: 31" (useful2)"
+    
+    !KU( sign(<'cert', 'server', pk(x)>, ~ca)
+    ) @ #vk.23 // nr: 32" (useful2)"
+    
+    !KU( sign(<'cv', 'server', ~n, 'nonzero', pk(x), 
+               sign(<'cert', 'server', pk(x)>, ~ca)>,
+              x)
+    ) @ #vk.24 // nr: 33" (useful2)"
+    
+    !KU( <'cancel', ~n.1> ) @ #vk.25 // nr: 63" (useful2)"
+    
+    !KU( 'cancel' ) @ #vk.26 // nr: 64" (currently deducible)"
+    
+    !KU( ~n.1 ) @ #vk.28 // nr: 65" (currently deducible)"
+    
+    !KU( <~n.1, 'zero', key, sign(<'cert', 'server', key>, ~ca), sig>
+    ) @ #vk.29 // nr: 66" (useful2)"
+    
+    !KU( <'zero', key, sign(<'cert', 'server', key>, ~ca), sig>
+    ) @ #vk.30 // nr: 71" (useful2)"
+    
+    !KU( 'zero' ) @ #vk.31 // nr: 102" (currently deducible)"
+    
+    !KU( <key, sign(<'cert', 'server', key>, ~ca), sig>
+    ) @ #vk.32 // nr: 73" (useful2)"
+    
+    !KU( key ) @ #vk.33 // nr: 98" (probably constructible)"
+    
+    !KU( <sign(<'cert', 'server', key>, ~ca), sig>
+    ) @ #vk.34 // nr: 75" (useful2)"
+    
+    !KU( sign(<'cert', 'server', key>, ~ca)
+    ) @ #vk.35 // nr: 76" (useful2)"
+    
+    !KU( sig ) @ #vk.36 // nr: 101" (probably constructible)"
+    
+    !KU( ~n.2 ) @ #vk.46 // nr: 137" (currently deducible)"
+    
+    !KU( <pk(x.1), sign(<'cert', 'server', pk(x.1)>, ~ca), 
+          sign(<'cv', 'server', ~n.2, 'nonzero', pk(x.1), 
+                sign(<'cert', 'server', pk(x.1)>, ~ca)>,
+               x.1)
+         >
+    ) @ #vk.47 // nr: 140" (useful2)"
+    
+    !KU( pk(x.1) ) @ #vk.48 // nr: 141" (probably constructible)"
+    
+    !KU( <sign(<'cert', 'server', pk(x.1)>, ~ca), 
+          sign(<'cv', 'server', ~n.2, 'nonzero', pk(x.1), 
+                sign(<'cert', 'server', pk(x.1)>, ~ca)>,
+               x.1)
+         >
+    ) @ #vk.49 // nr: 142" (useful2)"
+    
+    !KU( sign(<'cert', 'server', pk(x.1)>, ~ca)
+    ) @ #vk.50 // nr: 143" (useful2)"
+    
+    !KU( sign(<'cv', 'server', ~n.2, 'nonzero', pk(x.1), 
+               sign(<'cert', 'server', pk(x.1)>, ~ca)>,
+              x.1)
+    ) @ #vk.51 // nr: 144" (useful2)"
+  last: none
+  
+  formulas:
+  
+  subterms:
+  
+  equations:
+    subst:
+      'empty'  <~ {state}
+      'zero'  <~ {value}
+      ~ca  <~ {~ca.61}
+      ~n  <~ {~n.4}
+      ~sk  <~ {~sk.62}
+      key  <~ {key.1}
+      sig  <~ {sig.1}
+      x  <~ {x.2}
+      #a  <~ {#vr.58}
+      #b  <~ {#vr.15}
+      #i  <~ {#vr.16}
+      #j  <~ {#vr.7}
+      #k  <~ {#vr.5}
+      #vf  <~ {#vf.59}
+      #vk  <~ {#vk.5}
+      #vr  <~ {#vr.60}
+      ~n.1  <~ {~n.3}
+      #vf.1  <~ {#vf.11}
+      #vr.1  <~ {#vr.17}
+      #vk.2  <~ {#vk.3}
+      #vr.2  <~ {#vr.18}
+      #vf.3  <~ {#vf.63}
+      #vr.3  <~ {#vr.19}
+      #vf.4  <~ {#vf.64}
+      #vr.4  <~ {#vr.20}
+      #vf.5  <~ {#vf.12}
+      #vf.6  <~ {#vf.9}
+      #vk.6  <~ {#vk.11}
+      #vr.6  <~ {#vr.10}
+      #vf.7  <~ {#vf.8}
+      #vk.8  <~ {#vk.9}
+      #vr.8  <~ {#vr.9}
+      #vk.12  <~ {#vk.19}
+      #vk.13  <~ {#vk.52}
+      #vk.14  <~ {#vk.17}
+      #vk.20  <~ {#vk.53}
+      #vk.21  <~ {#vk.54}
+      #vk.22  <~ {#vk.55}
+      #vk.23  <~ {#vk.56}
+      #vk.24  <~ {#vk.57}
+      #vk.25  <~ {#vk.27}
+      #vk.28  <~ {#vk.38}
+      #vk.29  <~ {#vk.37}
+      #vk.30  <~ {#vk.39}
+      #vk.31  <~ {#vk.40}
+      #vk.32  <~ {#vk.41}
+      #vk.33  <~ {#vk.42}
+      #vk.34  <~ {#vk.43}
+      #vk.35  <~ {#vk.44}
+      #vk.36  <~ {#vk.45}
+    conj:
+  
+  lemmas:
+    ∀ C S #i #j.
+     (Initialised( C, S ) @ #i) ∧ (Initialised( C, S ) @ #j) ⇒ #i = #j
+    
+    ∀ x y #i. (Eq( x, y ) @ #i) ⇒ x = y
+  
+  allowed cases: refined
+  
+  solved formulas:
+    #vr = #vr
+    
+    true = true
+    
+    ∃ C S n n0 n1 #a #i #b #j #k #c #l.
+     (OpenedPhase( C, S, n0, 'empty', 'initial' ) @ #a) ∧
+     (CacheEstablished( C, S, n0 ) @ #i) ∧
+     (OpenedPhase( C, S, n, 'pq', 'probe' ) @ #b) ∧
+     (Parsed( C, S, n, 'zero' ) @ #j) ∧
+     (Aborted( C, S, n, 'pq' ) @ #k) ∧
+     (OpenedPhase( C, S, n1, 'pq', 'reconnect' ) @ #c) ∧
+     (Completed( C, S, n1, 'nonzero' ) @ #l)
+    ∧
+     (#a < #i) ∧
+     (#i < #b) ∧
+     (#b < #j) ∧
+     (#j < #k) ∧
+     (#k < #c) ∧
+     (#c < #l)
+  
+  unsolved constraints:
+    !KU( <'response', 'server', ~n, 'nonzero', pk(x), 
+          sign(<'cert', 'server', pk(x)>, ~ca), 
+          sign(<'cv', 'server', ~n, 'nonzero', pk(x), 
+                sign(<'cert', 'server', pk(x)>, ~ca)>,
+               x)
+         >
+    ) @ #vk // nr: 21" (useful2)"
+    
+    !KU( 'response' ) @ #vk.1 // nr: 22" (currently deducible)"
+    
+    !KU( <'response', 'server', ~n.1, 'zero', key, 
+          sign(<'cert', 'server', key>, ~ca), sig>
+    ) @ #vk.2 // nr: 67" (useful2)"
+    
+    !KU( <'response', 'server', ~n.2, 'nonzero', pk(x.1), 
+          sign(<'cert', 'server', pk(x.1)>, ~ca), 
+          sign(<'cv', 'server', ~n.2, 'nonzero', pk(x.1), 
+                sign(<'cert', 'server', pk(x.1)>, ~ca)>,
+               x.1)
+         >
+    ) @ #vk.4 // nr: 132" (useful2)"
+    
+    !KU( <'server', ~n, 'nonzero', pk(x), 
+          sign(<'cert', 'server', pk(x)>, ~ca), 
+          sign(<'cv', 'server', ~n, 'nonzero', pk(x), 
+                sign(<'cert', 'server', pk(x)>, ~ca)>,
+               x)
+         >
+    ) @ #vk.6 // nr: 23" (useful2)"
+    
+    !KU( 'server' ) @ #vk.7 // nr: 24" (currently deducible)"
+    
+    !KU( <'server', ~n.1, 'zero', key, 
+          sign(<'cert', 'server', key>, ~ca), sig>
+    ) @ #vk.8 // nr: 69" (useful2)"
+    
+    !KU( <'server', ~n.2, 'nonzero', pk(x.1), 
+          sign(<'cert', 'server', pk(x.1)>, ~ca), 
+          sign(<'cv', 'server', ~n.2, 'nonzero', pk(x.1), 
+                sign(<'cert', 'server', pk(x.1)>, ~ca)>,
+               x.1)
+         >
+    ) @ #vk.10 // nr: 134" (useful2)"
+    
+    !KU( <~n, 'nonzero', pk(x), sign(<'cert', 'server', pk(x)>, ~ca), 
+          sign(<'cv', 'server', ~n, 'nonzero', pk(x), 
+                sign(<'cert', 'server', pk(x)>, ~ca)>,
+               x)
+         >
+    ) @ #vk.12 // nr: 25" (useful2)"
+    
+    !KU( ~n ) @ #vk.13 // nr: 26" (currently deducible)"
+    
+    !KU( <'nonzero', pk(x), sign(<'cert', 'server', pk(x)>, ~ca), 
+          sign(<'cv', 'server', ~n, 'nonzero', pk(x), 
+                sign(<'cert', 'server', pk(x)>, ~ca)>,
+               x)
+         >
+    ) @ #vk.14 // nr: 27" (useful2)"
+    
+    !KU( 'nonzero' ) @ #vk.15 // nr: 28" (currently deducible)"
+    
+    !KU( <'nonzero', pk(x.1), sign(<'cert', 'server', pk(x.1)>, ~ca), 
+          sign(<'cv', 'server', ~n.2, 'nonzero', pk(x.1), 
+                sign(<'cert', 'server', pk(x.1)>, ~ca)>,
+               x.1)
+         >
+    ) @ #vk.16 // nr: 138" (useful2)"
+    
+    !KU( <~n.2, 'nonzero', pk(x.1), 
+          sign(<'cert', 'server', pk(x.1)>, ~ca), 
+          sign(<'cv', 'server', ~n.2, 'nonzero', pk(x.1), 
+                sign(<'cert', 'server', pk(x.1)>, ~ca)>,
+               x.1)
+         >
+    ) @ #vk.18 // nr: 136" (useful2)"
+    
+    !KU( <pk(x), sign(<'cert', 'server', pk(x)>, ~ca), 
+          sign(<'cv', 'server', ~n, 'nonzero', pk(x), 
+                sign(<'cert', 'server', pk(x)>, ~ca)>,
+               x)
+         >
+    ) @ #vk.20 // nr: 29" (useful2)"
+    
+    !KU( pk(x) ) @ #vk.21 // nr: 30" (probably constructible)"
+    
+    !KU( <sign(<'cert', 'server', pk(x)>, ~ca), 
+          sign(<'cv', 'server', ~n, 'nonzero', pk(x), 
+                sign(<'cert', 'server', pk(x)>, ~ca)>,
+               x)
+         >
+    ) @ #vk.22 // nr: 31" (useful2)"
+    
+    !KU( sign(<'cert', 'server', pk(x)>, ~ca)
+    ) @ #vk.23 // nr: 32" (useful2)"
+    
+    !KU( sign(<'cv', 'server', ~n, 'nonzero', pk(x), 
+               sign(<'cert', 'server', pk(x)>, ~ca)>,
+              x)
+    ) @ #vk.24 // nr: 33" (useful2)"
+    
+    !KU( <'cancel', ~n.1> ) @ #vk.25 // nr: 63" (useful2)"
+    
+    !KU( 'cancel' ) @ #vk.26 // nr: 64" (currently deducible)"
+    
+    !KU( ~n.1 ) @ #vk.28 // nr: 65" (currently deducible)"
+    
+    !KU( <~n.1, 'zero', key, sign(<'cert', 'server', key>, ~ca), sig>
+    ) @ #vk.29 // nr: 66" (useful2)"
+    
+    !KU( <'zero', key, sign(<'cert', 'server', key>, ~ca), sig>
+    ) @ #vk.30 // nr: 71" (useful2)"
+    
+    !KU( 'zero' ) @ #vk.31 // nr: 102" (currently deducible)"
+    
+    !KU( <key, sign(<'cert', 'server', key>, ~ca), sig>
+    ) @ #vk.32 // nr: 73" (useful2)"
+    
+    !KU( key ) @ #vk.33 // nr: 98" (probably constructible)"
+    
+    !KU( <sign(<'cert', 'server', key>, ~ca), sig>
+    ) @ #vk.34 // nr: 75" (useful2)"
+    
+    !KU( sign(<'cert', 'server', key>, ~ca)
+    ) @ #vk.35 // nr: 76" (useful2)"
+    
+    !KU( sig ) @ #vk.36 // nr: 101" (probably constructible)"
+    
+    !KU( ~n.2 ) @ #vk.46 // nr: 137" (currently deducible)"
+    
+    !KU( <pk(x.1), sign(<'cert', 'server', pk(x.1)>, ~ca), 
+          sign(<'cv', 'server', ~n.2, 'nonzero', pk(x.1), 
+                sign(<'cert', 'server', pk(x.1)>, ~ca)>,
+               x.1)
+         >
+    ) @ #vk.47 // nr: 140" (useful2)"
+    
+    !KU( pk(x.1) ) @ #vk.48 // nr: 141" (probably constructible)"
+    
+    !KU( <sign(<'cert', 'server', pk(x.1)>, ~ca), 
+          sign(<'cv', 'server', ~n.2, 'nonzero', pk(x.1), 
+                sign(<'cert', 'server', pk(x.1)>, ~ca)>,
+               x.1)
+         >
+    ) @ #vk.49 // nr: 142" (useful2)"
+    
+    !KU( sign(<'cert', 'server', pk(x.1)>, ~ca)
+    ) @ #vk.50 // nr: 143" (useful2)"
+    
+    !KU( sign(<'cv', 'server', ~n.2, 'nonzero', pk(x.1), 
+               sign(<'cert', 'server', pk(x.1)>, ~ca)>,
+              x.1)
+    ) @ #vk.51 // nr: 144" (useful2)"
+  
+  solved constraints:
+    OpenedPhase( 'client', 'server', ~n, 'empty', 'initial'
+    ) @ #a // nr: 0 (from rule Start)" (useful2)"
+    
+    OpenedPhase( 'client', 'server', ~n.1, 'pq', 'probe'
+    ) @ #b // nr: 2 (from rule Start)" (useful2)"
+    
+    OpenedPhase( 'client', 'server', ~n.2, 'pq', 'reconnect'
+    ) @ #c // nr: 5 (from rule Start)" (useful2)"
+    
+    CacheEstablished( 'client', 'server', ~n
+    ) @ #i // nr: 1 (from rule CommitPositive)" (useful2)"
+    
+    Parsed( 'client', 'server', ~n.1, 'zero'
+    ) @ #j // nr: 3 (from rule ParseDeferred)" (useful2)"
+    
+    Aborted( 'client', 'server', ~n.1, 'pq'
+    ) @ #k // nr: 4 (from rule AbortAfterChain)" (useful2)"
+    
+    Completed( 'client', 'server', ~n.2, 'nonzero'
+    ) @ #l // nr: 6 (from rule CommitPositive)" (useful2)"
+    
+    !Next( 'initial', 'probe'
+    ) ▶₀ #a // nr: 20 (from rule Start)" (useful2)"
+    
+    Cache( 'client', 'server', 'empty', 'initial'
+    ) ▶₀ #a // nr: 8 (from rule Start)" (useful2)"
+    
+    !Next( 'initial', 'probe'
+    ) ▶₁ #a // nr: 9 (from rule Start)" (useful2)"
+    
+    !Next( 'probe', 'reconnect'
+    ) ▶₀ #b // nr: 62 (from rule Start)" (useful2)"
+    
+    Cache( 'client', 'server', 'pq', 'probe'
+    ) ▶₀ #b // nr: 14 (from rule Start)" (useful2)"
+    
+    !Next( 'probe', 'reconnect'
+    ) ▶₁ #b // nr: 15 (from rule Start)" (useful2)"
+    
+    !Next( 'reconnect', 'done'
+    ) ▶₀ #c // nr: 85 (from rule Start)" (useful2)"
+    
+    Cache( 'client', 'server', 'pq', 'reconnect'
+    ) ▶₀ #c // nr: 17 (from rule Start)" (useful2)"
+    
+    !Next( 'reconnect', 'done'
+    ) ▶₁ #c // nr: 18 (from rule Start)" (useful2)"
+    
+    !Next( 'initial', 'probe'
+    ) ▶₀ #i // nr: 40 (from rule CommitPositive)" (useful2)"
+    
+    ReadyCommit( 'client', 'server', ~n, 'empty', 'initial', 'nonzero',
+                 pk(x), sign(<'cert', 'server', pk(x)>, ~ca)
+    ) ▶₀ #i // nr: 11 (from rule CommitPositive)" (useful2)"
+    
+    !Next( 'initial', 'probe'
+    ) ▶₁ #i // nr: 12 (from rule CommitPositive)" (useful2)"
+    
+    !Policy( 'defer'
+    ) ▶₀ #j // nr: 103 (from rule ParseDeferred)" (useful2)"
+    
+    Waiting( 'client', 'server', ~n.1, 'pq', 'probe'
+    ) ▶₀ #j // nr: 83 (from rule ParseDeferred) (loop breaker)" (loop breaker)"
+    
+    !Policy( 'defer'
+    ) ▶₁ #j // nr: 84 (from rule ParseDeferred)" (useful2)"
+    
+    !Next( 'probe', 'reconnect'
+    ) ▶₀ #k // nr: 128 (from rule AbortAfterChain)" (useful2)"
+    
+    Validated( 'client', 'server', ~n.1, 'pq', 'probe', 'zero', key,
+               sign(<'cert', 'server', key>, ~ca), sig
+    ) ▶₀ #k // nr: 79 (from rule AbortAfterChain)" (useful2)"
+    
+    !Next( 'probe', 'reconnect'
+    ) ▶₁ #k // nr: 80 (from rule AbortAfterChain)" (useful2)"
+    
+    !Next( 'reconnect', 'done'
+    ) ▶₀ #l // nr: 151 (from rule CommitPositive)" (useful2)"
+    
+    ReadyCommit( 'client', 'server', ~n.2, 'pq', 'reconnect',
+                 'nonzero', pk(x.1), sign(<'cert', 'server', pk(x.1)>, ~ca)
+    ) ▶₀ #l // nr: 130 (from rule CommitPositive)" (useful2)"
+    
+    !Next( 'reconnect', 'done'
+    ) ▶₁ #l // nr: 131 (from rule CommitPositive)" (useful2)"
+    
+    Validated( 'client', 'server', ~n, 'empty', 'initial', 'nonzero',
+               pk(x), sign(<'cert', 'server', pk(x)>, ~ca),
+               sign(<'cv', 'server', ~n, 'nonzero', pk(x), 
+                     sign(<'cert', 'server', pk(x)>, ~ca)>,
+                    x)
+    ) ▶₀ #vr.1 // nr: 35 (from rule CheckCV)" (useful2)"
+    
+    Pending( 'client', 'server', ~n, 'empty', 'initial', 'nonzero',
+             pk(x), sign(<'cert', 'server', pk(x)>, ~ca),
+             sign(<'cv', 'server', ~n, 'nonzero', pk(x), 
+                   sign(<'cert', 'server', pk(x)>, ~ca)>,
+                  x)
+    ) ▶₀ #vr.2 // nr: 36 (from rule ValidateCertificate)" (useful2)"
+    
+    !Trust( 'client', 'server', pk(~ca)
+    ) ▶₁ #vr.2 // nr: 37 (from rule ValidateCertificate)" (useful2)"
+    
+    Waiting( 'client', 'server', ~n, 'empty', 'initial'
+    ) ▶₀ #vr.3 // nr: 38 (from rule ParseDeferred) (loop breaker)" (loop breaker)"
+    
+    !Policy( 'defer'
+    ) ▶₁ #vr.3 // nr: 39 (from rule ParseDeferred)" (useful2)"
+    
+    Pending( 'client', 'server', ~n.1, 'pq', 'probe', 'zero', key,
+             sign(<'cert', 'server', key>, ~ca), sig
+    ) ▶₀ #vr.6 // nr: 81 (from rule ValidateCertificate)" (useful2)"
+    
+    !Trust( 'client', 'server', pk(~ca)
+    ) ▶₁ #vr.6 // nr: 82 (from rule ValidateCertificate)" (useful2)"
+    
+    Validated( 'client', 'server', ~n.2, 'pq', 'reconnect', 'nonzero',
+               pk(x.1), sign(<'cert', 'server', pk(x.1)>, ~ca),
+               sign(<'cv', 'server', ~n.2, 'nonzero', pk(x.1), 
+                     sign(<'cert', 'server', pk(x.1)>, ~ca)>,
+                    x.1)
+    ) ▶₀ #vr.11 // nr: 146 (from rule CheckCV)" (useful2)"
+    
+    Pending( 'client', 'server', ~n.2, 'pq', 'reconnect', 'nonzero',
+             pk(x.1), sign(<'cert', 'server', pk(x.1)>, ~ca),
+             sign(<'cv', 'server', ~n.2, 'nonzero', pk(x.1), 
+                   sign(<'cert', 'server', pk(x.1)>, ~ca)>,
+                  x.1)
+    ) ▶₀ #vr.12 // nr: 147 (from rule ValidateCertificate)" (useful2)"
+    
+    !Trust( 'client', 'server', pk(~ca)
+    ) ▶₁ #vr.12 // nr: 148 (from rule ValidateCertificate)" (useful2)"
+    
+    Waiting( 'client', 'server', ~n.2, 'pq', 'reconnect'
+    ) ▶₀ #vr.13 // nr: 149 (from rule ParseDeferred) (loop breaker)" (loop breaker)"
+    
+    !Policy( 'defer'
+    ) ▶₁ #vr.13 // nr: 150 (from rule ParseDeferred)" (useful2)"

@@ -1,0 +1,43 @@
+[
+  {
+    "name": "safe",
+    "model": "cache_transaction.spthy",
+    "flags": [],
+    "expected": [
+      "VERIFIED",
+      "VERIFIED",
+      "VERIFIED",
+      "VERIFIED",
+      "VERIFIED",
+      "VERIFIED"
+    ]
+  },
+  {
+    "name": "early",
+    "model": "cache_transaction.spthy",
+    "flags": [
+      "EARLY_CLEAR"
+    ],
+    "expected": [
+      "FALSIFIED",
+      "FALSIFIED",
+      "VERIFIED",
+      "VERIFIED",
+      "FALSIFIED",
+      "FALSIFIED"
+    ]
+  },
+  {
+    "name": "no_cv",
+    "model": "cache_transaction_no_cv.spthy",
+    "flags": [],
+    "expected": [
+      "FALSIFIED",
+      "VERIFIED",
+      "VERIFIED",
+      "VERIFIED",
+      "VERIFIED",
+      "VERIFIED"
+    ]
+  }
+]

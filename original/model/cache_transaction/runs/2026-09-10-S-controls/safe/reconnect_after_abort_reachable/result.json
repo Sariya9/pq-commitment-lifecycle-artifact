@@ -1,0 +1,23 @@
+{
+  "source": "/Users/sammo/Downloads/Research/thesis_pqc_tls/pq_auth_negotiation/model/cache_transaction/cache_transaction.spthy",
+  "sha256": "c24165f05ef5f7d7fa31c74c957a36c7ea6d83e04829e8ec8dc3f691008286a4",
+  "command": [
+    "/opt/homebrew/bin/tamarin-prover",
+    "--prove=reconnect_after_abort_reachable",
+    "--heuristic=S",
+    "/Users/sammo/Downloads/Research/thesis_pqc_tls/pq_auth_negotiation/model/cache_transaction/runs/2026-09-10-S-controls/safe/reconnect_after_abort_reachable/cache_transaction.spthy",
+    "+RTS",
+    "-N2",
+    "-M6G",
+    "-RTS"
+  ],
+  "flags": [],
+  "heuristic": "S",
+  "timeout_s": 90.0,
+  "parse_only": false,
+  "tool_sha256": "d6e6d38366501f51c2b417dab9fd1dbb1ac43f4b4dd701d9c152e3f7a2f1188f",
+  "status": "TIMEOUT",
+  "returncode": -9,
+  "elapsed_s": 90.051,
+  "results": []
+}

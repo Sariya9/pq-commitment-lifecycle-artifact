@@ -1,0 +1,169 @@
+/Users/sammo/Downloads/Research/thesis_pqc_tls/pq_auth_negotiation/experiments/finished_state/runs/2026-09-10-presence-and-identity/source.c:277:9: warning: variable 'n' is used uninitialized whenever '||' condition is true [-Wsometimes-uninitialized]
+  277 |     if (ctx == NULL
+      |         ^~~~~~~~~~~
+  278 |         || EVP_DecryptInit_ex(ctx, EVP_aes_128_gcm(), NULL, NULL, NULL) != 1
+      |         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  279 |         || EVP_CIPHER_CTX_ctrl(ctx, EVP_CTRL_GCM_SET_IVLEN,
+      |         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  280 |                                sizeof(nonce), NULL) != 1
+      |                                ~~~~~~~~~~~~~~~~~~~~~~~~~
+  281 |         || EVP_DecryptInit_ex(ctx, NULL, NULL, run->server_handshake_key,
+      |         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  282 |                               nonce) != 1
+      |                               ~~~~~~~~~~~
+/Users/sammo/Downloads/Research/thesis_pqc_tls/pq_auth_negotiation/experiments/finished_state/runs/2026-09-10-presence-and-identity/source.c:289:13: note: uninitialized use occurs here
+  289 |     total = n;
+      |             ^
+/Users/sammo/Downloads/Research/thesis_pqc_tls/pq_auth_negotiation/experiments/finished_state/runs/2026-09-10-presence-and-identity/source.c:277:9: note: remove the '||' if its condition is always false
+  277 |     if (ctx == NULL
+      |         ^~~~~~~~~~~
+  278 |         || EVP_DecryptInit_ex(ctx, EVP_aes_128_gcm(), NULL, NULL, NULL) != 1
+      |         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  279 |         || EVP_CIPHER_CTX_ctrl(ctx, EVP_CTRL_GCM_SET_IVLEN,
+      |         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  280 |                                sizeof(nonce), NULL) != 1
+      |                                ~~~~~~~~~~~~~~~~~~~~~~~~~
+  281 |         || EVP_DecryptInit_ex(ctx, NULL, NULL, run->server_handshake_key,
+      |         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  282 |                               nonce) != 1
+      |                               ~~~~~~~~~~~
+  283 |         || EVP_DecryptUpdate(ctx, NULL, &n, header, 5) != 1
+      |         ~~
+/Users/sammo/Downloads/Research/thesis_pqc_tls/pq_auth_negotiation/experiments/finished_state/runs/2026-09-10-presence-and-identity/source.c:277:9: warning: variable 'n' is used uninitialized whenever '||' condition is true [-Wsometimes-uninitialized]
+  277 |     if (ctx == NULL
+      |         ^~~~~~~~~~~
+  278 |         || EVP_DecryptInit_ex(ctx, EVP_aes_128_gcm(), NULL, NULL, NULL) != 1
+      |         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  279 |         || EVP_CIPHER_CTX_ctrl(ctx, EVP_CTRL_GCM_SET_IVLEN,
+      |         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  280 |                                sizeof(nonce), NULL) != 1
+      |                                ~~~~~~~~~~~~~~~~~~~~~~~~~
+/Users/sammo/Downloads/Research/thesis_pqc_tls/pq_auth_negotiation/experiments/finished_state/runs/2026-09-10-presence-and-identity/source.c:289:13: note: uninitialized use occurs here
+  289 |     total = n;
+      |             ^
+/Users/sammo/Downloads/Research/thesis_pqc_tls/pq_auth_negotiation/experiments/finished_state/runs/2026-09-10-presence-and-identity/source.c:277:9: note: remove the '||' if its condition is always false
+  277 |     if (ctx == NULL
+      |         ^~~~~~~~~~~
+  278 |         || EVP_DecryptInit_ex(ctx, EVP_aes_128_gcm(), NULL, NULL, NULL) != 1
+      |         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  279 |         || EVP_CIPHER_CTX_ctrl(ctx, EVP_CTRL_GCM_SET_IVLEN,
+      |         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  280 |                                sizeof(nonce), NULL) != 1
+      |                                ~~~~~~~~~~~~~~~~~~~~~~~~~
+  281 |         || EVP_DecryptInit_ex(ctx, NULL, NULL, run->server_handshake_key,
+      |         ~~
+/Users/sammo/Downloads/Research/thesis_pqc_tls/pq_auth_negotiation/experiments/finished_state/runs/2026-09-10-presence-and-identity/source.c:277:9: warning: variable 'n' is used uninitialized whenever '||' condition is true [-Wsometimes-uninitialized]
+  277 |     if (ctx == NULL
+      |         ^~~~~~~~~~~
+  278 |         || EVP_DecryptInit_ex(ctx, EVP_aes_128_gcm(), NULL, NULL, NULL) != 1
+      |         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/Users/sammo/Downloads/Research/thesis_pqc_tls/pq_auth_negotiation/experiments/finished_state/runs/2026-09-10-presence-and-identity/source.c:289:13: note: uninitialized use occurs here
+  289 |     total = n;
+      |             ^
+/Users/sammo/Downloads/Research/thesis_pqc_tls/pq_auth_negotiation/experiments/finished_state/runs/2026-09-10-presence-and-identity/source.c:277:9: note: remove the '||' if its condition is always false
+  277 |     if (ctx == NULL
+      |         ^~~~~~~~~~~
+  278 |         || EVP_DecryptInit_ex(ctx, EVP_aes_128_gcm(), NULL, NULL, NULL) != 1
+      |         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  279 |         || EVP_CIPHER_CTX_ctrl(ctx, EVP_CTRL_GCM_SET_IVLEN,
+      |         ~~
+/Users/sammo/Downloads/Research/thesis_pqc_tls/pq_auth_negotiation/experiments/finished_state/runs/2026-09-10-presence-and-identity/source.c:277:9: warning: variable 'n' is used uninitialized whenever '||' condition is true [-Wsometimes-uninitialized]
+  277 |     if (ctx == NULL
+      |         ^~~~~~~~~~~
+/Users/sammo/Downloads/Research/thesis_pqc_tls/pq_auth_negotiation/experiments/finished_state/runs/2026-09-10-presence-and-identity/source.c:289:13: note: uninitialized use occurs here
+  289 |     total = n;
+      |             ^
+/Users/sammo/Downloads/Research/thesis_pqc_tls/pq_auth_negotiation/experiments/finished_state/runs/2026-09-10-presence-and-identity/source.c:277:9: note: remove the '||' if its condition is always false
+  277 |     if (ctx == NULL
+      |         ^~~~~~~~~~~
+  278 |         || EVP_DecryptInit_ex(ctx, EVP_aes_128_gcm(), NULL, NULL, NULL) != 1
+      |         ~~
+/Users/sammo/Downloads/Research/thesis_pqc_tls/pq_auth_negotiation/experiments/finished_state/runs/2026-09-10-presence-and-identity/source.c:272:10: note: initialize the variable 'n' to silence this warning
+  272 |     int n;
+      |          ^
+      |           = 0
+/Users/sammo/Downloads/Research/thesis_pqc_tls/pq_auth_negotiation/experiments/finished_state/runs/2026-09-10-presence-and-identity/source.c:308:9: warning: variable 'n' is used uninitialized whenever '||' condition is true [-Wsometimes-uninitialized]
+  308 |     if (ctx == NULL
+      |         ^~~~~~~~~~~
+  309 |         || EVP_EncryptInit_ex(ctx, EVP_aes_128_gcm(), NULL, NULL, NULL) != 1
+      |         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  310 |         || EVP_CIPHER_CTX_ctrl(ctx, EVP_CTRL_GCM_SET_IVLEN,
+      |         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  311 |                                sizeof(nonce), NULL) != 1
+      |                                ~~~~~~~~~~~~~~~~~~~~~~~~~
+  312 |         || EVP_EncryptInit_ex(ctx, NULL, NULL, run->server_handshake_key,
+      |         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  313 |                               nonce) != 1
+      |                               ~~~~~~~~~~~
+/Users/sammo/Downloads/Research/thesis_pqc_tls/pq_auth_negotiation/experiments/finished_state/runs/2026-09-10-presence-and-identity/source.c:320:13: note: uninitialized use occurs here
+  320 |     total = n;
+      |             ^
+/Users/sammo/Downloads/Research/thesis_pqc_tls/pq_auth_negotiation/experiments/finished_state/runs/2026-09-10-presence-and-identity/source.c:308:9: note: remove the '||' if its condition is always false
+  308 |     if (ctx == NULL
+      |         ^~~~~~~~~~~
+  309 |         || EVP_EncryptInit_ex(ctx, EVP_aes_128_gcm(), NULL, NULL, NULL) != 1
+      |         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  310 |         || EVP_CIPHER_CTX_ctrl(ctx, EVP_CTRL_GCM_SET_IVLEN,
+      |         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  311 |                                sizeof(nonce), NULL) != 1
+      |                                ~~~~~~~~~~~~~~~~~~~~~~~~~
+  312 |         || EVP_EncryptInit_ex(ctx, NULL, NULL, run->server_handshake_key,
+      |         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  313 |                               nonce) != 1
+      |                               ~~~~~~~~~~~
+  314 |         || EVP_EncryptUpdate(ctx, NULL, &n, header, 5) != 1
+      |         ~~
+/Users/sammo/Downloads/Research/thesis_pqc_tls/pq_auth_negotiation/experiments/finished_state/runs/2026-09-10-presence-and-identity/source.c:308:9: warning: variable 'n' is used uninitialized whenever '||' condition is true [-Wsometimes-uninitialized]
+  308 |     if (ctx == NULL
+      |         ^~~~~~~~~~~
+  309 |         || EVP_EncryptInit_ex(ctx, EVP_aes_128_gcm(), NULL, NULL, NULL) != 1
+      |         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  310 |         || EVP_CIPHER_CTX_ctrl(ctx, EVP_CTRL_GCM_SET_IVLEN,
+      |         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  311 |                                sizeof(nonce), NULL) != 1
+      |                                ~~~~~~~~~~~~~~~~~~~~~~~~~
+/Users/sammo/Downloads/Research/thesis_pqc_tls/pq_auth_negotiation/experiments/finished_state/runs/2026-09-10-presence-and-identity/source.c:320:13: note: uninitialized use occurs here
+  320 |     total = n;
+      |             ^
+/Users/sammo/Downloads/Research/thesis_pqc_tls/pq_auth_negotiation/experiments/finished_state/runs/2026-09-10-presence-and-identity/source.c:308:9: note: remove the '||' if its condition is always false
+  308 |     if (ctx == NULL
+      |         ^~~~~~~~~~~
+  309 |         || EVP_EncryptInit_ex(ctx, EVP_aes_128_gcm(), NULL, NULL, NULL) != 1
+      |         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  310 |         || EVP_CIPHER_CTX_ctrl(ctx, EVP_CTRL_GCM_SET_IVLEN,
+      |         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  311 |                                sizeof(nonce), NULL) != 1
+      |                                ~~~~~~~~~~~~~~~~~~~~~~~~~
+  312 |         || EVP_EncryptInit_ex(ctx, NULL, NULL, run->server_handshake_key,
+      |         ~~
+/Users/sammo/Downloads/Research/thesis_pqc_tls/pq_auth_negotiation/experiments/finished_state/runs/2026-09-10-presence-and-identity/source.c:308:9: warning: variable 'n' is used uninitialized whenever '||' condition is true [-Wsometimes-uninitialized]
+  308 |     if (ctx == NULL
+      |         ^~~~~~~~~~~
+  309 |         || EVP_EncryptInit_ex(ctx, EVP_aes_128_gcm(), NULL, NULL, NULL) != 1
+      |         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/Users/sammo/Downloads/Research/thesis_pqc_tls/pq_auth_negotiation/experiments/finished_state/runs/2026-09-10-presence-and-identity/source.c:320:13: note: uninitialized use occurs here
+  320 |     total = n;
+      |             ^
+/Users/sammo/Downloads/Research/thesis_pqc_tls/pq_auth_negotiation/experiments/finished_state/runs/2026-09-10-presence-and-identity/source.c:308:9: note: remove the '||' if its condition is always false
+  308 |     if (ctx == NULL
+      |         ^~~~~~~~~~~
+  309 |         || EVP_EncryptInit_ex(ctx, EVP_aes_128_gcm(), NULL, NULL, NULL) != 1
+      |         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  310 |         || EVP_CIPHER_CTX_ctrl(ctx, EVP_CTRL_GCM_SET_IVLEN,
+      |         ~~
+/Users/sammo/Downloads/Research/thesis_pqc_tls/pq_auth_negotiation/experiments/finished_state/runs/2026-09-10-presence-and-identity/source.c:308:9: warning: variable 'n' is used uninitialized whenever '||' condition is true [-Wsometimes-uninitialized]
+  308 |     if (ctx == NULL
+      |         ^~~~~~~~~~~
+/Users/sammo/Downloads/Research/thesis_pqc_tls/pq_auth_negotiation/experiments/finished_state/runs/2026-09-10-presence-and-identity/source.c:320:13: note: uninitialized use occurs here
+  320 |     total = n;
+      |             ^
+/Users/sammo/Downloads/Research/thesis_pqc_tls/pq_auth_negotiation/experiments/finished_state/runs/2026-09-10-presence-and-identity/source.c:308:9: note: remove the '||' if its condition is always false
+  308 |     if (ctx == NULL
+      |         ^~~~~~~~~~~
+  309 |         || EVP_EncryptInit_ex(ctx, EVP_aes_128_gcm(), NULL, NULL, NULL) != 1
+      |         ~~
+/Users/sammo/Downloads/Research/thesis_pqc_tls/pq_auth_negotiation/experiments/finished_state/runs/2026-09-10-presence-and-identity/source.c:304:10: note: initialize the variable 'n' to silence this warning
+  304 |     int n;
+      |          ^
+      |           = 0
+8 warnings generated.

@@ -1,0 +1,1 @@
+/opt/homebrew/bin/tamarin-prover --prove=legitimate_withdrawal_reachable --heuristic=S /Users/sammo/.codex/workspaces/Users/sammo/Downloads/Research/pq_auth_negotiation/conference-lifecycle-2026-10-25/reproduction/tamarin/13-no_cv/cache_transaction_no_cv.spthy +RTS -N2 -M6G -RTS

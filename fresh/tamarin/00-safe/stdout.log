@@ -1,0 +1,635 @@
+theory CacheTransaction
+
+begin
+
+// Function signature and definition of the equational theory E
+
+functions: fst/1, pair/2, pk/1, sign/2, snd/1, true/0, verify/3
+equations:
+    fst(<x.1, x.2>) = x.1,
+    snd(<x.1, x.2>) = x.2,
+    verify(sign(x.1, x.2), x.1, pk(x.2)) = true
+
+rule (modulo E) Setup:
+   [ Fr( ~ca ), Fr( ~sk ) ]
+  --[ Initialised( 'client', 'server' ) ]->
+   [
+   !Trust( 'client', 'server', pk(~ca) ),
+   !Server( 'server', ~sk, sign(<'cert', 'server', pk(~sk)>, ~ca) ),
+   Out( <pk(~ca), pk(~sk), sign(<'cert', 'server', pk(~sk)>, ~ca)> ),
+   Cache( 'client', 'server', 'empty', 'initial' ),
+   !Next( 'initial', 'probe' ), !Next( 'probe', 'reconnect' ),
+   !Next( 'reconnect', 'done' ), !Keep( 'empty', 'zero' ),
+   !Keep( 'empty', 'nonzero' ), !Keep( 'pq', 'nonzero' )
+   ]
+
+  /* has exactly the trivial AC variant */
+
+restriction setup_once:
+  "∀ C S #i #j.
+    ((Initialised( C, S ) @ #i) ∧ (Initialised( C, S ) @ #j)) ⇒ (#i = #j)"
+  // safety formula
+
+  /*
+  expanded formula:
+  "∀ C S #i #j.
+    ((Initialised( C, S ) @ #i) ∧ (Initialised( C, S ) @ #j)) ⇒ (#i = #j)"
+  */
+
+restriction equality:
+  "∀ x y #i. (Eq( x, y ) @ #i) ⇒ (x = y)"
+  // safety formula
+
+  /*
+  expanded formula:
+  "∀ x y #i. (Eq( x, y ) @ #i) ⇒ (x = y)"
+  */
+
+rule (modulo E) Policy:
+   [ ] --> [ !Policy( 'defer' ) ]
+
+  /* has exactly the trivial AC variant */
+
+rule (modulo E) Start:
+   [ Cache( $C, $S, state, phase ), !Next( phase, next ), Fr( ~n ) ]
+  --[ Opened( $C, $S, ~n, state ) ]->
+   [ Waiting( $C, $S, ~n, state, phase ), Out( <'hello', $S, ~n> ) ]
+
+  /* has exactly the trivial AC variant */
+
+rule (modulo E) ServerRespond:
+   [ In( <'request', $S, n, value> ), !Server( $S, ~sk, cert ) ]
+  --[ ServerSent( $S, n, value, pk(~sk), cert ) ]->
+   [
+   Out( <'response', $S, n, value, pk(~sk), cert, 
+         sign(<'cv', $S, n, value, pk(~sk), cert>, ~sk)>
+   )
+   ]
+
+  /* has exactly the trivial AC variant */
+
+rule (modulo E) ParseDeferred:
+   [
+   Waiting( $C, $S, ~n, state, phase ), !Policy( 'defer' ),
+   In( <'response', $S, ~n, value, key, cert, sig> )
+   ]
+  --[ Parsed( $C, $S, ~n, value ) ]->
+   [ Pending( $C, $S, ~n, state, phase, value, key, cert, sig ) ]
+
+  // loop breaker: [0]
+  /* has exactly the trivial AC variant */
+
+rule (modulo E) ParseEarlyClear:
+   [
+   Waiting( $C, $S, ~n, 'pq', phase ), !Policy( 'early' ),
+   In( <'response', $S, ~n, 'zero', key, cert, sig> )
+   ]
+  --[
+  Parsed( $C, $S, ~n, 'zero' ),
+  CacheCleared( $C, $S, ~n, 'zero', key, cert )
+  ]->
+   [ Pending( $C, $S, ~n, 'empty', phase, 'zero', key, cert, sig ) ]
+
+  // loop breaker: [0]
+  /* has exactly the trivial AC variant */
+
+rule (modulo E) ParseEarlyKeep:
+   [
+   Waiting( $C, $S, ~n, state, phase ), !Policy( 'early' ),
+   !Keep( state, value ), In( <'response', $S, ~n, value, key, cert, sig> )
+   ]
+  --[ Parsed( $C, $S, ~n, value ) ]->
+   [ Pending( $C, $S, ~n, state, phase, value, key, cert, sig ) ]
+
+  // loop breaker: [0]
+  /* has exactly the trivial AC variant */
+
+rule (modulo E) ValidateCertificate:
+   [
+   Pending( $C, $S, ~n, state, phase, value, key, cert, sig ),
+   !Trust( $C, $S, ca )
+   ]
+  --[
+  Eq( verify(cert, <'cert', $S, key>, ca), true ),
+  ChainValidated( $C, $S, ~n )
+  ]->
+   [ Validated( $C, $S, ~n, state, phase, value, key, cert, sig ) ]
+
+  /*
+  rule (modulo AC) ValidateCertificate:
+     [
+     Pending( $C, $S, ~n, state, phase, value, key, cert, sig ),
+     !Trust( $C, $S, ca )
+     ]
+    --[ Eq( z, true ), ChainValidated( $C, $S, ~n ) ]->
+     [ Validated( $C, $S, ~n, state, phase, value, key, cert, sig ) ]
+    variants (modulo AC)
+    1. $S    = $S.12
+       ca    = ca.12
+       cert  = cert.12
+       key   = key.12
+       z     = verify(cert.12, <'cert', $S.12, key.12>, ca.12)
+    
+    2. $S    = $x.12
+       ca    = pk(x.14)
+       cert  = sign(<'cert', $x.12, x.15>, x.14)
+       key   = x.15
+       z     = true
+  */
+
+rule (modulo E) CheckCV:
+   [ Validated( $C, $S, ~n, state, phase, value, key, cert, sig ) ]
+  --[
+  Eq( verify(sig, <'cv', $S, ~n, value, key, cert>, key), true ),
+  Authenticated( $C, $S, ~n, value, key, cert )
+  ]->
+   [ ReadyCommit( $C, $S, ~n, state, phase, value, key, cert ) ]
+
+  /*
+  rule (modulo AC) CheckCV:
+     [ Validated( $C, $S, ~n, state, phase, value, key, cert, sig ) ]
+    --[ Eq( z, true ), Authenticated( $C, $S, ~n, value, key, cert ) ]->
+     [ ReadyCommit( $C, $S, ~n, state, phase, value, key, cert ) ]
+    variants (modulo AC)
+    1. $S    = $S.11
+       ~n    = ~n.11
+       cert  = cert.11
+       key   = key.11
+       sig   = sig.11
+       value = value.11
+       z     = verify(sig.11, <'cv', $S.11, ~n.11, value.11, key.11, cert.11>,
+                      key.11)
+    
+    2. $S    = $x.11
+       ~n    = ~x.12
+       cert  = x.13
+       key   = pk(x.14)
+       sig   = sign(<'cv', $x.11, ~x.12, x.16, pk(x.14), x.13>, x.14)
+       value = x.16
+       z     = true
+  */
+
+rule (modulo E) CommitPositive:
+   [
+   ReadyCommit( $C, $S, ~n, state, phase, 'nonzero', key, cert ),
+   !Next( phase, next )
+   ]
+  --[ Completed( $C, $S, ~n, 'nonzero' ), CacheEstablished( $C, $S, ~n )
+  ]->
+   [ Cache( $C, $S, 'pq', next ) ]
+
+  /* has exactly the trivial AC variant */
+
+rule (modulo E) CommitWithdrawal:
+   [
+   ReadyCommit( $C, $S, ~n, 'pq', phase, 'zero', key, cert ),
+   !Next( phase, next )
+   ]
+  --[
+  Completed( $C, $S, ~n, 'zero' ),
+  CacheCleared( $C, $S, ~n, 'zero', key, cert )
+  ]->
+   [ Cache( $C, $S, 'empty', next ) ]
+
+  /* has exactly the trivial AC variant */
+
+rule (modulo E) CompleteEmpty:
+   [
+   ReadyCommit( $C, $S, ~n, 'empty', phase, 'zero', key, cert ),
+   !Next( phase, next )
+   ]
+  --[ Completed( $C, $S, ~n, 'zero' ) ]->
+   [ Cache( $C, $S, 'empty', next ) ]
+
+  /* has exactly the trivial AC variant */
+
+rule (modulo E) AbortAfterParse:
+   [
+   Pending( $C, $S, ~n, state, phase, value, key, cert, sig ),
+   !Next( phase, next ), In( <'cancel', ~n> )
+   ]
+  --[ Aborted( $C, $S, ~n, state ) ]->
+   [ Cache( $C, $S, state, next ) ]
+
+  /* has exactly the trivial AC variant */
+
+rule (modulo E) AbortAfterChain:
+   [
+   Validated( $C, $S, ~n, state, phase, value, key, cert, sig ),
+   !Next( phase, next ), In( <'cancel', ~n> )
+   ]
+  --[ Aborted( $C, $S, ~n, state ) ]->
+   [ Cache( $C, $S, state, next ) ]
+
+  /* has exactly the trivial AC variant */
+
+lemma clearing_has_matching_server:
+  all-traces
+  "∀ C S n key cert #i.
+    (CacheCleared( C, S, n, 'zero', key, cert ) @ #i) ⇒
+    (∃ #j. (ServerSent( S, n, 'zero', key, cert ) @ #j) ∧ (#j < #i))"
+/*
+guarded formula characterizing all counter-examples:
+"∃ C S n key cert #i.
+  (CacheCleared( C, S, n, 'zero', key, cert ) @ #i)
+ ∧
+  ∀ #j. (ServerSent( S, n, 'zero', key, cert ) @ #j) ⇒ ¬(#j < #i)"
+*/
+simplify
+solve( CacheCleared( C, S, n, 'zero', key, cert ) @ #i )
+  case CommitWithdrawal
+  solve( ReadyCommit( $C, $S, ~n, 'pq', phase, 'zero', key, cert ) ▶₀ #i )
+    case CheckCV
+    solve( !Next( phase, next ) ▶₁ #i )
+      case Setup_case_1
+      by solve( Waiting( 'client', 'server', ~n, 'pq', 'initial' ) ▶₀ #vr.2 )
+    next
+      case Setup_case_2
+      solve( Waiting( 'client', 'server', ~n, 'pq', 'probe' ) ▶₀ #vr.2 )
+        case Start_case_1
+        solve( Waiting( 'client', 'server', ~n.1, state, 'initial' ) ▶₀ #vr.9 )
+          case Start
+          solve( !KU( sign(<'cert', 'server', pk(x)>, ~ca) ) @ #vk.13 )
+            case ServerRespond
+            solve( !KU( sign(<'cv', 'server', ~n, 'zero', pk(~sk), 
+                              sign(<'cert', 'server', pk(~sk)>, ~ca)>,
+                             ~sk)
+                   ) @ #vk.15 )
+              case ServerRespond
+              by contradiction /* from formulas */
+            next
+              case c_sign
+              by solve( !KU( ~sk ) @ #vk.35 )
+            qed
+          next
+            case Setup
+            solve( !KU( sign(<'cv', 'server', ~n, 'zero', pk(~sk), 
+                              sign(<'cert', 'server', pk(~sk)>, ~ca)>,
+                             ~sk)
+                   ) @ #vk.14 )
+              case ServerRespond
+              by contradiction /* from formulas */
+            next
+              case c_sign
+              by solve( !KU( ~sk ) @ #vk.29 )
+            qed
+          next
+            case c_sign
+            by solve( !KU( ~ca ) @ #vk.26 )
+          qed
+        qed
+      next
+        case Start_case_2
+        by solve( Waiting( 'client', 'server', ~n.1, 'pq', 'initial' ) ▶₀ #vr.7 )
+      next
+        case Start_case_3
+        by solve( Waiting( 'client', 'server', ~n.1, 'pq', 'initial' ) ▶₀ #vr.8 )
+      qed
+    next
+      case Setup_case_3
+      solve( Waiting( 'client', 'server', ~n, 'pq', 'reconnect' ) ▶₀ #vr.2 )
+        case Start_case_1
+        solve( Waiting( 'client', 'server', ~n.1, state, 'probe' ) ▶₀ #vr.9 )
+          case Start_case_1
+          solve( Waiting( 'client', 'server', ~n.2, state, 'initial' ) ▶₀ #vr.15 )
+            case Start
+            solve( !KU( sign(<'cert', 'server', pk(x)>, ~ca) ) @ #vk.15 )
+              case ServerRespond
+              solve( !KU( sign(<'cv', 'server', ~n, 'zero', pk(~sk), 
+                                sign(<'cert', 'server', pk(~sk)>, ~ca)>,
+                               ~sk)
+                     ) @ #vk.17 )
+                case ServerRespond
+                by contradiction /* from formulas */
+              next
+                case c_sign
+                by solve( !KU( ~sk ) @ #vk.45 )
+              qed
+            next
+              case Setup
+              solve( !KU( sign(<'cv', 'server', ~n, 'zero', pk(~sk), 
+                                sign(<'cert', 'server', pk(~sk)>, ~ca)>,
+                               ~sk)
+                     ) @ #vk.16 )
+                case ServerRespond
+                by contradiction /* from formulas */
+              next
+                case c_sign
+                by solve( !KU( ~sk ) @ #vk.39 )
+              qed
+            next
+              case c_sign
+              by solve( !KU( ~ca ) @ #vk.36 )
+            qed
+          qed
+        next
+          case Start_case_2
+          by solve( Waiting( 'client', 'server', ~n.2, 'pq', 'initial'
+                    ) ▶₀ #vr.15 )
+        next
+          case Start_case_3
+          solve( Waiting( 'client', 'server', ~n.2, 'empty', 'initial'
+                 ) ▶₀ #vr.15 )
+            case Start
+            solve( !KU( sign(<'cert', 'server', pk(x)>, ~ca) ) @ #vk.17 )
+              case ServerRespond
+              solve( !KU( sign(<'cv', 'server', ~n, 'zero', pk(~sk), 
+                                sign(<'cert', 'server', pk(~sk)>, ~ca)>,
+                               ~sk)
+                     ) @ #vk.19 )
+                case ServerRespond
+                by contradiction /* from formulas */
+              next
+                case c_sign
+                by solve( !KU( ~sk ) @ #vk.45 )
+              qed
+            next
+              case Setup
+              solve( !KU( sign(<'cv', 'server', ~n, 'zero', pk(~sk), 
+                                sign(<'cert', 'server', pk(~sk)>, ~ca)>,
+                               ~sk)
+                     ) @ #vk.18 )
+                case ServerRespond
+                by contradiction /* from formulas */
+              next
+                case c_sign
+                by solve( !KU( ~sk ) @ #vk.39 )
+              qed
+            next
+              case c_sign
+              by solve( !KU( ~ca ) @ #vk.36 )
+            qed
+          qed
+        next
+          case Start_case_4
+          solve( Waiting( 'client', 'server', ~n.2, state, 'initial' ) ▶₀ #vr.13 )
+            case Start
+            solve( !KU( sign(<'cert', 'server', pk(x)>, ~ca) ) @ #vk.15 )
+              case ServerRespond
+              solve( !KU( sign(<'cv', 'server', ~n, 'zero', pk(~sk), 
+                                sign(<'cert', 'server', pk(~sk)>, ~ca)>,
+                               ~sk)
+                     ) @ #vk.17 )
+                case ServerRespond
+                by contradiction /* from formulas */
+              next
+                case c_sign
+                by solve( !KU( ~sk ) @ #vk.48 )
+              qed
+            next
+              case Setup
+              solve( !KU( sign(<'cv', 'server', ~n, 'zero', pk(~sk), 
+                                sign(<'cert', 'server', pk(~sk)>, ~ca)>,
+                               ~sk)
+                     ) @ #vk.16 )
+                case ServerRespond
+                by contradiction /* from formulas */
+              next
+                case c_sign
+                by solve( !KU( ~sk ) @ #vk.42 )
+              qed
+            next
+              case c_sign
+              by solve( !KU( ~ca ) @ #vk.39 )
+            qed
+          qed
+        next
+          case Start_case_5
+          solve( Waiting( 'client', 'server', ~n.2, state, 'initial' ) ▶₀ #vr.14 )
+            case Start
+            solve( !KU( sign(<'cert', 'server', pk(x)>, ~ca) ) @ #vk.15 )
+              case ServerRespond
+              solve( !KU( sign(<'cv', 'server', ~n, 'zero', pk(~sk), 
+                                sign(<'cert', 'server', pk(~sk)>, ~ca)>,
+                               ~sk)
+                     ) @ #vk.17 )
+                case ServerRespond
+                by contradiction /* from formulas */
+              next
+                case c_sign
+                by solve( !KU( ~sk ) @ #vk.48 )
+              qed
+            next
+              case Setup
+              solve( !KU( sign(<'cv', 'server', ~n, 'zero', pk(~sk), 
+                                sign(<'cert', 'server', pk(~sk)>, ~ca)>,
+                               ~sk)
+                     ) @ #vk.16 )
+                case ServerRespond
+                by contradiction /* from formulas */
+              next
+                case c_sign
+                by solve( !KU( ~sk ) @ #vk.42 )
+              qed
+            next
+              case c_sign
+              by solve( !KU( ~ca ) @ #vk.39 )
+            qed
+          qed
+        qed
+      next
+        case Start_case_2
+        solve( Waiting( 'client', 'server', ~n.1, 'pq', 'probe' ) ▶₀ #vr.7 )
+          case Start_case_1
+          solve( Waiting( 'client', 'server', ~n.2, state, 'initial' ) ▶₀ #vr.13 )
+            case Start
+            solve( !KU( sign(<'cert', 'server', pk(x)>, ~ca) ) @ #vk.15 )
+              case ServerRespond
+              solve( !KU( sign(<'cv', 'server', ~n, 'zero', pk(~sk), 
+                                sign(<'cert', 'server', pk(~sk)>, ~ca)>,
+                               ~sk)
+                     ) @ #vk.17 )
+                case ServerRespond
+                by contradiction /* from formulas */
+              next
+                case c_sign
+                by solve( !KU( ~sk ) @ #vk.48 )
+              qed
+            next
+              case Setup
+              solve( !KU( sign(<'cv', 'server', ~n, 'zero', pk(~sk), 
+                                sign(<'cert', 'server', pk(~sk)>, ~ca)>,
+                               ~sk)
+                     ) @ #vk.16 )
+                case ServerRespond
+                by contradiction /* from formulas */
+              next
+                case c_sign
+                by solve( !KU( ~sk ) @ #vk.42 )
+              qed
+            next
+              case c_sign
+              by solve( !KU( ~ca ) @ #vk.39 )
+            qed
+          qed
+        next
+          case Start_case_2
+          by solve( Waiting( 'client', 'server', ~n.2, 'pq', 'initial'
+                    ) ▶₀ #vr.11 )
+        next
+          case Start_case_3
+          by solve( Waiting( 'client', 'server', ~n.2, 'pq', 'initial'
+                    ) ▶₀ #vr.12 )
+        qed
+      next
+        case Start_case_3
+        solve( Waiting( 'client', 'server', ~n.1, 'pq', 'probe' ) ▶₀ #vr.8 )
+          case Start_case_1
+          solve( Waiting( 'client', 'server', ~n.2, state, 'initial' ) ▶₀ #vr.14 )
+            case Start
+            solve( !KU( sign(<'cert', 'server', pk(x)>, ~ca) ) @ #vk.15 )
+              case ServerRespond
+              solve( !KU( sign(<'cv', 'server', ~n, 'zero', pk(~sk), 
+                                sign(<'cert', 'server', pk(~sk)>, ~ca)>,
+                               ~sk)
+                     ) @ #vk.17 )
+                case ServerRespond
+                by contradiction /* from formulas */
+              next
+                case c_sign
+                by solve( !KU( ~sk ) @ #vk.48 )
+              qed
+            next
+              case Setup
+              solve( !KU( sign(<'cv', 'server', ~n, 'zero', pk(~sk), 
+                                sign(<'cert', 'server', pk(~sk)>, ~ca)>,
+                               ~sk)
+                     ) @ #vk.16 )
+                case ServerRespond
+                by contradiction /* from formulas */
+              next
+                case c_sign
+                by solve( !KU( ~sk ) @ #vk.42 )
+              qed
+            next
+              case c_sign
+              by solve( !KU( ~ca ) @ #vk.39 )
+            qed
+          qed
+        next
+          case Start_case_2
+          by solve( Waiting( 'client', 'server', ~n.2, 'pq', 'initial'
+                    ) ▶₀ #vr.12 )
+        next
+          case Start_case_3
+          by solve( Waiting( 'client', 'server', ~n.2, 'pq', 'initial'
+                    ) ▶₀ #vr.13 )
+        qed
+      qed
+    qed
+  qed
+next
+  case ParseEarlyClear
+  by solve( !Policy( 'early' ) ▶₁ #i )
+qed
+
+lemma abort_preserves_established_cache:
+  all-traces
+  "∀ C S n state #i #j.
+    (((Opened( C, S, n, 'pq' ) @ #i) ∧ (Aborted( C, S, n, state ) @ #j)) ∧
+     (#i < #j)) ⇒
+    (state = 'pq')"
+/*
+guarded formula characterizing all counter-examples:
+"∃ C S n state #i #j.
+  (Opened( C, S, n, 'pq' ) @ #i) ∧ (Aborted( C, S, n, state ) @ #j)
+ ∧
+  (#i < #j) ∧ (¬(state = 'pq'))"
+*/
+by sorry
+
+lemma establishment_reachable:
+  exists-trace "∃ C S n #i. CacheEstablished( C, S, n ) @ #i"
+/*
+guarded formula characterizing all satisfying traces:
+"∃ C S n #i. (CacheEstablished( C, S, n ) @ #i)"
+*/
+by sorry
+
+lemma legitimate_withdrawal_reachable:
+  exists-trace
+  "∃ C S n n0 key cert #i #j #k.
+    ((((CacheEstablished( C, S, n0 ) @ #i) ∧
+       (ServerSent( S, n, 'zero', key, cert ) @ #j)) ∧
+      (CacheCleared( C, S, n, 'zero', key, cert ) @ #k)) ∧
+     (#i < #j)) ∧
+    (#j < #k)"
+/*
+guarded formula characterizing all satisfying traces:
+"∃ C S n n0 key cert #i #j #k.
+  (CacheEstablished( C, S, n0 ) @ #i) ∧
+  (ServerSent( S, n, 'zero', key, cert ) @ #j) ∧
+  (CacheCleared( C, S, n, 'zero', key, cert ) @ #k)
+ ∧
+  (#i < #j) ∧ (#j < #k)"
+*/
+by sorry
+
+lemma aborted_withdrawal_retains_protection:
+  exists-trace
+  "∃ C S n n0 #i #j #k.
+    ((((CacheEstablished( C, S, n0 ) @ #i) ∧
+       (Parsed( C, S, n, 'zero' ) @ #j)) ∧
+      (Aborted( C, S, n, 'pq' ) @ #k)) ∧
+     (#i < #j)) ∧
+    (#j < #k)"
+/*
+guarded formula characterizing all satisfying traces:
+"∃ C S n n0 #i #j #k.
+  (CacheEstablished( C, S, n0 ) @ #i) ∧
+  (Parsed( C, S, n, 'zero' ) @ #j) ∧
+  (Aborted( C, S, n, 'pq' ) @ #k)
+ ∧
+  (#i < #j) ∧ (#j < #k)"
+*/
+by sorry
+
+lemma reconnect_after_abort_reachable:
+  exists-trace
+  "∃ C S n n0 n1 #i #j #k #l.
+    ((((((CacheEstablished( C, S, n0 ) @ #i) ∧
+         (Parsed( C, S, n, 'zero' ) @ #j)) ∧
+        (Aborted( C, S, n, 'pq' ) @ #k)) ∧
+       (Completed( C, S, n1, 'nonzero' ) @ #l)) ∧
+      (#i < #j)) ∧
+     (#j < #k)) ∧
+    (#k < #l)"
+/*
+guarded formula characterizing all satisfying traces:
+"∃ C S n n0 n1 #i #j #k #l.
+  (CacheEstablished( C, S, n0 ) @ #i) ∧
+  (Parsed( C, S, n, 'zero' ) @ #j) ∧
+  (Aborted( C, S, n, 'pq' ) @ #k) ∧
+  (Completed( C, S, n1, 'nonzero' ) @ #l)
+ ∧
+  (#i < #j) ∧ (#j < #k) ∧ (#k < #l)"
+*/
+by sorry
+
+/* All wellformedness checks were successful. */
+
+/*
+Generated from:
+Tamarin version 1.12.0
+Maude version 3.5.1
+Git revision: UNKNOWN, branch: UNKNOWN
+Compiled at: 2026-03-08 09:49:47.765662 UTC
+*/
+
+end
+
+==============================================================================
+summary of summaries:
+
+analyzed: /Users/sammo/.codex/workspaces/Users/sammo/Downloads/Research/pq_auth_negotiation/conference-lifecycle-2026-10-25/reproduction/tamarin/00-safe/cache_transaction.spthy
+
+  processing time: 3.27s
+  
+  clearing_has_matching_server (all-traces): verified (81 steps)
+  abort_preserves_established_cache (all-traces): analysis incomplete (1 steps)
+  establishment_reachable (exists-trace): analysis incomplete (1 steps)
+  legitimate_withdrawal_reachable (exists-trace): analysis incomplete (1 steps)
+  aborted_withdrawal_retains_protection (exists-trace): analysis incomplete (1 steps)
+  reconnect_after_abort_reachable (exists-trace): analysis incomplete (1 steps)
+
+==============================================================================

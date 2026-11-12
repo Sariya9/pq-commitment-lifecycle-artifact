@@ -1,0 +1,39 @@
+[
+  {
+    "case": {
+      "name": "early",
+      "model": "model/cache_transaction/cache_transaction_phase_witness.spthy",
+      "flags": [
+        "EARLY_CLEAR"
+      ],
+      "expected": "FALSIFIED"
+    },
+    "result": {
+      "source": "/Users/sammo/Downloads/Research/thesis_pqc_tls/pq_auth_negotiation/model/cache_transaction/cache_transaction_phase_witness.spthy",
+      "sha256": "c79bc6de086d8e8bd122a68bdf6006fe167959d5762323dcd1b99f705e28a114",
+      "command": [
+        "/opt/homebrew/bin/tamarin-prover",
+        "-D=EARLY_CLEAR",
+        "--prove=reconnect_witness_with_phase_labels",
+        "--heuristic=S",
+        "/Users/sammo/Downloads/Research/thesis_pqc_tls/pq_auth_negotiation/model/cache_transaction/runs/2026-09-10-phase-companions/early/cache_transaction_phase_witness.spthy",
+        "+RTS",
+        "-N2",
+        "-M6G",
+        "-RTS"
+      ],
+      "flags": [
+        "EARLY_CLEAR"
+      ],
+      "heuristic": "S",
+      "timeout_s": 90,
+      "parse_only": false,
+      "tool_sha256": "d6e6d38366501f51c2b417dab9fd1dbb1ac43f4b4dd701d9c152e3f7a2f1188f",
+      "status": "TIMEOUT",
+      "returncode": -9,
+      "elapsed_s": 90.059,
+      "results": []
+    },
+    "expectation_met": false
+  }
+]

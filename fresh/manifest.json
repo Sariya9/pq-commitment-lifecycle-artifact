@@ -1,0 +1,203 @@
+{
+  "date": "25 October 2026",
+  "python": "3.14.5 (main, May 10 2026, 10:21:34) [Clang 21.0.0 (clang-2100.0.123.102)]",
+  "platform": "macOS-27.0.1-arm64-arm-64bit-Mach-O",
+  "commands": [
+    {
+      "command": [
+        "/opt/homebrew/opt/python@3.14/bin/python3.14",
+        "--version"
+      ],
+      "cwd": "/Users/sammo/Downloads/Research/pq_auth_negotiation",
+      "timeout_s": 120,
+      "returncode": 0
+    },
+    {
+      "command": [
+        "tamarin-prover",
+        "--version"
+      ],
+      "cwd": "/Users/sammo/Downloads/Research/pq_auth_negotiation",
+      "timeout_s": 120,
+      "returncode": 0
+    },
+    {
+      "command": [
+        "maude",
+        "--version"
+      ],
+      "cwd": "/Users/sammo/Downloads/Research/pq_auth_negotiation",
+      "timeout_s": 120,
+      "returncode": 0
+    },
+    {
+      "command": [
+        "/opt/homebrew/opt/openssl@3.6/bin/openssl",
+        "version",
+        "-a"
+      ],
+      "cwd": "/Users/sammo/Downloads/Research/pq_auth_negotiation",
+      "timeout_s": 120,
+      "returncode": 0
+    },
+    {
+      "command": [
+        "/opt/homebrew/opt/python@3.14/bin/python3.14",
+        "/Users/sammo/.codex/workspaces/Users/sammo/Downloads/Research/pq_auth_negotiation/conference-lifecycle-2026-10-25/reproduction/finite/explore.py",
+        "--self-test",
+        "--out",
+        "/Users/sammo/.codex/workspaces/Users/sammo/Downloads/Research/pq_auth_negotiation/conference-lifecycle-2026-10-25/reproduction/finite/results.json"
+      ],
+      "cwd": "/Users/sammo/Downloads/Research/pq_auth_negotiation",
+      "timeout_s": 120,
+      "returncode": 0
+    },
+    {
+      "command": [
+        "/opt/homebrew/opt/python@3.14/bin/python3.14",
+        "/Users/sammo/.codex/workspaces/Users/sammo/Downloads/Research/pq_auth_negotiation/conference-lifecycle-2026-10-25/reproduction/reference/reference_check.py",
+        "--self-test"
+      ],
+      "cwd": "/Users/sammo/Downloads/Research/pq_auth_negotiation",
+      "timeout_s": 120,
+      "returncode": 0
+    },
+    {
+      "command": [
+        "/opt/homebrew/opt/python@3.14/bin/python3.14",
+        "/Users/sammo/.codex/workspaces/Users/sammo/Downloads/Research/pq_auth_negotiation/conference-lifecycle-2026-10-25/reproduction/reference/reference_check.py",
+        "--out",
+        "/Users/sammo/.codex/workspaces/Users/sammo/Downloads/Research/pq_auth_negotiation/conference-lifecycle-2026-10-25/reproduction/reference/results.json"
+      ],
+      "cwd": "/Users/sammo/Downloads/Research/pq_auth_negotiation",
+      "timeout_s": 120,
+      "returncode": 0
+    },
+    {
+      "command": [
+        "/opt/homebrew/opt/python@3.14/bin/python3.14",
+        "/Users/sammo/.codex/workspaces/Users/sammo/Downloads/Research/pq_auth_negotiation/conference-lifecycle-2026-10-25/reproduction/edge-audit/audit_monitors.py",
+        "--out",
+        "/Users/sammo/.codex/workspaces/Users/sammo/Downloads/Research/pq_auth_negotiation/conference-lifecycle-2026-10-25/reproduction/edge-audit/results.json"
+      ],
+      "cwd": "/Users/sammo/Downloads/Research/pq_auth_negotiation",
+      "timeout_s": 120,
+      "returncode": 0
+    },
+    {
+      "command": [
+        "/opt/homebrew/opt/python@3.14/bin/python3.14",
+        "/Users/sammo/.codex/workspaces/Users/sammo/Downloads/Research/pq_auth_negotiation/conference-lifecycle-2026-10-25/reproduction/lifecycle/lifecycle_check.py",
+        "--self-test",
+        "--out",
+        "/Users/sammo/.codex/workspaces/Users/sammo/Downloads/Research/pq_auth_negotiation/conference-lifecycle-2026-10-25/reproduction/lifecycle/results.json"
+      ],
+      "cwd": "/Users/sammo/Downloads/Research/pq_auth_negotiation",
+      "timeout_s": 120,
+      "returncode": 0
+    },
+    {
+      "command": [
+        "/opt/homebrew/opt/python@3.14/bin/python3.14",
+        "/Users/sammo/.codex/workspaces/Users/sammo/Downloads/Research/pq_auth_negotiation/conference-lifecycle-2026-10-25/reproduction/response-control/lifecycle_check.py",
+        "--self-test",
+        "--enforce-start-offer",
+        "--no-pq-omission",
+        "--out",
+        "/Users/sammo/.codex/workspaces/Users/sammo/Downloads/Research/pq_auth_negotiation/conference-lifecycle-2026-10-25/reproduction/response-control/results.json"
+      ],
+      "cwd": "/Users/sammo/Downloads/Research/pq_auth_negotiation",
+      "timeout_s": 120,
+      "returncode": 0
+    },
+    {
+      "command": [
+        "/opt/homebrew/opt/python@3.14/bin/python3.14",
+        "/Users/sammo/Downloads/Research/pq_auth_negotiation/experiments/overlap_state/test_runner.py"
+      ],
+      "cwd": "/Users/sammo/Downloads/Research/pq_auth_negotiation",
+      "timeout_s": 120,
+      "returncode": 0
+    },
+    {
+      "command": [
+        "/opt/homebrew/opt/python@3.14/bin/python3.14",
+        "/Users/sammo/Downloads/Research/pq_auth_negotiation/experiments/overlap_state/run.py",
+        "--out",
+        "/Users/sammo/.codex/workspaces/Users/sammo/Downloads/Research/pq_auth_negotiation/conference-lifecycle-2026-10-25/reproduction/overlap-runtime"
+      ],
+      "cwd": "/Users/sammo/Downloads/Research/pq_auth_negotiation",
+      "timeout_s": 120,
+      "returncode": 0
+    },
+    {
+      "command": [
+        "cc",
+        "-std=c11",
+        "-O1",
+        "-Wall",
+        "-Wextra",
+        "-o",
+        "/Users/sammo/.codex/workspaces/Users/sammo/Downloads/Research/pq_auth_negotiation/conference-lifecycle-2026-10-25/reproduction/finished/finished_state/finished_state",
+        "/Users/sammo/.codex/workspaces/Users/sammo/Downloads/Research/pq_auth_negotiation/conference-lifecycle-2026-10-25/reproduction/finished/finished_state/finished_state.c",
+        "-I/opt/homebrew/opt/openssl@3.6/include",
+        "-L/opt/homebrew/opt/openssl@3.6/lib",
+        "-Wl,-rpath,/opt/homebrew/opt/openssl@3.6/lib",
+        "-lssl",
+        "-lcrypto"
+      ],
+      "cwd": "/Users/sammo/Downloads/Research/pq_auth_negotiation",
+      "timeout_s": 120,
+      "returncode": 0
+    },
+    {
+      "command": [
+        "/Users/sammo/.codex/workspaces/Users/sammo/Downloads/Research/pq_auth_negotiation/conference-lifecycle-2026-10-25/reproduction/finished/finished_state/finished_state"
+      ],
+      "cwd": "/Users/sammo/.codex/workspaces/Users/sammo/Downloads/Research/pq_auth_negotiation/conference-lifecycle-2026-10-25/reproduction/finished/finished_state",
+      "timeout_s": 60,
+      "returncode": 0
+    }
+  ],
+  "checks": {
+    "lifecycle": "Exact states, transitions, verdicts and traces reproduced",
+    "response-control": "Exact states, transitions, verdicts and traces reproduced",
+    "tamarin": "15 exact source hashes and selected verdict/step records reproduced",
+    "finite": "44 exact primary results and traces reproduced; reference agrees",
+    "edges": "308794 edges checked with corruption negative control",
+    "runtime": "Five Finished cases and six overlap cases passed"
+  },
+  "source_manifest": {
+    "finite/explore.py": "4c0fc0e9a6ec11dfaae6a4a0d5a5115dc243d23aba1134e9d9198bf4afead78a",
+    "overlap-runtime/overlap_state.c": "a5fc71ba1cfd0b8d8d0e17d814546fc231a66120106e8b11da9b7e53e22b9df5",
+    "lifecycle/lifecycle_check.py": "d5d1abef7df4388ffb7042e22cea9b63fe276a6e1bd8934a9eff5b691c705714",
+    "response-control/lifecycle_check.py": "acb510e10a7c203a009efc18a8a62f295c011b40b02c1990151ee097648cd729",
+    "reference/overlap_policy.spthy": "6b6fe5a25523c521dcf59f021dac82995253b71e002e39f2276d179b09d1cc18",
+    "reference/reference_check.py": "e2e04fda0a13c70b29f3c52bb9dbd5b93d85178b1f7c9e8dda89c921baef2d93",
+    "edge-audit/audit_monitors.py": "db0b02208c2c3d2ea0f47aaa5a757ad905d1e2d355d5344ab25280ca1a09a2f1",
+    "edge-audit/explore.py": "4c0fc0e9a6ec11dfaae6a4a0d5a5115dc243d23aba1134e9d9198bf4afead78a",
+    "tamarin/04-safe/cache_transaction.spthy": "c24165f05ef5f7d7fa31c74c957a36c7ea6d83e04829e8ec8dc3f691008286a4",
+    "tamarin/06-early/cache_transaction.spthy": "c24165f05ef5f7d7fa31c74c957a36c7ea6d83e04829e8ec8dc3f691008286a4",
+    "tamarin/02-safe/cache_transaction.spthy": "c24165f05ef5f7d7fa31c74c957a36c7ea6d83e04829e8ec8dc3f691008286a4",
+    "tamarin/05-early/cache_transaction.spthy": "c24165f05ef5f7d7fa31c74c957a36c7ea6d83e04829e8ec8dc3f691008286a4",
+    "tamarin/03-safe/cache_transaction.spthy": "c24165f05ef5f7d7fa31c74c957a36c7ea6d83e04829e8ec8dc3f691008286a4",
+    "tamarin/07-early/cache_transaction.spthy": "c24165f05ef5f7d7fa31c74c957a36c7ea6d83e04829e8ec8dc3f691008286a4",
+    "tamarin/12-no_cv/cache_transaction_no_cv.spthy": "f5a3a9669f14d209ce8f498b8c1a2042dd55239d815550d63113d5e637289f9a",
+    "tamarin/00-safe/cache_transaction.spthy": "c24165f05ef5f7d7fa31c74c957a36c7ea6d83e04829e8ec8dc3f691008286a4",
+    "tamarin/10-no_cv/cache_transaction_no_cv.spthy": "f5a3a9669f14d209ce8f498b8c1a2042dd55239d815550d63113d5e637289f9a",
+    "tamarin/09-early/cache_transaction.spthy": "c24165f05ef5f7d7fa31c74c957a36c7ea6d83e04829e8ec8dc3f691008286a4",
+    "tamarin/14-no_cv/cache_transaction_no_cv.spthy": "f5a3a9669f14d209ce8f498b8c1a2042dd55239d815550d63113d5e637289f9a",
+    "tamarin/01-safe/cache_transaction.spthy": "c24165f05ef5f7d7fa31c74c957a36c7ea6d83e04829e8ec8dc3f691008286a4",
+    "tamarin/08-early/cache_transaction.spthy": "c24165f05ef5f7d7fa31c74c957a36c7ea6d83e04829e8ec8dc3f691008286a4",
+    "tamarin/11-no_cv/cache_transaction_no_cv.spthy": "f5a3a9669f14d209ce8f498b8c1a2042dd55239d815550d63113d5e637289f9a",
+    "tamarin/13-no_cv/cache_transaction_no_cv.spthy": "f5a3a9669f14d209ce8f498b8c1a2042dd55239d815550d63113d5e637289f9a",
+    "finished/testbed/server.key": "dfab01cea9d6ffce405ef9cb4e1753e3507ab611477473361660ac589c021587",
+    "finished/testbed/ca.crt": "275b14580cdbcdcc7ee357c50b355c22d784a90d75b74bb4b7a6b1074f00a07f",
+    "finished/testbed/server.crt": "bf1b5f39b497d97d1d2796768b3e14120ba6225ae7da2ade3b02c66bc21c9f54",
+    "finished/finished_state/finished_state.c": "62403cc0878f00d6335c95ce00502c2a68b96726dd9840159c81eb7ce74436f6",
+    "overlap-runtime/fixtures/server.key": "5cb75d069b8629af76bd7403185e044016e2443d9759d6e06d503a3ae1f945db",
+    "overlap-runtime/fixtures/ca.crt": "0ff6343f9ed71aeff9b941bc7db433ab8f307ccae0d127782bea2b5aed02f42f",
+    "overlap-runtime/fixtures/server.crt": "e82049e67b17a02b67ee8d506960537ab19e102b61e56fe45f7187c992a9b937"
+  },
+  "status": "COMPLETE"
+}

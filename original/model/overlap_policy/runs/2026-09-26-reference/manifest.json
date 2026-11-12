@@ -1,0 +1,21 @@
+{
+  "source_sha256": "e2e04fda0a13c70b29f3c52bb9dbd5b93d85178b1f7c9e8dda89c921baef2d93",
+  "model_sha256": "6b6fe5a25523c521dcf59f021dac82995253b71e002e39f2276d179b09d1cc18",
+  "commands": [
+    [
+      "/opt/homebrew/opt/python@3.14/bin/python3.14",
+      "/Users/sammo/Downloads/Research/thesis_pqc_tls/pq_auth_negotiation/model/overlap_policy/runs/2026-09-26-reference/reference_check.py",
+      "--self-test"
+    ],
+    [
+      "/opt/homebrew/opt/python@3.14/bin/python3.14",
+      "/Users/sammo/Downloads/Research/thesis_pqc_tls/pq_auth_negotiation/model/overlap_policy/runs/2026-09-26-reference/reference_check.py",
+      "--out",
+      "/Users/sammo/Downloads/Research/thesis_pqc_tls/pq_auth_negotiation/model/overlap_policy/runs/2026-09-26-reference/results.json"
+    ]
+  ],
+  "python": "3.14.5 (main, May 10 2026, 10:21:34) [Clang 21.0.0 (clang-2100.0.123.102)]",
+  "self-test_exit": 0,
+  "elapsed_s": 0.484,
+  "explore_exit": 0
+}

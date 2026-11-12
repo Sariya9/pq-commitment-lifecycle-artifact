@@ -1,0 +1,16 @@
+[
+  {
+    "name": "early",
+    "model": "model/cache_transaction/cache_transaction_phase_witness.spthy",
+    "flags": [
+      "EARLY_CLEAR"
+    ],
+    "expected": "FALSIFIED"
+  },
+  {
+    "name": "no_cv",
+    "model": "model/cache_transaction/runs/2026-09-10-phase-companions/no_cv_phase.spthy",
+    "flags": [],
+    "expected": "VERIFIED"
+  }
+]

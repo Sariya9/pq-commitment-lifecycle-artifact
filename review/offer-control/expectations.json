@@ -1,0 +1,5 @@
+{
+  "aggregate_outcomes": "The original eleven outcomes per profile should remain unchanged.",
+  "restore_start_witness": "Must no longer use a classical full response to a PQ-only start.",
+  "PSK": "A classical-origin resumption can still violate the selected start-origin contract."
+}

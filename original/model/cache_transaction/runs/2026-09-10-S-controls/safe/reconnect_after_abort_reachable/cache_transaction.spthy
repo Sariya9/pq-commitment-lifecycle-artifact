@@ -1,0 +1,130 @@
+theory CacheTransaction
+begin
+builtins: signing
+
+// Bounded single-endpoint cache component. Completion abstracts certificate
+// validation plus CV, NOT TLS Finished or the key schedule. No PSK or ports.
+// Network cancellation can occur after parsing. Abort is explicit; failed
+// signature checks do not themselves emit an abort or a validation-failure event.
+rule Setup:
+ [ Fr(~ca), Fr(~sk) ]
+ --[ Initialised('client','server') ]->
+ [ !Trust('client','server',pk(~ca))
+ , !Server('server',~sk,sign(<'cert','server',pk(~sk)>,~ca))
+ , Out(<pk(~ca),pk(~sk),sign(<'cert','server',pk(~sk)>,~ca)>)
+ , Cache('client','server','empty','initial')
+ , !Next('initial','probe'), !Next('probe','reconnect'), !Next('reconnect','done')
+ , !Keep('empty','zero'), !Keep('empty','nonzero'), !Keep('pq','nonzero') ]
+restriction setup_once:
+ "All C S #i #j. Initialised(C,S) @ i & Initialised(C,S) @ j ==> #i = #j"
+restriction equality:
+ "All x y #i. Eq(x,y) @ i ==> x = y"
+
+#ifdef EARLY_CLEAR
+rule Policy:
+ [ ] --> [ !Policy('early') ]
+#else
+rule Policy:
+ [ ] --> [ !Policy('defer') ]
+#endif
+
+rule Start:
+ [ Cache($C,$S,state,phase), !Next(phase,next), Fr(~n) ]
+ --[ Opened($C,$S,~n,state) ]->
+ [ Waiting($C,$S,~n,state,phase), Out(<'hello',$S,~n>) ]
+
+rule ServerRespond:
+ [ In(<'request',$S,n,value>), !Server($S,~sk,cert) ]
+ --[ ServerSent($S,n,value,pk(~sk),cert) ]->
+ [ Out(<'response',$S,n,value,pk(~sk),cert,
+          sign(<'cv',$S,n,value,pk(~sk),cert>,~sk)>) ]
+
+rule ParseDeferred:
+ [ Waiting($C,$S,~n,state,phase), !Policy('defer')
+ , In(<'response',$S,~n,value,key,cert,sig>) ]
+ --[ Parsed($C,$S,~n,value) ]->
+ [ Pending($C,$S,~n,state,phase,value,key,cert,sig) ]
+
+rule ParseEarlyClear:
+ [ Waiting($C,$S,~n,'pq',phase), !Policy('early')
+ , In(<'response',$S,~n,'zero',key,cert,sig>) ]
+ --[ Parsed($C,$S,~n,'zero'), CacheCleared($C,$S,~n,'zero',key,cert) ]->
+ [ Pending($C,$S,~n,'empty',phase,'zero',key,cert,sig) ]
+
+rule ParseEarlyKeep:
+ [ Waiting($C,$S,~n,state,phase), !Policy('early'), !Keep(state,value)
+ , In(<'response',$S,~n,value,key,cert,sig>) ]
+ --[ Parsed($C,$S,~n,value) ]->
+ [ Pending($C,$S,~n,state,phase,value,key,cert,sig) ]
+
+rule ValidateCertificate:
+ [ Pending($C,$S,~n,state,phase,value,key,cert,sig), !Trust($C,$S,ca) ]
+ --[ Eq(verify(cert,<'cert',$S,key>,ca),true), ChainValidated($C,$S,~n) ]->
+ [ Validated($C,$S,~n,state,phase,value,key,cert,sig) ]
+
+rule CheckCV:
+ [ Validated($C,$S,~n,state,phase,value,key,cert,sig) ]
+ --[ Eq(verify(sig,<'cv',$S,~n,value,key,cert>,key),true)
+ , Authenticated($C,$S,~n,value,key,cert) ]->
+ [ ReadyCommit($C,$S,~n,state,phase,value,key,cert) ]
+
+rule CommitPositive:
+ [ ReadyCommit($C,$S,~n,state,phase,'nonzero',key,cert), !Next(phase,next) ]
+ --[ Completed($C,$S,~n,'nonzero'), CacheEstablished($C,$S,~n) ]->
+ [ Cache($C,$S,'pq',next) ]
+
+rule CommitWithdrawal:
+ [ ReadyCommit($C,$S,~n,'pq',phase,'zero',key,cert), !Next(phase,next) ]
+ --[ Completed($C,$S,~n,'zero'), CacheCleared($C,$S,~n,'zero',key,cert) ]->
+ [ Cache($C,$S,'empty',next) ]
+
+rule CompleteEmpty:
+ [ ReadyCommit($C,$S,~n,'empty',phase,'zero',key,cert), !Next(phase,next) ]
+ --[ Completed($C,$S,~n,'zero') ]->
+ [ Cache($C,$S,'empty',next) ]
+
+rule AbortAfterParse:
+ [ Pending($C,$S,~n,state,phase,value,key,cert,sig), !Next(phase,next)
+ , In(<'cancel',~n>) ]
+ --[ Aborted($C,$S,~n,state) ]->
+ [ Cache($C,$S,state,next) ]
+
+rule AbortAfterChain:
+ [ Validated($C,$S,~n,state,phase,value,key,cert,sig), !Next(phase,next)
+ , In(<'cancel',~n>) ]
+ --[ Aborted($C,$S,~n,state) ]->
+ [ Cache($C,$S,state,next) ]
+
+lemma clearing_has_matching_server:
+ all-traces
+ "All C S n key cert #i. CacheCleared(C,S,n,'zero',key,cert) @ i
+ ==> (Ex #j. ServerSent(S,n,'zero',key,cert) @ j & j < i)"
+
+lemma abort_preserves_established_cache:
+ all-traces
+ "All C S n state #i #j.
+ Opened(C,S,n,'pq') @ i & Aborted(C,S,n,state) @ j & i < j ==> state = 'pq'"
+
+lemma establishment_reachable:
+ exists-trace
+ "Ex C S n #i. CacheEstablished(C,S,n) @ i"
+
+lemma legitimate_withdrawal_reachable:
+ exists-trace
+ "Ex C S n n0 key cert #i #j #k.
+ CacheEstablished(C,S,n0) @ i & ServerSent(S,n,'zero',key,cert) @ j
+ & CacheCleared(C,S,n,'zero',key,cert) @ k & i < j & j < k"
+
+lemma aborted_withdrawal_retains_protection:
+ exists-trace
+ "Ex C S n n0 #i #j #k.
+ CacheEstablished(C,S,n0) @ i & Parsed(C,S,n,'zero') @ j
+ & Aborted(C,S,n,'pq') @ k & i < j & j < k"
+
+lemma reconnect_after_abort_reachable:
+ exists-trace
+ "Ex C S n n0 n1 #i #j #k #l.
+ CacheEstablished(C,S,n0) @ i & Parsed(C,S,n,'zero') @ j
+ & Aborted(C,S,n,'pq') @ k & Completed(C,S,n1,'nonzero') @ l
+ & i < j & j < k & k < l"
+end

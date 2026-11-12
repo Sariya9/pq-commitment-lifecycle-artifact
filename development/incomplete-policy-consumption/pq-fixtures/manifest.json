@@ -1,0 +1,80 @@
+{
+  "created_on": "2026-09-26",
+  "purpose": "local laboratory fixtures, not production",
+  "private_CA_retained": false,
+  "subject": "CN=unused.invalid",
+  "SAN": "DNS:localhost",
+  "algorithm": "ML-DSA-65",
+  "validity_days": 365,
+  "command_templates": [
+    [
+      "/opt/homebrew/opt/openssl@3.6/bin/openssl",
+      "genpkey",
+      "-algorithm",
+      "ML-DSA-65",
+      "-out",
+      "<temporary>/ca.key"
+    ],
+    [
+      "/opt/homebrew/opt/openssl@3.6/bin/openssl",
+      "req",
+      "-new",
+      "-x509",
+      "-key",
+      "<temporary>/ca.key",
+      "-subj",
+      "/CN=PQ overlap laboratory CA",
+      "-days",
+      "365",
+      "-addext",
+      "basicConstraints=critical,CA:TRUE",
+      "-addext",
+      "keyUsage=critical,keyCertSign,cRLSign",
+      "-out",
+      "<temporary>/ca.crt"
+    ],
+    [
+      "/opt/homebrew/opt/openssl@3.6/bin/openssl",
+      "genpkey",
+      "-algorithm",
+      "ML-DSA-65",
+      "-out",
+      "<temporary>/server.key"
+    ],
+    [
+      "/opt/homebrew/opt/openssl@3.6/bin/openssl",
+      "req",
+      "-new",
+      "-key",
+      "<temporary>/server.key",
+      "-subj",
+      "/CN=unused.invalid",
+      "-out",
+      "<temporary>/server.csr"
+    ],
+    [
+      "/opt/homebrew/opt/openssl@3.6/bin/openssl",
+      "x509",
+      "-req",
+      "-in",
+      "<temporary>/server.csr",
+      "-CA",
+      "<temporary>/ca.crt",
+      "-CAkey",
+      "<temporary>/ca.key",
+      "-CAcreateserial",
+      "-days",
+      "365",
+      "-extfile",
+      "<temporary>/server.ext",
+      "-out",
+      "<temporary>/server.crt"
+    ]
+  ],
+  "server_extensions": "subjectAltName=DNS:localhost\nbasicConstraints=critical,CA:FALSE\nkeyUsage=critical,digitalSignature\nextendedKeyUsage=serverAuth\n",
+  "sha256": {
+    "server.key": "5cb75d069b8629af76bd7403185e044016e2443d9759d6e06d503a3ae1f945db",
+    "ca.crt": "0ff6343f9ed71aeff9b941bc7db433ab8f307ccae0d127782bea2b5aed02f42f",
+    "server.crt": "e82049e67b17a02b67ee8d506960537ab19e102b61e56fe45f7187c992a9b937"
+  }
+}

@@ -1,0 +1,44 @@
+OpenSSL runtime: OpenSSL 3.6.3 9 Jun 2026
+Credential: existing testbed ML-DSA-65 server chain
+
+CASE 1 commit succeeds
+  cache_before parser=0 after_cv=0 after_finished=0
+  events parse=1 cv_message=2 cv_processed=3 injection=0 finished_message=4 init_finished=5 terminal=6
+  handshake client=complete server=complete finished_corrupted=no ssl_error=0 ssl_reason=0
+  verification=0 (ok) peer_key=ML-DSA-65
+  cache_after parser=86400 after_cv=86400 after_finished=86400
+  CASE PASS
+
+CASE 2 extension omitted
+  cache_before parser=86400 after_cv=86400 after_finished=86400
+  events parse=0 cv_message=1 cv_processed=2 injection=0 finished_message=3 init_finished=4 terminal=5
+  handshake client=complete server=complete finished_corrupted=no ssl_error=0 ssl_reason=0
+  verification=0 (ok) peer_key=ML-DSA-65
+  cache_after parser=86400 after_cv=86400 after_finished=86400
+  CASE PASS
+
+CASE 3 zero withdrawal with invalid chain
+  cache_before parser=86400 after_cv=86400 after_finished=86400
+  events parse=1 cv_message=0 cv_processed=0 injection=0 finished_message=0 init_finished=0 terminal=2
+  handshake client=failed server=incomplete finished_corrupted=no ssl_error=1 ssl_reason=134
+  verification=20 (unable to get local issuer certificate) peer_key=ML-DSA-65
+  cache_after parser=0 after_cv=86400 after_finished=86400
+  CASE PASS
+
+CASE 4 zero withdrawal with invalid Finished after CertificateVerify
+  cache_before parser=0 after_cv=86400 after_finished=86400
+  events parse=1 cv_message=2 cv_processed=3 injection=4 finished_message=5 init_finished=0 terminal=6
+  handshake client=failed server=incomplete finished_corrupted=yes ssl_error=1 ssl_reason=149
+  verification=0 (ok) peer_key=ML-DSA-65
+  cache_after parser=0 after_cv=0 after_finished=86400
+  CASE PASS
+
+CASE 5 zero withdrawal succeeds
+  cache_before parser=0 after_cv=0 after_finished=86400
+  events parse=1 cv_message=2 cv_processed=3 injection=0 finished_message=4 init_finished=5 terminal=6
+  handshake client=complete server=complete finished_corrupted=no ssl_error=0 ssl_reason=0
+  verification=0 (ok) peer_key=ML-DSA-65
+  cache_after parser=0 after_cv=0 after_finished=0
+  CASE PASS
+
+PASS: only the SSL_is_init_finished policy preserved the prior commitment across both failed handshakes

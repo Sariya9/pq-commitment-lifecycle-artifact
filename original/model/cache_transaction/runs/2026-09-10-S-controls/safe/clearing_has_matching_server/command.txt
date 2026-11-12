@@ -1,0 +1,1 @@
+/opt/homebrew/bin/tamarin-prover --prove=clearing_has_matching_server --heuristic=S /Users/sammo/Downloads/Research/thesis_pqc_tls/pq_auth_negotiation/model/cache_transaction/runs/2026-09-10-S-controls/safe/clearing_has_matching_server/cache_transaction.spthy +RTS -N2 -M6G -RTS

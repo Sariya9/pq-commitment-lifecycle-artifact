@@ -1,0 +1,791 @@
+{
+  "scope": "Three full attempts and one secure-origin resumption; no expiry or withdrawal.",
+  "date": "25 October 2026",
+  "command": [
+    "pq_auth_negotiation/model/overlap_policy/offer_control.py",
+    "--out",
+    "/Users/sammo/.codex/workspaces/Users/sammo/Downloads/Research/pq_auth_negotiation/icete2027/hard-review-2026-10-25/offer-control-confirmed"
+  ],
+  "python": "3.14.5 (main, May 10 2026, 10:21:34) [Clang 21.0.0 (clang-2100.0.123.102)]",
+  "runner_sha256": "933958d832336e6752bd35e139a57852e443cc8ba00adc7fab00418db6363675",
+  "baseline_sha256": "4c0fc0e9a6ec11dfaae6a4a0d5a5115dc243d23aba1134e9d9198bf4afead78a",
+  "restricted_sha256": "53763fbec1043a8e5067090ae75e1b764b67d052488d1f00853853a8ac9a0ddc",
+  "change": "Only classical full replies to a recorded PQ snapshot are excluded.",
+  "expectations": {
+    "aggregate_outcomes": "The original eleven outcomes per profile should remain unchanged.",
+    "restore_start_witness": "Must no longer use a classical full response to a PQ-only start.",
+    "PSK": "A classical-origin resumption can still violate the selected start-origin contract."
+  },
+  "profiles": {
+    "start": {
+      "states": 42916,
+      "transitions": 94269,
+      "properties": [
+        {
+          "query": "acceptance_time_policy",
+          "kind": "all",
+          "outcome": "FALSIFIED",
+          "role": "property_or_control",
+          "expected": "FALSIFIED",
+          "expectation_source": "run.py",
+          "differs": false,
+          "shortest_action_trace": [
+            "F0: start full [snapshot=none]",
+            "F1: start full [snapshot=none]",
+            "F0: honest classical response",
+            "F0: policy check [none]",
+            "F1: honest pq response",
+            "F1: policy check [none]",
+            "F1: accept full [pq]",
+            "F0: accept full [classical]"
+          ]
+        },
+        {
+          "query": "resumed_acceptance_time_policy",
+          "kind": "all",
+          "outcome": "FALSIFIED",
+          "role": "property_or_control",
+          "expected": "FALSIFIED",
+          "expectation_source": "run.py",
+          "differs": false,
+          "shortest_action_trace": [
+            "F0: start full [snapshot=none]",
+            "F1: start full [snapshot=none]",
+            "F0: honest classical response",
+            "F0: policy check [none]",
+            "F0: accept full [classical]",
+            "F0: issue classical ticket",
+            "F1: honest pq response",
+            "F1: policy check [none]",
+            "R: start from F0 classical ticket [snapshot=none]",
+            "F1: accept full [pq]",
+            "R: honest classical response",
+            "R: policy check [none]",
+            "R: accept [classical]"
+          ]
+        },
+        {
+          "query": "start_time_policy",
+          "kind": "all",
+          "outcome": "VERIFIED",
+          "role": "property_or_control",
+          "expected": "VERIFIED",
+          "expectation_source": "run.py",
+          "differs": false,
+          "shortest_action_trace": null
+        },
+        {
+          "query": "abort_does_not_erase",
+          "kind": "all",
+          "outcome": "VERIFIED",
+          "role": "structural_sanity",
+          "expected": "VERIFIED",
+          "expectation_source": "run.py",
+          "differs": false,
+          "shortest_action_trace": null
+        },
+        {
+          "query": "full_acceptance_reachable",
+          "kind": "exists",
+          "outcome": "VERIFIED",
+          "role": "property_or_control",
+          "expected": "VERIFIED",
+          "expectation_source": "run.py",
+          "differs": false,
+          "shortest_action_trace": [
+            "F0: start full [snapshot=none]",
+            "F0: honest pq response",
+            "F0: policy check [none]",
+            "F0: accept full [pq]"
+          ]
+        },
+        {
+          "query": "resume_reachable",
+          "kind": "exists",
+          "outcome": "VERIFIED",
+          "role": "property_or_control",
+          "expected": "VERIFIED",
+          "expectation_source": "run.py",
+          "differs": false,
+          "shortest_action_trace": [
+            "F0: start full [snapshot=none]",
+            "F0: honest pq response",
+            "F0: policy check [none]",
+            "F0: accept full [pq]",
+            "F0: issue pq ticket",
+            "R: start from F0 pq ticket [snapshot=pq]",
+            "R: honest pq response",
+            "R: policy check [pq]",
+            "R: accept [pq]"
+          ]
+        },
+        {
+          "query": "checked_then_commit_then_classical",
+          "kind": "exists",
+          "outcome": "VERIFIED",
+          "role": "property_or_control",
+          "expected": "VERIFIED",
+          "expectation_source": "run.py",
+          "differs": false,
+          "shortest_action_trace": [
+            "F0: start full [snapshot=none]",
+            "F1: start full [snapshot=none]",
+            "F0: honest classical response",
+            "F0: policy check [none]",
+            "F1: honest pq response",
+            "F1: policy check [none]",
+            "F1: accept full [pq]",
+            "F0: accept full [classical]"
+          ]
+        },
+        {
+          "query": "ticket_delivered_after_commit",
+          "kind": "exists",
+          "outcome": "VERIFIED",
+          "role": "property_or_control",
+          "expected": "VERIFIED",
+          "expectation_source": "run.py",
+          "differs": false,
+          "shortest_action_trace": [
+            "F0: start full [snapshot=none]",
+            "F1: start full [snapshot=none]",
+            "F0: honest classical response",
+            "F0: policy check [none]",
+            "F0: accept full [classical]",
+            "F1: honest pq response",
+            "F1: policy check [none]",
+            "F1: accept full [pq]",
+            "F0: issue classical ticket"
+          ]
+        },
+        {
+          "query": "abort_erases_other_connection",
+          "kind": "exists",
+          "outcome": "FALSIFIED",
+          "role": "property_or_control",
+          "expected": "FALSIFIED",
+          "expectation_source": "run.py",
+          "differs": false,
+          "shortest_action_trace": null
+        },
+        {
+          "query": "full_classical_reachable_before_commit",
+          "kind": "exists",
+          "outcome": "VERIFIED",
+          "role": "property_or_control",
+          "expected": "VERIFIED",
+          "expectation_source": "control",
+          "differs": false,
+          "shortest_action_trace": [
+            "F0: start full [snapshot=none]",
+            "F0: honest classical response",
+            "F0: policy check [none]",
+            "F0: accept full [classical]"
+          ]
+        },
+        {
+          "query": "resume_classical_reachable_before_commit",
+          "kind": "exists",
+          "outcome": "VERIFIED",
+          "role": "property_or_control",
+          "expected": "VERIFIED",
+          "expectation_source": "control",
+          "differs": false,
+          "shortest_action_trace": [
+            "F0: start full [snapshot=none]",
+            "F0: honest classical response",
+            "F0: policy check [none]",
+            "F0: accept full [classical]",
+            "F0: issue classical ticket",
+            "R: start from F0 classical ticket [snapshot=none]",
+            "R: honest classical response",
+            "R: policy check [none]",
+            "R: accept [classical]"
+          ]
+        }
+      ]
+    },
+    "split": {
+      "states": 31662,
+      "transitions": 68631,
+      "properties": [
+        {
+          "query": "acceptance_time_policy",
+          "kind": "all",
+          "outcome": "FALSIFIED",
+          "role": "property_or_control",
+          "expected": "FALSIFIED",
+          "expectation_source": "run.py",
+          "differs": false,
+          "shortest_action_trace": [
+            "F0: start full [snapshot=none]",
+            "F1: start full [snapshot=none]",
+            "F0: honest classical response",
+            "F0: policy check [none]",
+            "F1: honest pq response",
+            "F1: policy check [none]",
+            "F1: accept full [pq]",
+            "F0: accept full [classical]"
+          ]
+        },
+        {
+          "query": "resumed_acceptance_time_policy",
+          "kind": "all",
+          "outcome": "FALSIFIED",
+          "role": "property_or_control",
+          "expected": "FALSIFIED",
+          "expectation_source": "run.py",
+          "differs": false,
+          "shortest_action_trace": [
+            "F0: start full [snapshot=none]",
+            "F1: start full [snapshot=none]",
+            "F0: honest classical response",
+            "F0: policy check [none]",
+            "F0: accept full [classical]",
+            "F0: issue classical ticket",
+            "F1: honest pq response",
+            "F1: policy check [none]",
+            "R: start from F0 classical ticket [snapshot=none]",
+            "R: honest classical response",
+            "R: policy check [none]",
+            "F1: accept full [pq]",
+            "R: accept [classical]"
+          ]
+        },
+        {
+          "query": "start_time_policy",
+          "kind": "all",
+          "outcome": "VERIFIED",
+          "role": "property_or_control",
+          "expected": "VERIFIED",
+          "expectation_source": "run.py",
+          "differs": false,
+          "shortest_action_trace": null
+        },
+        {
+          "query": "abort_does_not_erase",
+          "kind": "all",
+          "outcome": "VERIFIED",
+          "role": "structural_sanity",
+          "expected": "VERIFIED",
+          "expectation_source": "run.py",
+          "differs": false,
+          "shortest_action_trace": null
+        },
+        {
+          "query": "full_acceptance_reachable",
+          "kind": "exists",
+          "outcome": "VERIFIED",
+          "role": "property_or_control",
+          "expected": "VERIFIED",
+          "expectation_source": "run.py",
+          "differs": false,
+          "shortest_action_trace": [
+            "F0: start full [snapshot=none]",
+            "F0: honest pq response",
+            "F0: policy check [none]",
+            "F0: accept full [pq]"
+          ]
+        },
+        {
+          "query": "resume_reachable",
+          "kind": "exists",
+          "outcome": "VERIFIED",
+          "role": "property_or_control",
+          "expected": "VERIFIED",
+          "expectation_source": "run.py",
+          "differs": false,
+          "shortest_action_trace": [
+            "F0: start full [snapshot=none]",
+            "F0: honest pq response",
+            "F0: policy check [none]",
+            "F0: accept full [pq]",
+            "F0: issue pq ticket",
+            "R: start from F0 pq ticket [snapshot=pq]",
+            "R: honest pq response",
+            "R: policy check [pq]",
+            "R: accept [pq]"
+          ]
+        },
+        {
+          "query": "checked_then_commit_then_classical",
+          "kind": "exists",
+          "outcome": "VERIFIED",
+          "role": "property_or_control",
+          "expected": "VERIFIED",
+          "expectation_source": "run.py",
+          "differs": false,
+          "shortest_action_trace": [
+            "F0: start full [snapshot=none]",
+            "F1: start full [snapshot=none]",
+            "F0: honest classical response",
+            "F0: policy check [none]",
+            "F1: honest pq response",
+            "F1: policy check [none]",
+            "F1: accept full [pq]",
+            "F0: accept full [classical]"
+          ]
+        },
+        {
+          "query": "ticket_delivered_after_commit",
+          "kind": "exists",
+          "outcome": "VERIFIED",
+          "role": "property_or_control",
+          "expected": "VERIFIED",
+          "expectation_source": "run.py",
+          "differs": false,
+          "shortest_action_trace": [
+            "F0: start full [snapshot=none]",
+            "F1: start full [snapshot=none]",
+            "F0: honest classical response",
+            "F0: policy check [none]",
+            "F0: accept full [classical]",
+            "F1: honest pq response",
+            "F1: policy check [none]",
+            "F1: accept full [pq]",
+            "F0: issue classical ticket"
+          ]
+        },
+        {
+          "query": "abort_erases_other_connection",
+          "kind": "exists",
+          "outcome": "FALSIFIED",
+          "role": "property_or_control",
+          "expected": "FALSIFIED",
+          "expectation_source": "run.py",
+          "differs": false,
+          "shortest_action_trace": null
+        },
+        {
+          "query": "full_classical_reachable_before_commit",
+          "kind": "exists",
+          "outcome": "VERIFIED",
+          "role": "property_or_control",
+          "expected": "VERIFIED",
+          "expectation_source": "control",
+          "differs": false,
+          "shortest_action_trace": [
+            "F0: start full [snapshot=none]",
+            "F0: honest classical response",
+            "F0: policy check [none]",
+            "F0: accept full [classical]"
+          ]
+        },
+        {
+          "query": "resume_classical_reachable_before_commit",
+          "kind": "exists",
+          "outcome": "VERIFIED",
+          "role": "property_or_control",
+          "expected": "VERIFIED",
+          "expectation_source": "control",
+          "differs": false,
+          "shortest_action_trace": [
+            "F0: start full [snapshot=none]",
+            "F0: honest classical response",
+            "F0: policy check [none]",
+            "F0: accept full [classical]",
+            "F0: issue classical ticket",
+            "R: start from F0 classical ticket [snapshot=none]",
+            "R: honest classical response",
+            "R: policy check [none]",
+            "R: accept [classical]"
+          ]
+        }
+      ]
+    },
+    "atomic": {
+      "states": 26572,
+      "transitions": 57539,
+      "properties": [
+        {
+          "query": "acceptance_time_policy",
+          "kind": "all",
+          "outcome": "VERIFIED",
+          "role": "property_or_control",
+          "expected": "VERIFIED",
+          "expectation_source": "run.py",
+          "differs": false,
+          "shortest_action_trace": null
+        },
+        {
+          "query": "resumed_acceptance_time_policy",
+          "kind": "all",
+          "outcome": "VERIFIED",
+          "role": "property_or_control",
+          "expected": "VERIFIED",
+          "expectation_source": "run.py",
+          "differs": false,
+          "shortest_action_trace": null
+        },
+        {
+          "query": "start_time_policy",
+          "kind": "all",
+          "outcome": "VERIFIED",
+          "role": "property_or_control",
+          "expected": "VERIFIED",
+          "expectation_source": "run.py",
+          "differs": false,
+          "shortest_action_trace": null
+        },
+        {
+          "query": "abort_does_not_erase",
+          "kind": "all",
+          "outcome": "VERIFIED",
+          "role": "structural_sanity",
+          "expected": "VERIFIED",
+          "expectation_source": "run.py",
+          "differs": false,
+          "shortest_action_trace": null
+        },
+        {
+          "query": "full_acceptance_reachable",
+          "kind": "exists",
+          "outcome": "VERIFIED",
+          "role": "property_or_control",
+          "expected": "VERIFIED",
+          "expectation_source": "run.py",
+          "differs": false,
+          "shortest_action_trace": [
+            "F0: start full [snapshot=none]",
+            "F0: honest pq response",
+            "F0: policy check [none]",
+            "F0: accept full [pq]"
+          ]
+        },
+        {
+          "query": "resume_reachable",
+          "kind": "exists",
+          "outcome": "VERIFIED",
+          "role": "property_or_control",
+          "expected": "VERIFIED",
+          "expectation_source": "run.py",
+          "differs": false,
+          "shortest_action_trace": [
+            "F0: start full [snapshot=none]",
+            "F0: honest pq response",
+            "F0: policy check [none]",
+            "F0: accept full [pq]",
+            "F0: issue pq ticket",
+            "R: start from F0 pq ticket [snapshot=pq]",
+            "R: honest pq response",
+            "R: policy check [pq]",
+            "R: accept [pq]"
+          ]
+        },
+        {
+          "query": "checked_then_commit_then_classical",
+          "kind": "exists",
+          "outcome": "FALSIFIED",
+          "role": "property_or_control",
+          "expected": "FALSIFIED",
+          "expectation_source": "run.py",
+          "differs": false,
+          "shortest_action_trace": null
+        },
+        {
+          "query": "ticket_delivered_after_commit",
+          "kind": "exists",
+          "outcome": "VERIFIED",
+          "role": "property_or_control",
+          "expected": "VERIFIED",
+          "expectation_source": "run.py",
+          "differs": false,
+          "shortest_action_trace": [
+            "F0: start full [snapshot=none]",
+            "F1: start full [snapshot=none]",
+            "F0: honest classical response",
+            "F0: policy check [none]",
+            "F0: accept full [classical]",
+            "F1: honest pq response",
+            "F1: policy check [none]",
+            "F1: accept full [pq]",
+            "F0: issue classical ticket"
+          ]
+        },
+        {
+          "query": "abort_erases_other_connection",
+          "kind": "exists",
+          "outcome": "FALSIFIED",
+          "role": "property_or_control",
+          "expected": "FALSIFIED",
+          "expectation_source": "run.py",
+          "differs": false,
+          "shortest_action_trace": null
+        },
+        {
+          "query": "full_classical_reachable_before_commit",
+          "kind": "exists",
+          "outcome": "VERIFIED",
+          "role": "property_or_control",
+          "expected": "VERIFIED",
+          "expectation_source": "control",
+          "differs": false,
+          "shortest_action_trace": [
+            "F0: start full [snapshot=none]",
+            "F0: honest classical response",
+            "F0: policy check [none]",
+            "F0: accept full [classical]"
+          ]
+        },
+        {
+          "query": "resume_classical_reachable_before_commit",
+          "kind": "exists",
+          "outcome": "VERIFIED",
+          "role": "property_or_control",
+          "expected": "VERIFIED",
+          "expectation_source": "control",
+          "differs": false,
+          "shortest_action_trace": [
+            "F0: start full [snapshot=none]",
+            "F0: honest classical response",
+            "F0: policy check [none]",
+            "F0: accept full [classical]",
+            "F0: issue classical ticket",
+            "R: start from F0 classical ticket [snapshot=none]",
+            "R: honest classical response",
+            "R: policy check [none]",
+            "R: accept [classical]"
+          ]
+        }
+      ]
+    },
+    "restore-abort": {
+      "states": 42418,
+      "transitions": 80267,
+      "properties": [
+        {
+          "query": "acceptance_time_policy",
+          "kind": "all",
+          "outcome": "FALSIFIED",
+          "role": "property_or_control",
+          "expected": "FALSIFIED",
+          "expectation_source": "run.py",
+          "differs": false,
+          "shortest_action_trace": [
+            "F0: start full [snapshot=none]",
+            "F1: start full [snapshot=none]",
+            "F2: start full [snapshot=none]",
+            "F0: honest classical response",
+            "F0: policy check [none]",
+            "F1: honest classical response",
+            "F1: policy check [none]",
+            "F2: honest pq response",
+            "F2: policy check [none]",
+            "F2: accept full [pq]",
+            "F0: abort [pq->none]",
+            "F1: accept full [classical]"
+          ]
+        },
+        {
+          "query": "resumed_acceptance_time_policy",
+          "kind": "all",
+          "outcome": "FALSIFIED",
+          "role": "property_or_control",
+          "expected": "FALSIFIED",
+          "expectation_source": "run.py",
+          "differs": false,
+          "shortest_action_trace": [
+            "F0: start full [snapshot=none]",
+            "F1: start full [snapshot=none]",
+            "F2: start full [snapshot=none]",
+            "F0: honest classical response",
+            "F0: policy check [none]",
+            "F0: accept full [classical]",
+            "F0: issue classical ticket",
+            "F1: honest classical response",
+            "F1: policy check [none]",
+            "F2: honest pq response",
+            "F2: policy check [none]",
+            "F2: accept full [pq]",
+            "F1: abort [pq->none]",
+            "R: start from F0 classical ticket [snapshot=none]",
+            "R: honest classical response",
+            "R: policy check [none]",
+            "R: accept [classical]"
+          ]
+        },
+        {
+          "query": "start_time_policy",
+          "kind": "all",
+          "outcome": "FALSIFIED",
+          "role": "property_or_control",
+          "expected": "FALSIFIED",
+          "expectation_source": "run.py",
+          "differs": false,
+          "shortest_action_trace": [
+            "F0: start full [snapshot=none]",
+            "F1: start full [snapshot=none]",
+            "F2: start full [snapshot=none]",
+            "F0: honest classical response",
+            "F0: policy check [none]",
+            "F0: accept full [classical]",
+            "F0: issue classical ticket",
+            "F1: honest classical response",
+            "F1: policy check [none]",
+            "F2: honest pq response",
+            "F2: policy check [none]",
+            "F2: accept full [pq]",
+            "R: start from F0 classical ticket [snapshot=pq]",
+            "F1: abort [pq->none]",
+            "R: honest classical response",
+            "R: policy check [none]",
+            "R: accept [classical]"
+          ]
+        },
+        {
+          "query": "abort_does_not_erase",
+          "kind": "all",
+          "outcome": "FALSIFIED",
+          "role": "structural_sanity",
+          "expected": "FALSIFIED",
+          "expectation_source": "run.py",
+          "differs": false,
+          "shortest_action_trace": [
+            "F0: start full [snapshot=none]",
+            "F1: start full [snapshot=none]",
+            "F0: honest classical response",
+            "F0: policy check [none]",
+            "F1: honest pq response",
+            "F1: policy check [none]",
+            "F1: accept full [pq]",
+            "F0: abort [pq->none]"
+          ]
+        },
+        {
+          "query": "full_acceptance_reachable",
+          "kind": "exists",
+          "outcome": "VERIFIED",
+          "role": "property_or_control",
+          "expected": "VERIFIED",
+          "expectation_source": "run.py",
+          "differs": false,
+          "shortest_action_trace": [
+            "F0: start full [snapshot=none]",
+            "F0: honest pq response",
+            "F0: policy check [none]",
+            "F0: accept full [pq]"
+          ]
+        },
+        {
+          "query": "resume_reachable",
+          "kind": "exists",
+          "outcome": "VERIFIED",
+          "role": "property_or_control",
+          "expected": "VERIFIED",
+          "expectation_source": "run.py",
+          "differs": false,
+          "shortest_action_trace": [
+            "F0: start full [snapshot=none]",
+            "F0: honest pq response",
+            "F0: policy check [none]",
+            "F0: accept full [pq]",
+            "F0: issue pq ticket",
+            "R: start from F0 pq ticket [snapshot=pq]",
+            "R: honest pq response",
+            "R: policy check [pq]",
+            "R: accept [pq]"
+          ]
+        },
+        {
+          "query": "checked_then_commit_then_classical",
+          "kind": "exists",
+          "outcome": "VERIFIED",
+          "role": "property_or_control",
+          "expected": "VERIFIED",
+          "expectation_source": "run.py",
+          "differs": false,
+          "shortest_action_trace": [
+            "F0: start full [snapshot=none]",
+            "F1: start full [snapshot=none]",
+            "F2: start full [snapshot=none]",
+            "F0: honest classical response",
+            "F0: policy check [none]",
+            "F1: honest classical response",
+            "F1: policy check [none]",
+            "F2: honest pq response",
+            "F2: policy check [none]",
+            "F2: accept full [pq]",
+            "F0: abort [pq->none]",
+            "F1: accept full [classical]"
+          ]
+        },
+        {
+          "query": "ticket_delivered_after_commit",
+          "kind": "exists",
+          "outcome": "VERIFIED",
+          "role": "property_or_control",
+          "expected": "VERIFIED",
+          "expectation_source": "run.py",
+          "differs": false,
+          "shortest_action_trace": [
+            "F0: start full [snapshot=none]",
+            "F1: start full [snapshot=none]",
+            "F0: honest classical response",
+            "F0: policy check [none]",
+            "F0: accept full [classical]",
+            "F1: honest pq response",
+            "F1: policy check [none]",
+            "F1: accept full [pq]",
+            "F0: issue classical ticket"
+          ]
+        },
+        {
+          "query": "abort_erases_other_connection",
+          "kind": "exists",
+          "outcome": "VERIFIED",
+          "role": "property_or_control",
+          "expected": "VERIFIED",
+          "expectation_source": "run.py",
+          "differs": false,
+          "shortest_action_trace": [
+            "F0: start full [snapshot=none]",
+            "F1: start full [snapshot=none]",
+            "F0: honest classical response",
+            "F0: policy check [none]",
+            "F1: honest pq response",
+            "F1: policy check [none]",
+            "F1: accept full [pq]",
+            "F0: abort [pq->none]"
+          ]
+        },
+        {
+          "query": "full_classical_reachable_before_commit",
+          "kind": "exists",
+          "outcome": "VERIFIED",
+          "role": "property_or_control",
+          "expected": "VERIFIED",
+          "expectation_source": "control",
+          "differs": false,
+          "shortest_action_trace": [
+            "F0: start full [snapshot=none]",
+            "F0: honest classical response",
+            "F0: policy check [none]",
+            "F0: accept full [classical]"
+          ]
+        },
+        {
+          "query": "resume_classical_reachable_before_commit",
+          "kind": "exists",
+          "outcome": "VERIFIED",
+          "role": "property_or_control",
+          "expected": "VERIFIED",
+          "expectation_source": "control",
+          "differs": false,
+          "shortest_action_trace": [
+            "F0: start full [snapshot=none]",
+            "F0: honest classical response",
+            "F0: policy check [none]",
+            "F0: accept full [classical]",
+            "F0: issue classical ticket",
+            "R: start from F0 classical ticket [snapshot=none]",
+            "R: honest classical response",
+            "R: policy check [none]",
+            "R: accept [classical]"
+          ]
+        }
+      ]
+    }
+  },
+  "status": "COMPLETE",
+  "aggregate_expectations_met": true
+}

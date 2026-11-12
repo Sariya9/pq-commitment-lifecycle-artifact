@@ -1,0 +1,29 @@
+{
+  "source": "/Users/sammo/Downloads/Research/pq_auth_negotiation/model/cache_transaction/cache_transaction_no_cv.spthy",
+  "sha256": "f5a3a9669f14d209ce8f498b8c1a2042dd55239d815550d63113d5e637289f9a",
+  "command": [
+    "/opt/homebrew/bin/tamarin-prover",
+    "--prove=abort_preserves_established_cache",
+    "--heuristic=S",
+    "/Users/sammo/.codex/workspaces/Users/sammo/Downloads/Research/pq_auth_negotiation/conference-lifecycle-2026-10-25/reproduction/tamarin/11-no_cv/cache_transaction_no_cv.spthy",
+    "+RTS",
+    "-N2",
+    "-M6G",
+    "-RTS"
+  ],
+  "flags": [],
+  "heuristic": "S",
+  "timeout_s": 120,
+  "parse_only": false,
+  "tool_sha256": "d6e6d38366501f51c2b417dab9fd1dbb1ac43f4b4dd701d9c152e3f7a2f1188f",
+  "status": "OK",
+  "returncode": 0,
+  "elapsed_s": 3.358,
+  "results": [
+    {
+      "query": "abort_preserves_established_cache",
+      "verdict": "VERIFIED",
+      "steps": 173
+    }
+  ]
+}

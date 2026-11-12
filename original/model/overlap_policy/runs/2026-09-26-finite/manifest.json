@@ -1,0 +1,14 @@
+{
+  "command": [
+    "/opt/homebrew/opt/python@3.14/bin/python3.14",
+    "/Users/sammo/Downloads/Research/thesis_pqc_tls/pq_auth_negotiation/model/overlap_policy/runs/2026-09-26-finite/explore.py",
+    "--self-test",
+    "--out",
+    "/Users/sammo/Downloads/Research/thesis_pqc_tls/pq_auth_negotiation/model/overlap_policy/runs/2026-09-26-finite/results.json"
+  ],
+  "source_sha256": "4c0fc0e9a6ec11dfaae6a4a0d5a5115dc243d23aba1134e9d9198bf4afead78a",
+  "model_sha256": "6b6fe5a25523c521dcf59f021dac82995253b71e002e39f2276d179b09d1cc18",
+  "python": "3.14.5 (main, May 10 2026, 10:21:34) [Clang 21.0.0 (clang-2100.0.123.102)]",
+  "returncode": 0,
+  "elapsed_s": 0.574
+}

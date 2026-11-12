@@ -1,0 +1,212 @@
+{
+  "date": "25 October 2026",
+  "expected_probes": [
+    [
+      "loss-preserve",
+      86400,
+      "ECDSA",
+      "REJECT"
+    ],
+    [
+      "loss-restore",
+      0,
+      "ECDSA",
+      "ACCEPT"
+    ],
+    [
+      "loss-preserve-PQ",
+      86400,
+      "ML-DSA-65",
+      "ACCEPT"
+    ],
+    [
+      "loss-restore-PQ",
+      0,
+      "ML-DSA-65",
+      "ACCEPT"
+    ],
+    [
+      "withdraw-preserve",
+      0,
+      "ECDSA",
+      "ACCEPT"
+    ],
+    [
+      "withdraw-restore",
+      86400,
+      "ECDSA",
+      "REJECT"
+    ],
+    [
+      "withdraw-preserve-PQ",
+      0,
+      "ML-DSA-65",
+      "ACCEPT"
+    ],
+    [
+      "withdraw-restore-PQ",
+      86400,
+      "ML-DSA-65",
+      "ACCEPT"
+    ]
+  ],
+  "expected_active_failures": {
+    "chain": 20,
+    "hostname": 62
+  },
+  "scope": "Cache-dependent signature offers in laboratory policy probes; no network attacker or conforming post-zero availability claim.",
+  "commands": [
+    {
+      "stage": "version",
+      "command": [
+        "/opt/homebrew/opt/openssl@3.6/bin/openssl",
+        "version",
+        "-a"
+      ],
+      "timeout_s": 60,
+      "returncode": 0
+    },
+    {
+      "stage": "pq-validity",
+      "command": [
+        "/opt/homebrew/opt/openssl@3.6/bin/openssl",
+        "x509",
+        "-in",
+        "/Users/sammo/.codex/workspaces/Users/sammo/Downloads/Research/pq_auth_negotiation/icete2027/hard-review-2026-10-25/policy-consumption/pq-fixtures/server.crt",
+        "-checkend",
+        "0",
+        "-noout"
+      ],
+      "timeout_s": 60,
+      "returncode": 0
+    },
+    {
+      "stage": "ec-ca-key",
+      "command": [
+        "/opt/homebrew/opt/openssl@3.6/bin/openssl",
+        "genpkey",
+        "-algorithm",
+        "EC",
+        "-pkeyopt",
+        "ec_paramgen_curve:P-256",
+        "-out",
+        "/var/folders/8h/rmws85sj21x450g5bnbdgdw00000gn/T/tmp477doo6c/ca.key"
+      ],
+      "timeout_s": 60,
+      "returncode": 0
+    },
+    {
+      "stage": "ec-ca",
+      "command": [
+        "/opt/homebrew/opt/openssl@3.6/bin/openssl",
+        "req",
+        "-new",
+        "-x509",
+        "-key",
+        "/var/folders/8h/rmws85sj21x450g5bnbdgdw00000gn/T/tmp477doo6c/ca.key",
+        "-subj",
+        "/CN=Policy-consumption laboratory CA",
+        "-days",
+        "365",
+        "-addext",
+        "basicConstraints=critical,CA:TRUE",
+        "-addext",
+        "keyUsage=critical,keyCertSign,cRLSign",
+        "-out",
+        "/Users/sammo/.codex/workspaces/Users/sammo/Downloads/Research/pq_auth_negotiation/icete2027/hard-review-2026-10-25/policy-consumption/ec-fixtures/ca.crt"
+      ],
+      "timeout_s": 60,
+      "returncode": 0
+    },
+    {
+      "stage": "ec-key",
+      "command": [
+        "/opt/homebrew/opt/openssl@3.6/bin/openssl",
+        "genpkey",
+        "-algorithm",
+        "EC",
+        "-pkeyopt",
+        "ec_paramgen_curve:P-256",
+        "-out",
+        "/Users/sammo/.codex/workspaces/Users/sammo/Downloads/Research/pq_auth_negotiation/icete2027/hard-review-2026-10-25/policy-consumption/ec-fixtures/server.key"
+      ],
+      "timeout_s": 60,
+      "returncode": 0
+    },
+    {
+      "stage": "ec-csr",
+      "command": [
+        "/opt/homebrew/opt/openssl@3.6/bin/openssl",
+        "req",
+        "-new",
+        "-key",
+        "/Users/sammo/.codex/workspaces/Users/sammo/Downloads/Research/pq_auth_negotiation/icete2027/hard-review-2026-10-25/policy-consumption/ec-fixtures/server.key",
+        "-subj",
+        "/CN=unused.invalid",
+        "-out",
+        "/Users/sammo/.codex/workspaces/Users/sammo/Downloads/Research/pq_auth_negotiation/icete2027/hard-review-2026-10-25/policy-consumption/ec-fixtures/server.csr"
+      ],
+      "timeout_s": 60,
+      "returncode": 0
+    },
+    {
+      "stage": "ec-cert",
+      "command": [
+        "/opt/homebrew/opt/openssl@3.6/bin/openssl",
+        "x509",
+        "-req",
+        "-in",
+        "/Users/sammo/.codex/workspaces/Users/sammo/Downloads/Research/pq_auth_negotiation/icete2027/hard-review-2026-10-25/policy-consumption/ec-fixtures/server.csr",
+        "-CA",
+        "/Users/sammo/.codex/workspaces/Users/sammo/Downloads/Research/pq_auth_negotiation/icete2027/hard-review-2026-10-25/policy-consumption/ec-fixtures/ca.crt",
+        "-CAkey",
+        "/var/folders/8h/rmws85sj21x450g5bnbdgdw00000gn/T/tmp477doo6c/ca.key",
+        "-set_serial",
+        "1",
+        "-days",
+        "365",
+        "-extfile",
+        "/Users/sammo/.codex/workspaces/Users/sammo/Downloads/Research/pq_auth_negotiation/icete2027/hard-review-2026-10-25/policy-consumption/ec-fixtures/server.ext",
+        "-out",
+        "/Users/sammo/.codex/workspaces/Users/sammo/Downloads/Research/pq_auth_negotiation/icete2027/hard-review-2026-10-25/policy-consumption/ec-fixtures/server.crt"
+      ],
+      "timeout_s": 60,
+      "returncode": 0
+    },
+    {
+      "stage": "compile",
+      "command": [
+        "/usr/bin/cc",
+        "-std=c11",
+        "-O1",
+        "-Wall",
+        "-Wextra",
+        "-o",
+        "/Users/sammo/.codex/workspaces/Users/sammo/Downloads/Research/pq_auth_negotiation/icete2027/hard-review-2026-10-25/policy-consumption/policy_consumption",
+        "/Users/sammo/.codex/workspaces/Users/sammo/Downloads/Research/pq_auth_negotiation/icete2027/hard-review-2026-10-25/policy-consumption/policy_consumption.c",
+        "-I/opt/homebrew/opt/openssl@3.6/include",
+        "-L/opt/homebrew/opt/openssl@3.6/lib",
+        "-Wl,-rpath,/opt/homebrew/opt/openssl@3.6/lib",
+        "-lssl",
+        "-lcrypto"
+      ],
+      "timeout_s": 60,
+      "returncode": 0
+    },
+    {
+      "stage": "run",
+      "command": [
+        "/Users/sammo/.codex/workspaces/Users/sammo/Downloads/Research/pq_auth_negotiation/icete2027/hard-review-2026-10-25/policy-consumption/policy_consumption",
+        "/Users/sammo/.codex/workspaces/Users/sammo/Downloads/Research/pq_auth_negotiation/icete2027/hard-review-2026-10-25/policy-consumption/pq-fixtures/server.crt",
+        "/Users/sammo/.codex/workspaces/Users/sammo/Downloads/Research/pq_auth_negotiation/icete2027/hard-review-2026-10-25/policy-consumption/pq-fixtures/server.key",
+        "/Users/sammo/.codex/workspaces/Users/sammo/Downloads/Research/pq_auth_negotiation/icete2027/hard-review-2026-10-25/policy-consumption/pq-fixtures/ca.crt",
+        "/Users/sammo/.codex/workspaces/Users/sammo/Downloads/Research/pq_auth_negotiation/icete2027/hard-review-2026-10-25/policy-consumption/ec-fixtures/server.crt",
+        "/Users/sammo/.codex/workspaces/Users/sammo/Downloads/Research/pq_auth_negotiation/icete2027/hard-review-2026-10-25/policy-consumption/ec-fixtures/server.key",
+        "/Users/sammo/.codex/workspaces/Users/sammo/Downloads/Research/pq_auth_negotiation/icete2027/hard-review-2026-10-25/policy-consumption/ec-fixtures/ca.crt"
+      ],
+      "timeout_s": 60,
+      "returncode": 2
+    }
+  ],
+  "status": "INCOMPLETE"
+}

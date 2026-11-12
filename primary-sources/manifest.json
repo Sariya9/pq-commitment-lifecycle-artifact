@@ -1,0 +1,106 @@
+[
+  {
+    "file": "continuity-02.txt",
+    "url": "https://www.ietf.org/archive/id/draft-sheffer-tls-pqc-continuity-02.txt",
+    "final_url": "https://www.ietf.org/archive/id/draft-sheffer-tls-pqc-continuity-02.txt",
+    "status": 200,
+    "sha256": "793acc7c528925efe3a68d6f741f078f5da4af3b3b497a276c031e4ea6918e31",
+    "bytes": 31366
+  },
+  {
+    "file": "continuity-status.json",
+    "url": "https://datatracker.ietf.org/api/v1/doc/document/draft-sheffer-tls-pqc-continuity/",
+    "final_url": "https://datatracker.ietf.org/api/v1/doc/document/draft-sheffer-tls-pqc-continuity/",
+    "status": 200,
+    "sha256": "b0c8014cb75a673107278f15d7e135d83b811c7b80fb442b5a3fc57f0bd3dc01",
+    "bytes": 1862
+  },
+  {
+    "file": "rfc8446.txt",
+    "url": "https://www.rfc-editor.org/rfc/rfc8446.txt",
+    "final_url": "https://www.rfc-editor.org/rfc/rfc8446.txt",
+    "status": 200,
+    "sha256": "47871bc8820a2c3b6ea89f061055577058862cf543686b82d10131239702b3bd",
+    "bytes": 337736
+  },
+  {
+    "file": "rfc9846.txt",
+    "url": "https://www.rfc-editor.org/rfc/rfc9846.txt",
+    "final_url": "https://www.rfc-editor.org/rfc/rfc9846.txt",
+    "status": 200,
+    "sha256": "b1bee06a814f92ca4677c85b97519be53869b2bf8edc79ade955fb51c0402b17",
+    "bytes": 339413
+  },
+  {
+    "file": "rfc6797.txt",
+    "url": "https://www.rfc-editor.org/rfc/rfc6797.txt",
+    "final_url": "https://www.rfc-editor.org/rfc/rfc6797.txt",
+    "status": 200,
+    "sha256": "7cefa03f77547532580b7f877b4e6388bb66c20631b624667a0065c14ae3d364",
+    "bytes": 103554
+  },
+  {
+    "file": "rfc7469.txt",
+    "url": "https://www.rfc-editor.org/rfc/rfc7469.txt",
+    "final_url": "https://www.rfc-editor.org/rfc/rfc7469.txt",
+    "status": 200,
+    "sha256": "c1d5b042e77e2eb0abcfc2f1bcd444873621ea00b632c0b045492effd0888064",
+    "bytes": 61619
+  },
+  {
+    "file": "rfc9525.txt",
+    "url": "https://www.rfc-editor.org/rfc/rfc9525.txt",
+    "final_url": "https://www.rfc-editor.org/rfc/rfc9525.txt",
+    "status": 200,
+    "sha256": "ed8116c2435376dffe37ec2ca688c3a8515e36820852b29e0b6cdfbe92abd2c5",
+    "bytes": 69260
+  },
+  {
+    "file": "issue27.json",
+    "url": "https://api.github.com/repos/yaronf/draft-sheffer-tls-pqc-continuity/issues/27",
+    "final_url": "https://api.github.com/repos/yaronf/draft-sheffer-tls-pqc-continuity/issues/27",
+    "status": 200,
+    "sha256": "b49194f836112870131e6a36b28740300c7d19fa48fe5685a1ece3a52e68f1ed",
+    "bytes": 7782
+  },
+  {
+    "file": "pr33.json",
+    "url": "https://api.github.com/repos/yaronf/draft-sheffer-tls-pqc-continuity/pulls/33",
+    "final_url": "https://api.github.com/repos/yaronf/draft-sheffer-tls-pqc-continuity/pulls/33",
+    "status": 200,
+    "sha256": "05c6f06d1ed54b44613a536dc485f13b40bfc6c35d758c08ab78c63104e03082",
+    "bytes": 18983
+  },
+  {
+    "file": "pr33.diff",
+    "url": "https://github.com/yaronf/draft-sheffer-tls-pqc-continuity/pull/33.diff",
+    "final_url": "https://patch-diff.githubusercontent.com/raw/yaronf/draft-sheffer-tls-pqc-continuity/pull/33.diff",
+    "status": 200,
+    "sha256": "5e074a460ace842b20b7c847ec9ca81811f93ec39aeb77c82c229093291be79a",
+    "bytes": 3788
+  },
+  {
+    "file": "openssl-statem-lib.c",
+    "url": "https://raw.githubusercontent.com/openssl/openssl/openssl-3.6.3/ssl/statem/statem_lib.c",
+    "final_url": "https://raw.githubusercontent.com/openssl/openssl/openssl-3.6.3/ssl/statem/statem_lib.c",
+    "status": 200,
+    "sha256": "6f39a296fee281d993e778acd908eddc818523f8c52d113435a92161c17854bb",
+    "bytes": 98999
+  },
+  {
+    "file": "openssl-custom-ext.html",
+    "url": "https://docs.openssl.org/3.6/man3/SSL_extension_supported/",
+    "final_url": "https://docs.openssl.org/3.6/man3/SSL_extension_supported/",
+    "status": 200,
+    "sha256": "4069123932637a7cb9c1a0edb1fcb42385267cee5bba8cb14ad8a75d4d670ebd",
+    "bytes": 1104730
+  },
+  {
+    "file": "openssl-init.html",
+    "url": "https://docs.openssl.org/3.6/man3/SSL_in_init/",
+    "final_url": "https://docs.openssl.org/3.6/man3/SSL_in_init/",
+    "status": 200,
+    "sha256": "532679353d2249fff9f2ed92d0ad5bded232be9aab52b90eb4bbba1050e58a72",
+    "bytes": 1085271
+  }
+]

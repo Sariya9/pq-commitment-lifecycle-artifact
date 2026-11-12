@@ -1,0 +1,1 @@
+/opt/homebrew/bin/tamarin-prover -D=EARLY_CLEAR --prove=establishment_reachable --heuristic=S /Users/sammo/Downloads/Research/thesis_pqc_tls/pq_auth_negotiation/model/cache_transaction/runs/2026-09-10-negative-controls/early/establishment_reachable/cache_transaction.spthy +RTS -N2 -M6G -RTS

@@ -1,0 +1,401 @@
+{
+  "status": "COMPLETE",
+  "source": "/Users/sammo/Downloads/Research/thesis_pqc_tls/pq_auth_negotiation/model/overlap_policy/runs/2026-09-26-reference/overlap_policy.spthy",
+  "source_sha256": "6b6fe5a25523c521dcf59f021dac82995253b71e002e39f2276d179b09d1cc18",
+  "budget_per_profile": {
+    "states": 2000000,
+    "transitions": 10000000
+  },
+  "assumptions": [
+    "three concrete full slots 0, 1, 2 and one resumption slot",
+    "honest already-valid responses and private-channel interface",
+    "one optional delayed ticket per accepted full origin; origin retained",
+    "no expiry or withdrawal; PQ full acceptance alone installs"
+  ],
+  "profiles": {
+    "start": {
+      "status": "COMPLETE",
+      "states": 75958,
+      "transitions": 160482,
+      "safety_violations_reached": [
+        "acceptance_time_policy",
+        "resumed_acceptance_time_policy"
+      ],
+      "existence_witnesses_reached": [
+        "full_acceptance_reachable",
+        "resume_reachable",
+        "checked_then_commit_then_classical",
+        "ticket_delivered_after_commit",
+        "full_classical_reachable_before_commit",
+        "resume_classical_reachable_before_commit"
+      ],
+      "verdicts": [
+        {
+          "query": "acceptance_time_policy",
+          "kind": "all",
+          "outcome": "FALSIFIED",
+          "expected": "FALSIFIED",
+          "matches_expected": true
+        },
+        {
+          "query": "resumed_acceptance_time_policy",
+          "kind": "all",
+          "outcome": "FALSIFIED",
+          "expected": "FALSIFIED",
+          "matches_expected": true
+        },
+        {
+          "query": "start_time_policy",
+          "kind": "all",
+          "outcome": "VERIFIED",
+          "expected": "VERIFIED",
+          "matches_expected": true
+        },
+        {
+          "query": "abort_does_not_erase",
+          "kind": "all",
+          "outcome": "VERIFIED",
+          "expected": "VERIFIED",
+          "matches_expected": true
+        },
+        {
+          "query": "full_acceptance_reachable",
+          "kind": "exists",
+          "outcome": "VERIFIED",
+          "expected": "VERIFIED",
+          "matches_expected": true
+        },
+        {
+          "query": "resume_reachable",
+          "kind": "exists",
+          "outcome": "VERIFIED",
+          "expected": "VERIFIED",
+          "matches_expected": true
+        },
+        {
+          "query": "checked_then_commit_then_classical",
+          "kind": "exists",
+          "outcome": "VERIFIED",
+          "expected": "VERIFIED",
+          "matches_expected": true
+        },
+        {
+          "query": "ticket_delivered_after_commit",
+          "kind": "exists",
+          "outcome": "VERIFIED",
+          "expected": "VERIFIED",
+          "matches_expected": true
+        },
+        {
+          "query": "abort_erases_other_connection",
+          "kind": "exists",
+          "outcome": "FALSIFIED",
+          "expected": "FALSIFIED",
+          "matches_expected": true
+        },
+        {
+          "query": "full_classical_reachable_before_commit",
+          "kind": "exists",
+          "outcome": "VERIFIED",
+          "expected": "VERIFIED",
+          "matches_expected": true
+        },
+        {
+          "query": "resume_classical_reachable_before_commit",
+          "kind": "exists",
+          "outcome": "VERIFIED",
+          "expected": "VERIFIED",
+          "matches_expected": true
+        }
+      ]
+    },
+    "split": {
+      "status": "COMPLETE",
+      "states": 60706,
+      "transitions": 126540,
+      "safety_violations_reached": [
+        "acceptance_time_policy",
+        "resumed_acceptance_time_policy"
+      ],
+      "existence_witnesses_reached": [
+        "full_acceptance_reachable",
+        "resume_reachable",
+        "checked_then_commit_then_classical",
+        "ticket_delivered_after_commit",
+        "full_classical_reachable_before_commit",
+        "resume_classical_reachable_before_commit"
+      ],
+      "verdicts": [
+        {
+          "query": "acceptance_time_policy",
+          "kind": "all",
+          "outcome": "FALSIFIED",
+          "expected": "FALSIFIED",
+          "matches_expected": true
+        },
+        {
+          "query": "resumed_acceptance_time_policy",
+          "kind": "all",
+          "outcome": "FALSIFIED",
+          "expected": "FALSIFIED",
+          "matches_expected": true
+        },
+        {
+          "query": "start_time_policy",
+          "kind": "all",
+          "outcome": "VERIFIED",
+          "expected": "VERIFIED",
+          "matches_expected": true
+        },
+        {
+          "query": "abort_does_not_erase",
+          "kind": "all",
+          "outcome": "VERIFIED",
+          "expected": "VERIFIED",
+          "matches_expected": true
+        },
+        {
+          "query": "full_acceptance_reachable",
+          "kind": "exists",
+          "outcome": "VERIFIED",
+          "expected": "VERIFIED",
+          "matches_expected": true
+        },
+        {
+          "query": "resume_reachable",
+          "kind": "exists",
+          "outcome": "VERIFIED",
+          "expected": "VERIFIED",
+          "matches_expected": true
+        },
+        {
+          "query": "checked_then_commit_then_classical",
+          "kind": "exists",
+          "outcome": "VERIFIED",
+          "expected": "VERIFIED",
+          "matches_expected": true
+        },
+        {
+          "query": "ticket_delivered_after_commit",
+          "kind": "exists",
+          "outcome": "VERIFIED",
+          "expected": "VERIFIED",
+          "matches_expected": true
+        },
+        {
+          "query": "abort_erases_other_connection",
+          "kind": "exists",
+          "outcome": "FALSIFIED",
+          "expected": "FALSIFIED",
+          "matches_expected": true
+        },
+        {
+          "query": "full_classical_reachable_before_commit",
+          "kind": "exists",
+          "outcome": "VERIFIED",
+          "expected": "VERIFIED",
+          "matches_expected": true
+        },
+        {
+          "query": "resume_classical_reachable_before_commit",
+          "kind": "exists",
+          "outcome": "VERIFIED",
+          "expected": "VERIFIED",
+          "matches_expected": true
+        }
+      ]
+    },
+    "atomic": {
+      "status": "COMPLETE",
+      "states": 53674,
+      "transitions": 111558,
+      "safety_violations_reached": [],
+      "existence_witnesses_reached": [
+        "full_acceptance_reachable",
+        "resume_reachable",
+        "ticket_delivered_after_commit",
+        "full_classical_reachable_before_commit",
+        "resume_classical_reachable_before_commit"
+      ],
+      "verdicts": [
+        {
+          "query": "acceptance_time_policy",
+          "kind": "all",
+          "outcome": "VERIFIED",
+          "expected": "VERIFIED",
+          "matches_expected": true
+        },
+        {
+          "query": "resumed_acceptance_time_policy",
+          "kind": "all",
+          "outcome": "VERIFIED",
+          "expected": "VERIFIED",
+          "matches_expected": true
+        },
+        {
+          "query": "start_time_policy",
+          "kind": "all",
+          "outcome": "VERIFIED",
+          "expected": "VERIFIED",
+          "matches_expected": true
+        },
+        {
+          "query": "abort_does_not_erase",
+          "kind": "all",
+          "outcome": "VERIFIED",
+          "expected": "VERIFIED",
+          "matches_expected": true
+        },
+        {
+          "query": "full_acceptance_reachable",
+          "kind": "exists",
+          "outcome": "VERIFIED",
+          "expected": "VERIFIED",
+          "matches_expected": true
+        },
+        {
+          "query": "resume_reachable",
+          "kind": "exists",
+          "outcome": "VERIFIED",
+          "expected": "VERIFIED",
+          "matches_expected": true
+        },
+        {
+          "query": "checked_then_commit_then_classical",
+          "kind": "exists",
+          "outcome": "FALSIFIED",
+          "expected": "FALSIFIED",
+          "matches_expected": true
+        },
+        {
+          "query": "ticket_delivered_after_commit",
+          "kind": "exists",
+          "outcome": "VERIFIED",
+          "expected": "VERIFIED",
+          "matches_expected": true
+        },
+        {
+          "query": "abort_erases_other_connection",
+          "kind": "exists",
+          "outcome": "FALSIFIED",
+          "expected": "FALSIFIED",
+          "matches_expected": true
+        },
+        {
+          "query": "full_classical_reachable_before_commit",
+          "kind": "exists",
+          "outcome": "VERIFIED",
+          "expected": "VERIFIED",
+          "matches_expected": true
+        },
+        {
+          "query": "resume_classical_reachable_before_commit",
+          "kind": "exists",
+          "outcome": "VERIFIED",
+          "expected": "VERIFIED",
+          "matches_expected": true
+        }
+      ]
+    },
+    "restore-abort": {
+      "status": "COMPLETE",
+      "states": 79282,
+      "transitions": 147834,
+      "safety_violations_reached": [
+        "acceptance_time_policy",
+        "resumed_acceptance_time_policy",
+        "start_time_policy",
+        "abort_does_not_erase"
+      ],
+      "existence_witnesses_reached": [
+        "full_acceptance_reachable",
+        "resume_reachable",
+        "checked_then_commit_then_classical",
+        "ticket_delivered_after_commit",
+        "abort_erases_other_connection",
+        "full_classical_reachable_before_commit",
+        "resume_classical_reachable_before_commit"
+      ],
+      "verdicts": [
+        {
+          "query": "acceptance_time_policy",
+          "kind": "all",
+          "outcome": "FALSIFIED",
+          "expected": "FALSIFIED",
+          "matches_expected": true
+        },
+        {
+          "query": "resumed_acceptance_time_policy",
+          "kind": "all",
+          "outcome": "FALSIFIED",
+          "expected": "FALSIFIED",
+          "matches_expected": true
+        },
+        {
+          "query": "start_time_policy",
+          "kind": "all",
+          "outcome": "FALSIFIED",
+          "expected": "FALSIFIED",
+          "matches_expected": true
+        },
+        {
+          "query": "abort_does_not_erase",
+          "kind": "all",
+          "outcome": "FALSIFIED",
+          "expected": "FALSIFIED",
+          "matches_expected": true
+        },
+        {
+          "query": "full_acceptance_reachable",
+          "kind": "exists",
+          "outcome": "VERIFIED",
+          "expected": "VERIFIED",
+          "matches_expected": true
+        },
+        {
+          "query": "resume_reachable",
+          "kind": "exists",
+          "outcome": "VERIFIED",
+          "expected": "VERIFIED",
+          "matches_expected": true
+        },
+        {
+          "query": "checked_then_commit_then_classical",
+          "kind": "exists",
+          "outcome": "VERIFIED",
+          "expected": "VERIFIED",
+          "matches_expected": true
+        },
+        {
+          "query": "ticket_delivered_after_commit",
+          "kind": "exists",
+          "outcome": "VERIFIED",
+          "expected": "VERIFIED",
+          "matches_expected": true
+        },
+        {
+          "query": "abort_erases_other_connection",
+          "kind": "exists",
+          "outcome": "VERIFIED",
+          "expected": "VERIFIED",
+          "matches_expected": true
+        },
+        {
+          "query": "full_classical_reachable_before_commit",
+          "kind": "exists",
+          "outcome": "VERIFIED",
+          "expected": "VERIFIED",
+          "matches_expected": true
+        },
+        {
+          "query": "resume_classical_reachable_before_commit",
+          "kind": "exists",
+          "outcome": "VERIFIED",
+          "expected": "VERIFIED",
+          "matches_expected": true
+        }
+      ]
+    }
+  },
+  "all_expectations_met": true
+}

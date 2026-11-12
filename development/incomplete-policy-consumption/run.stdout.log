@@ -1,0 +1,2 @@
+OpenSSL runtime: OpenSSL 3.6.3 9 Jun 2026
+PROBE loss-preserve cache=86400 peer=ECDSA sigalgs=0905

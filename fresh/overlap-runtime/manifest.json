@@ -1,0 +1,60 @@
+{
+  "source_sha256": "a5fc71ba1cfd0b8d8d0e17d814546fc231a66120106e8b11da9b7e53e22b9df5",
+  "fixtures": {
+    "server.key": "5cb75d069b8629af76bd7403185e044016e2443d9759d6e06d503a3ae1f945db",
+    "ca.crt": "0ff6343f9ed71aeff9b941bc7db433ab8f307ccae0d127782bea2b5aed02f42f",
+    "server.crt": "e82049e67b17a02b67ee8d506960537ab19e102b61e56fe45f7187c992a9b937"
+  },
+  "compile_command": [
+    "/usr/bin/cc",
+    "-std=c11",
+    "-O1",
+    "-Wall",
+    "-Wextra",
+    "-o",
+    "/Users/sammo/.codex/workspaces/Users/sammo/Downloads/Research/pq_auth_negotiation/conference-lifecycle-2026-10-25/reproduction/overlap-runtime/overlap_state",
+    "/Users/sammo/.codex/workspaces/Users/sammo/Downloads/Research/pq_auth_negotiation/conference-lifecycle-2026-10-25/reproduction/overlap-runtime/overlap_state.c",
+    "-I/opt/homebrew/opt/openssl@3.6/include",
+    "-L/opt/homebrew/opt/openssl@3.6/lib",
+    "-Wl,-rpath,/opt/homebrew/opt/openssl@3.6/lib",
+    "-lssl",
+    "-lcrypto"
+  ],
+  "run_command": [
+    "/Users/sammo/.codex/workspaces/Users/sammo/Downloads/Research/pq_auth_negotiation/conference-lifecycle-2026-10-25/reproduction/overlap-runtime/overlap_state",
+    "/Users/sammo/.codex/workspaces/Users/sammo/Downloads/Research/pq_auth_negotiation/conference-lifecycle-2026-10-25/reproduction/overlap-runtime/fixtures/server.crt",
+    "/Users/sammo/.codex/workspaces/Users/sammo/Downloads/Research/pq_auth_negotiation/conference-lifecycle-2026-10-25/reproduction/overlap-runtime/fixtures/server.key",
+    "/Users/sammo/.codex/workspaces/Users/sammo/Downloads/Research/pq_auth_negotiation/conference-lifecycle-2026-10-25/reproduction/overlap-runtime/fixtures/ca.crt"
+  ],
+  "platform": "macOS-27.0.1-arm64-arm-64bit-Mach-O",
+  "expected": [
+    {
+      "preserve": 86400,
+      "restore": 0
+    },
+    {
+      "preserve": 0,
+      "restore": 0
+    },
+    {
+      "preserve": 0,
+      "restore": 0
+    },
+    {
+      "preserve": 0,
+      "restore": 86400
+    },
+    {
+      "preserve": 86400,
+      "restore": 86400
+    },
+    {
+      "preserve": 0,
+      "restore": 0
+    }
+  ],
+  "running_stage": "run",
+  "compile_exit": 0,
+  "elapsed_s": 0.93,
+  "run_exit": 0
+}

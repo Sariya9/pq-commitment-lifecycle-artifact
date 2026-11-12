@@ -1,0 +1,1 @@
+/opt/homebrew/bin/tamarin-prover --prove=abort_preserves_established_cache --heuristic=S /Users/sammo/Downloads/Research/thesis_pqc_tls/pq_auth_negotiation/model/cache_transaction/runs/2026-09-10-S-controls/safe/abort_preserves_established_cache/cache_transaction.spthy +RTS -N2 -M6G -RTS

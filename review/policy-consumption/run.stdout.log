@@ -1,0 +1,12 @@
+OpenSSL runtime: OpenSSL 3.6.3 9 Jun 2026
+PROBE loss-preserve cache=86400 peer=ECDSA sigalgs=0905 result=REJECT reason=no-suitable-signature-algorithm
+PROBE loss-restore cache=0 peer=ECDSA sigalgs=0905:0403 result=ACCEPT verified=yes
+PROBE loss-preserve-PQ cache=86400 peer=ML-DSA-65 sigalgs=0905 result=ACCEPT verified=yes
+PROBE loss-restore-PQ cache=0 peer=ML-DSA-65 sigalgs=0905:0403 result=ACCEPT verified=yes
+PROBE withdraw-preserve cache=0 peer=ECDSA sigalgs=0905:0403 result=ACCEPT verified=yes
+PROBE withdraw-restore cache=86400 peer=ECDSA sigalgs=0905 result=REJECT reason=no-suitable-signature-algorithm
+PROBE withdraw-preserve-PQ cache=0 peer=ML-DSA-65 sigalgs=0905:0403 result=ACCEPT verified=yes
+PROBE withdraw-restore-PQ cache=86400 peer=ML-DSA-65 sigalgs=0905 result=ACCEPT verified=yes
+ACTIVE-FAILURE chain cache=86400/86400 verification=20
+ACTIVE-FAILURE hostname cache=86400/86400 verification=62
+PASS: eight policy-consumption probes and two active-cache failure controls

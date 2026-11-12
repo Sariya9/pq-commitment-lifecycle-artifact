@@ -1,0 +1,106 @@
+{
+  "paper": "Persistent Post-Quantum TLS Commitments across Failed and Overlapping Handshakes",
+  "date": "25 October 2026",
+  "evidence_bundle": "icete2027-pq-commitment-evidence-r2.zip",
+  "scope": "Selected completed component checks and laboratory observations; no TLS composition proof",
+  "fresh_manifest": "fresh/manifest.json",
+  "models": {
+    "tamarin/00-safe/cache_transaction.spthy": {
+      "bundle_path": "fresh/tamarin/00-safe/cache_transaction.spthy",
+      "sha256": "c24165f05ef5f7d7fa31c74c957a36c7ea6d83e04829e8ec8dc3f691008286a4"
+    },
+    "tamarin/10-no_cv/cache_transaction_no_cv.spthy": {
+      "bundle_path": "fresh/tamarin/10-no_cv/cache_transaction_no_cv.spthy",
+      "sha256": "f5a3a9669f14d209ce8f498b8c1a2042dd55239d815550d63113d5e637289f9a"
+    },
+    "finite/explore.py": {
+      "bundle_path": "fresh/finite/explore.py",
+      "sha256": "4c0fc0e9a6ec11dfaae6a4a0d5a5115dc243d23aba1134e9d9198bf4afead78a"
+    },
+    "reference/reference_check.py": {
+      "bundle_path": "fresh/reference/reference_check.py",
+      "sha256": "e2e04fda0a13c70b29f3c52bb9dbd5b93d85178b1f7c9e8dda89c921baef2d93"
+    },
+    "edge-audit/audit_monitors.py": {
+      "bundle_path": "fresh/edge-audit/audit_monitors.py",
+      "sha256": "db0b02208c2c3d2ea0f47aaa5a757ad905d1e2d355d5344ab25280ca1a09a2f1"
+    },
+    "lifecycle/lifecycle_check.py": {
+      "bundle_path": "fresh/lifecycle/lifecycle_check.py",
+      "sha256": "d5d1abef7df4388ffb7042e22cea9b63fe276a6e1bd8934a9eff5b691c705714"
+    },
+    "response-control/lifecycle_check.py": {
+      "bundle_path": "fresh/response-control/lifecycle_check.py",
+      "sha256": "acb510e10a7c203a009efc18a8a62f295c011b40b02c1990151ee097648cd729"
+    },
+    "finished/finished_state/finished_state.c": {
+      "bundle_path": "fresh/finished/finished_state/finished_state.c",
+      "sha256": "62403cc0878f00d6335c95ce00502c2a68b96726dd9840159c81eb7ce74436f6"
+    },
+    "overlap-runtime/overlap_state.c": {
+      "bundle_path": "fresh/overlap-runtime/overlap_state.c",
+      "sha256": "a5fc71ba1cfd0b8d8d0e17d814546fc231a66120106e8b11da9b7e53e22b9df5"
+    },
+    "offer_control.py": {
+      "bundle_path": "current/model/overlap_policy/offer_control.py",
+      "sha256": "933958d832336e6752bd35e139a57852e443cc8ba00adc7fab00418db6363675"
+    },
+    "restricted_primary.py": {
+      "bundle_path": "review/offer-control/explore_restricted.py",
+      "sha256": "53763fbec1043a8e5067090ae75e1b764b67d052488d1f00853853a8ac9a0ddc"
+    },
+    "policy_consumption.c": {
+      "bundle_path": "current/experiments/overlap_state/policy_consumption.c",
+      "sha256": "8af43678ddbafaf884f667676e48e48543937ecc1d8c1874edbf7f9c5afd3945"
+    },
+    "run_consumption.py": {
+      "bundle_path": "current/experiments/overlap_state/run_consumption.py",
+      "sha256": "91ca75951315191168e366a409e5e6ce53aa3f32b62637a87d5857f5cbe95209"
+    }
+  },
+  "historical_lifecycle_revisions": {
+    "unrestricted": "original/model/overlap_policy/runs/2026-09-26-lifecycle-final",
+    "response_restricted": "original/model/overlap_policy/runs/2026-09-26-lifecycle-response-control"
+  },
+  "reproduction": {
+    "tamarin_selected_queries": 15,
+    "primary_finite_outcomes": 44,
+    "lifecycle_outcomes": 14,
+    "restricted_lifecycle_outcomes": 14,
+    "monitor_edges": 308794,
+    "finished_runtime_cases": 5,
+    "overlap_runtime_cases": 6,
+    "status": "COMPLETE"
+  },
+  "inconclusive": "Retained timeout records are not counted as completed results; Tamarin overlap remains incomplete.",
+  "publication_relationship": "Central results are shared with the preserved unpublished journal. The new controls do not create an independent central contribution; author publication-route decision remains required.",
+  "revision": "Hard review revision, 25 October 2026",
+  "recipe": "REPRODUCE.py at the evidence bundle root. Run --check or --run --out <new-directory>.",
+  "review_controls": {
+    "offer_control_outcomes": 44,
+    "offer_control_states": [
+      42916,
+      31662,
+      26572,
+      42418
+    ],
+    "policy_consumption_probes": 8,
+    "active_cache_failure_controls": 2,
+    "offer_control_record": "review/offer-control/results.json",
+    "policy_consumption_record": "review/policy-consumption/manifest.json",
+    "incomplete_development_record": "development/incomplete-policy-consumption/manifest.json",
+    "independence": "Additional controls on the same research system, not independent central discoveries."
+  },
+  "source_comparators": {
+    "continuity_poc": {
+      "commit": "65e31cf107ae5768a884a7db0d8842ea534db23f",
+      "url": "https://github.com/yaronf/openssl/blob/65e31cf107ae5768a884a7db0d8842ea534db23f/ssl/pqc_continuity.c",
+      "status": "Source inspected, not executed"
+    },
+    "headers2025": {
+      "doi": "10.1145/3719027.3765119",
+      "url": "https://swag.cispa.saarland/papers/rautenstrauch2025headers.pdf",
+      "comparison": "Adjacent HSTS race; no same-fault equivalence claimed"
+    }
+  }
+}

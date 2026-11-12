@@ -1,0 +1,1 @@
+/opt/homebrew/bin/tamarin-prover --prove=aborted_withdrawal_retains_protection --heuristic=S /Users/sammo/Downloads/Research/thesis_pqc_tls/pq_auth_negotiation/model/cache_transaction/runs/2026-09-10-negative-controls/no_cv/aborted_withdrawal_retains_protection/cache_transaction_no_cv.spthy +RTS -N2 -M6G -RTS

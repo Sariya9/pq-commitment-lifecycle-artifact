@@ -1,0 +1,29 @@
+{
+  "source": "/Users/sammo/Downloads/Research/thesis_pqc_tls/pq_auth_negotiation/model/cache_transaction/cache_transaction_phase_witness.spthy",
+  "sha256": "c79bc6de086d8e8bd122a68bdf6006fe167959d5762323dcd1b99f705e28a114",
+  "command": [
+    "/opt/homebrew/bin/tamarin-prover",
+    "--prove=reconnect_witness_with_phase_labels",
+    "--heuristic=S",
+    "/Users/sammo/Downloads/Research/thesis_pqc_tls/pq_auth_negotiation/model/cache_transaction/runs/2026-09-10-phase-witness/00-cache_transaction_phase_witness/cache_transaction_phase_witness.spthy",
+    "+RTS",
+    "-N2",
+    "-M6G",
+    "-RTS"
+  ],
+  "flags": [],
+  "heuristic": "S",
+  "timeout_s": 90.0,
+  "parse_only": false,
+  "tool_sha256": "d6e6d38366501f51c2b417dab9fd1dbb1ac43f4b4dd701d9c152e3f7a2f1188f",
+  "status": "OK",
+  "returncode": 0,
+  "elapsed_s": 54.635,
+  "results": [
+    {
+      "query": "reconnect_witness_with_phase_labels",
+      "verdict": "VERIFIED",
+      "steps": 34
+    }
+  ]
+}

@@ -1,0 +1,236 @@
+[
+  {
+    "case": "safe",
+    "query": "clearing_has_matching_server",
+    "status": "OK",
+    "results": [
+      {
+        "query": "clearing_has_matching_server",
+        "verdict": "VERIFIED",
+        "steps": 81
+      }
+    ],
+    "source_sha256": "c24165f05ef5f7d7fa31c74c957a36c7ea6d83e04829e8ec8dc3f691008286a4",
+    "record": "model/cache_transaction/runs/2026-09-10-S-controls/safe.json",
+    "expectation_met": true
+  },
+  {
+    "case": "safe",
+    "query": "abort_preserves_established_cache",
+    "status": "OK",
+    "results": [
+      {
+        "query": "abort_preserves_established_cache",
+        "verdict": "VERIFIED",
+        "steps": 173
+      }
+    ],
+    "source_sha256": "c24165f05ef5f7d7fa31c74c957a36c7ea6d83e04829e8ec8dc3f691008286a4",
+    "record": "model/cache_transaction/runs/2026-09-10-S-controls/safe.json",
+    "expectation_met": true
+  },
+  {
+    "case": "safe",
+    "query": "establishment_reachable",
+    "status": "OK",
+    "results": [
+      {
+        "query": "establishment_reachable",
+        "verdict": "VERIFIED",
+        "steps": 9
+      }
+    ],
+    "source_sha256": "c24165f05ef5f7d7fa31c74c957a36c7ea6d83e04829e8ec8dc3f691008286a4",
+    "record": "model/cache_transaction/runs/2026-09-10-S-controls/safe.json",
+    "expectation_met": true
+  },
+  {
+    "case": "safe",
+    "query": "legitimate_withdrawal_reachable",
+    "status": "OK",
+    "results": [
+      {
+        "query": "legitimate_withdrawal_reachable",
+        "verdict": "VERIFIED",
+        "steps": 17
+      }
+    ],
+    "source_sha256": "c24165f05ef5f7d7fa31c74c957a36c7ea6d83e04829e8ec8dc3f691008286a4",
+    "record": "model/cache_transaction/runs/2026-09-10-S-controls/safe.json",
+    "expectation_met": true
+  },
+  {
+    "case": "safe",
+    "query": "aborted_withdrawal_retains_protection",
+    "status": "OK",
+    "results": [
+      {
+        "query": "aborted_withdrawal_retains_protection",
+        "verdict": "VERIFIED",
+        "steps": 19
+      }
+    ],
+    "source_sha256": "c24165f05ef5f7d7fa31c74c957a36c7ea6d83e04829e8ec8dc3f691008286a4",
+    "record": "model/cache_transaction/runs/2026-09-10-S-controls/safe.json",
+    "expectation_met": true
+  },
+  {
+    "case": "safe",
+    "query": "reconnect_after_abort_reachable",
+    "status": "TIMEOUT",
+    "results": [],
+    "source_sha256": "c24165f05ef5f7d7fa31c74c957a36c7ea6d83e04829e8ec8dc3f691008286a4",
+    "record": "model/cache_transaction/runs/2026-09-10-S-controls/safe.json",
+    "expectation_met": false
+  },
+  {
+    "case": "early",
+    "query": "clearing_has_matching_server",
+    "status": "OK",
+    "results": [
+      {
+        "query": "clearing_has_matching_server",
+        "verdict": "FALSIFIED",
+        "steps": 11
+      }
+    ],
+    "source_sha256": "c24165f05ef5f7d7fa31c74c957a36c7ea6d83e04829e8ec8dc3f691008286a4",
+    "record": "model/cache_transaction/runs/2026-09-10-negative-controls/early.json",
+    "expectation_met": true
+  },
+  {
+    "case": "early",
+    "query": "abort_preserves_established_cache",
+    "status": "OK",
+    "results": [
+      {
+        "query": "abort_preserves_established_cache",
+        "verdict": "FALSIFIED",
+        "steps": 16
+      }
+    ],
+    "source_sha256": "c24165f05ef5f7d7fa31c74c957a36c7ea6d83e04829e8ec8dc3f691008286a4",
+    "record": "model/cache_transaction/runs/2026-09-10-negative-controls/early.json",
+    "expectation_met": true
+  },
+  {
+    "case": "early",
+    "query": "establishment_reachable",
+    "status": "OK",
+    "results": [
+      {
+        "query": "establishment_reachable",
+        "verdict": "VERIFIED",
+        "steps": 9
+      }
+    ],
+    "source_sha256": "c24165f05ef5f7d7fa31c74c957a36c7ea6d83e04829e8ec8dc3f691008286a4",
+    "record": "model/cache_transaction/runs/2026-09-10-negative-controls/early.json",
+    "expectation_met": true
+  },
+  {
+    "case": "early",
+    "query": "legitimate_withdrawal_reachable",
+    "status": "OK",
+    "results": [
+      {
+        "query": "legitimate_withdrawal_reachable",
+        "verdict": "VERIFIED",
+        "steps": 15
+      }
+    ],
+    "source_sha256": "c24165f05ef5f7d7fa31c74c957a36c7ea6d83e04829e8ec8dc3f691008286a4",
+    "record": "model/cache_transaction/runs/2026-09-10-negative-controls/early.json",
+    "expectation_met": true
+  },
+  {
+    "case": "early",
+    "query": "aborted_withdrawal_retains_protection",
+    "status": "OK",
+    "results": [
+      {
+        "query": "aborted_withdrawal_retains_protection",
+        "verdict": "FALSIFIED",
+        "steps": 4210
+      }
+    ],
+    "source_sha256": "c24165f05ef5f7d7fa31c74c957a36c7ea6d83e04829e8ec8dc3f691008286a4",
+    "record": "model/cache_transaction/runs/2026-09-10-negative-controls/early.json",
+    "expectation_met": true
+  },
+  {
+    "case": "no_cv",
+    "query": "clearing_has_matching_server",
+    "status": "OK",
+    "results": [
+      {
+        "query": "clearing_has_matching_server",
+        "verdict": "FALSIFIED",
+        "steps": 12
+      }
+    ],
+    "source_sha256": "f5a3a9669f14d209ce8f498b8c1a2042dd55239d815550d63113d5e637289f9a",
+    "record": "model/cache_transaction/runs/2026-09-10-negative-controls/no_cv.json",
+    "expectation_met": true
+  },
+  {
+    "case": "no_cv",
+    "query": "abort_preserves_established_cache",
+    "status": "OK",
+    "results": [
+      {
+        "query": "abort_preserves_established_cache",
+        "verdict": "VERIFIED",
+        "steps": 173
+      }
+    ],
+    "source_sha256": "f5a3a9669f14d209ce8f498b8c1a2042dd55239d815550d63113d5e637289f9a",
+    "record": "model/cache_transaction/runs/2026-09-10-negative-controls/no_cv.json",
+    "expectation_met": true
+  },
+  {
+    "case": "no_cv",
+    "query": "establishment_reachable",
+    "status": "OK",
+    "results": [
+      {
+        "query": "establishment_reachable",
+        "verdict": "VERIFIED",
+        "steps": 8
+      }
+    ],
+    "source_sha256": "f5a3a9669f14d209ce8f498b8c1a2042dd55239d815550d63113d5e637289f9a",
+    "record": "model/cache_transaction/runs/2026-09-10-negative-controls/no_cv.json",
+    "expectation_met": true
+  },
+  {
+    "case": "no_cv",
+    "query": "legitimate_withdrawal_reachable",
+    "status": "OK",
+    "results": [
+      {
+        "query": "legitimate_withdrawal_reachable",
+        "verdict": "VERIFIED",
+        "steps": 15
+      }
+    ],
+    "source_sha256": "f5a3a9669f14d209ce8f498b8c1a2042dd55239d815550d63113d5e637289f9a",
+    "record": "model/cache_transaction/runs/2026-09-10-negative-controls/no_cv.json",
+    "expectation_met": true
+  },
+  {
+    "case": "no_cv",
+    "query": "aborted_withdrawal_retains_protection",
+    "status": "OK",
+    "results": [
+      {
+        "query": "aborted_withdrawal_retains_protection",
+        "verdict": "VERIFIED",
+        "steps": 18
+      }
+    ],
+    "source_sha256": "f5a3a9669f14d209ce8f498b8c1a2042dd55239d815550d63113d5e637289f9a",
+    "record": "model/cache_transaction/runs/2026-09-10-negative-controls/no_cv.json",
+    "expectation_met": true
+  }
+]

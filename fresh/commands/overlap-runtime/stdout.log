@@ -1,0 +1,38 @@
+compile 0 
+run 0 OpenSSL runtime: OpenSSL 3.6.3 9 Jun 2026
+
+CASE B commits, A cancelled
+  A paused: verified_chain=yes ML-DSA-65=yes state=TLS_ST_CR_CERT_VRFY waiting_read=yes finished_seen=0 snapshot=0
+  B completed: received=86400 preserve=86400 restore=86400
+  A locally cancelled: preserve=86400 restore=0
+  CASE PASS
+
+CASE B untrusted, A cancelled
+  A paused: verified_chain=yes ML-DSA-65=yes state=TLS_ST_CR_CERT_VRFY waiting_read=yes finished_seen=0 snapshot=0
+  B failed chain validation: candidate=86400 committed=no verify=20
+  A locally cancelled: preserve=0 restore=0
+  CASE PASS
+
+CASE B commits, A completes zero update
+  A paused: verified_chain=yes ML-DSA-65=yes state=TLS_ST_CR_CERT_VRFY waiting_read=yes finished_seen=0 snapshot=0
+  B completed: received=86400 preserve=86400 restore=86400
+  A completed: adapter applies received zero; preserve=0 restore=0
+  CASE PASS
+
+CASE B withdraws seeded commitment, A cancelled
+  Seed completed: preserve=86400 restore=86400
+  B completed: extension=zero preserve=0 restore=0
+  A locally cancelled: preserve=0 restore=86400
+  CASE PASS
+
+CASE B omits extension on seeded state, A cancelled
+  Seed completed: preserve=86400 restore=86400
+  B completed: extension=omitted preserve=86400 restore=86400
+  A locally cancelled: preserve=86400 restore=86400
+  CASE PASS
+
+CASE wrong reference identity rejected
+  Verification=62; no CV completion or policy update
+  CASE PASS
+PASS: deterministic overlap; rollback is in the deliberately faulty adapter
+

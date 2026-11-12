@@ -1,0 +1,1 @@
+/opt/homebrew/bin/tamarin-prover -D=EARLY_CLEAR --prove=establishment_reachable --heuristic=S /Users/sammo/.codex/workspaces/Users/sammo/Downloads/Research/pq_auth_negotiation/conference-lifecycle-2026-10-25/reproduction/tamarin/07-early/cache_transaction.spthy +RTS -N2 -M6G -RTS

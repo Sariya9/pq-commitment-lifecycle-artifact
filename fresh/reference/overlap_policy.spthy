@@ -1,0 +1,139 @@
+theory OverlapPolicy
+begin
+builtins: signing, hashing
+functions: mac/2
+// Three full attempts and one resumption slot, one endpoint. No expiry or
+// withdrawal. Pinned signing keys abstract certificate validation. Private
+// channel-key facts abstract authentic key establishment, not the TLS schedule.
+// Policies differ only in which cache view permits an acceptance. Abort never
+// restores a private snapshot in the baseline. There is no session-order restriction.
+rule Setup:
+ [ Fr(~pq), Fr(~cl) ] --[ SetupOnce() ]->
+ [ Cache('none'), Slot('a'), Slot('b'), Slot('c'), ResumeSlot()
+ , !Key('pq',~pq), !Key('classical',~cl)
+ , !Trust('pq',pk(~pq)), !Trust('classical',pk(~cl))
+ , Out(<pk(~pq),pk(~cl)>)
+ , !Allowed('none','pq'), !Allowed('none','classical'), !Allowed('pq','pq')
+ , !Final('unchecked','none','pq'), !Final('unchecked','none','classical')
+ , !Final('unchecked','pq','pq'), !Final('unchecked','pq','classical')
+ , !Final('current','none','pq'), !Final('current','none','classical')
+ , !Final('current','pq','pq') ]
+restriction once:
+ "All #i #j. SetupOnce() @ i & SetupOnce() @ j ==> #i = #j"
+restriction equality:
+ "All x y #i. Eq(x,y) @ i ==> x = y"
+#ifdef START_POLICY
+rule ConfigureStart:
+ [ ] --> [ !CheckView('start'), !FinalMode('unchecked') ]
+#endif
+#ifdef SPLIT_POLICY
+rule ConfigureSplit:
+ [ ] --> [ !CheckView('current'), !FinalMode('unchecked') ]
+#endif
+#ifdef ATOMIC_POLICY
+rule ConfigureAtomic:
+ [ ] --> [ !CheckView('current'), !FinalMode('current') ]
+#endif
+rule StartFull:
+ [ Slot(slot), Cache(state), Fr(~n), Fr(~hs) ]
+ --[ Started(~n,'full',state) ]->
+ [ Cache(state), Waiting(~n,'full',state,~hs), !Channel(~n,~hs)
+ , Out(<'full',~n>) ]
+rule ServerFull:
+ [ In(<'full',n>), !Key(cls,sk), !Channel(n,hs) ]
+ --[ ServerResponse(n,'full',cls) ]->
+ [ Out(<'full-response',n,cls,sign(<'cv',n,cls>,sk),
+        mac(<'finished',n,'full',cls>,hs)>) ]
+rule ReceiveFull:
+ [ Waiting(n,'full',start,hs), !Trust(cls,pk)
+ , In(<'full-response',n,cls,sig,fin>) ]
+ --[ Eq(verify(sig,<'cv',n,cls>,pk),true), ResponseChecked(n,'full',cls) ]->
+ [ NeedCheck(n,'full',cls,start,hs,fin) ]
+rule IssueTicket:
+ [ TicketPending(origin,cls,'full'), Fr(~id), Fr(~psk) ]
+ --[ IssuedFrom(~id,origin,cls) ]->
+ [ !Ticket(~id,~psk,cls), Out(~id) ]
+rule StartResume:
+ [ ResumeSlot(), Cache(state), !Ticket(id,psk,cls), Fr(~n) ]
+ --[ Started(~n,'resume',state), ResumingFrom(~n,id,cls) ]->
+ [ Cache(state), WaitingResume(~n,cls,state,psk)
+ , Out(<'resume',id,~n,mac(<'binder',id,~n>,h(<'binder-key',psk>))>) ]
+rule ServerResume:
+ [ In(<'resume',id,n,binder>), !Ticket(id,psk,cls) ]
+ --[ Eq(binder,mac(<'binder',id,n>,h(<'binder-key',psk>))),
+      ServerResponse(n,'resume',cls) ]->
+ [ Out(<'resume-response',n,mac(<'finished',n,'resume',cls>,h(<'finished-key',psk>))>) ]
+rule ReceiveResume:
+ [ WaitingResume(n,cls,start,psk), In(<'resume-response',n,fin>) ]
+ --> [ NeedCheck(n,'resume',cls,start,h(<'finished-key',psk>),fin) ]
+rule CheckAtStart:
+ [ NeedCheck(n,mode,cls,start,hs,fin), !CheckView('start'), !Allowed(start,cls) ]
+ --[ PolicyChecked(n,mode,cls,start) ]->
+ [ Ready(n,mode,cls,start,hs,fin) ]
+rule CheckCurrent:
+ [ NeedCheck(n,mode,cls,start,hs,fin), !CheckView('current')
+ , Cache(current), !Allowed(current,cls) ]
+ --[ PolicyChecked(n,mode,cls,current) ]->
+ [ Cache(current), Ready(n,mode,cls,start,hs,fin) ]
+rule AcceptClassical:
+ [ Ready(n,mode,'classical',start,hs,fin), Cache(current)
+ , !FinalMode(f), !Final(f,current,'classical') ]
+ --[ Eq(fin,mac(<'finished',n,mode,'classical'>,hs)),
+      Accepted(n,mode,'classical'), AtAcceptance(n,current) ]->
+ [ Cache(current), TicketPending(n,'classical',mode) ]
+rule AcceptPQFull:
+ [ Ready(n,'full','pq',start,hs,fin), Cache(current)
+ , !FinalMode(f), !Final(f,current,'pq') ]
+ --[ Eq(fin,mac(<'finished',n,'full','pq'>,hs)),
+      Accepted(n,'full','pq'), AtAcceptance(n,current), Installed(n) ]->
+ [ Cache('pq'), TicketPending(n,'pq','full') ]
+rule AcceptPQResume:
+ [ Ready(n,'resume','pq',start,hs,fin), Cache(current)
+ , !FinalMode(f), !Final(f,current,'pq') ]
+ --[ Eq(fin,mac(<'finished',n,'resume','pq'>,hs)),
+      Accepted(n,'resume','pq'), AtAcceptance(n,current) ]->
+ [ Cache(current) ]
+// Ticket issuance above is an assumed confidential local origin interface.
+// Restrict the witness to full origins; this pilot permits one resumption only.
+#ifdef RESTORE_ON_ABORT
+rule Abort:
+ [ Ready(n,mode,cls,start,hs,fin), Cache(current), In(<'cancel',n>) ]
+ --[ Aborted(n,current,start) ]-> [ Cache(start) ]
+#else
+rule Abort:
+ [ Ready(n,mode,cls,start,hs,fin), Cache(current), In(<'cancel',n>) ]
+ --[ Aborted(n,current,current) ]-> [ Cache(current) ]
+#endif
+
+lemma acceptance_time_policy [use_induction]:
+ all-traces
+ "All n m #i #j. Installed(n) @ i & Accepted(m,'full','classical') @ j & i < j ==> F"
+lemma resumed_acceptance_time_policy [use_induction]:
+ all-traces
+ "All n m #i #j. Installed(n) @ i & Accepted(m,'resume','classical') @ j & i < j ==> F"
+lemma start_time_policy [use_induction]:
+ all-traces
+ "All n m mode #i #j #k. Installed(n) @ i & Started(m,mode,'pq') @ j
+ & Accepted(m,mode,'classical') @ k & i < j & j < k ==> F"
+lemma abort_does_not_erase:
+ all-traces
+ "All n before after #i. Aborted(n,before,after) @ i ==> before = after"
+lemma full_acceptance_reachable:
+ exists-trace
+ "Ex n #i. Accepted(n,'full','pq') @ i"
+lemma resume_reachable:
+ exists-trace
+ "Ex n #i. Accepted(n,'resume','pq') @ i"
+lemma checked_then_commit_then_classical:
+ exists-trace
+ "Ex n m #i #j #k. PolicyChecked(n,'full','classical','none') @ i
+ & Installed(m) @ j & Accepted(n,'full','classical') @ k & i < j & j < k"
+lemma ticket_delivered_after_commit:
+ exists-trace
+ "Ex n m id #i #j #k. Accepted(n,'full','classical') @ i
+ & Installed(m) @ j & IssuedFrom(id,n,'classical') @ k & i < j & j < k"
+lemma abort_erases_other_connection:
+ exists-trace
+ "Ex n m #i #j #k. Started(n,'full','none') @ i
+ & Installed(m) @ j & Aborted(n,'pq','none') @ k & i < j & j < k"
+end

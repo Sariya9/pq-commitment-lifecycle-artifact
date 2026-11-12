@@ -1,0 +1,4 @@
+start 43713 states
+split 32383 states
+atomic 27253 states
+restore-abort 43663 states

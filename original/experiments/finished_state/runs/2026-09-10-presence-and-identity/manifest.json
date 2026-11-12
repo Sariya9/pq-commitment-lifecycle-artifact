@@ -1,0 +1,52 @@
+{
+  "source_sha256": "62403cc0878f00d6335c95ce00502c2a68b96726dd9840159c81eb7ce74436f6",
+  "compile_command": [
+    "cc",
+    "-std=c11",
+    "-O1",
+    "-Wall",
+    "-Wextra",
+    "-o",
+    "/Users/sammo/Downloads/Research/thesis_pqc_tls/pq_auth_negotiation/experiments/finished_state/runs/2026-09-10-presence-and-identity/finished_state",
+    "/Users/sammo/Downloads/Research/thesis_pqc_tls/pq_auth_negotiation/experiments/finished_state/runs/2026-09-10-presence-and-identity/source.c",
+    "-I/opt/homebrew/opt/openssl@3.6/include",
+    "-L/opt/homebrew/opt/openssl@3.6/lib",
+    "-Wl,-rpath,/opt/homebrew/opt/openssl@3.6/lib",
+    "-lssl",
+    "-lcrypto"
+  ],
+  "run_command": [
+    "/Users/sammo/Downloads/Research/thesis_pqc_tls/pq_auth_negotiation/experiments/finished_state/runs/2026-09-10-presence-and-identity/finished_state"
+  ],
+  "cwd": "/Users/sammo/Downloads/Research/thesis_pqc_tls/pq_auth_negotiation/experiments/finished_state",
+  "expected_cache": [
+    [
+      86400,
+      86400,
+      86400
+    ],
+    [
+      86400,
+      86400,
+      86400
+    ],
+    [
+      0,
+      86400,
+      86400
+    ],
+    [
+      0,
+      0,
+      86400
+    ],
+    [
+      0,
+      0,
+      0
+    ]
+  ],
+  "compile_exit": 0,
+  "run_exit": 0,
+  "binary_sha256": "cfcaa7abd481e1e98a07827545c2ee47efde06fa9052c8bf18720cd58ceb1a6c"
+}

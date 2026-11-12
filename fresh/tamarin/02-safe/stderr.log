@@ -1,0 +1,10 @@
+maude tool: 'maude'
+ checking version: 3.5.1. OK.
+ checking installation: OK.
+[Theory CacheTransaction] Theory loaded
+[Theory CacheTransaction] Theory translated
+[Theory CacheTransaction] Derivation checks started
+[Theory CacheTransaction] Derivation checks ended
+[Theory CacheTransaction] Theory closed
+[Saturating Sources] Step 1 (Max 5)
+[Saturating Sources] Done

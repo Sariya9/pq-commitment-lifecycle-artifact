@@ -1,0 +1,1 @@
+/opt/homebrew/bin/tamarin-prover --prove=reconnect_witness_with_phase_labels --heuristic=S /Users/sammo/Downloads/Research/thesis_pqc_tls/pq_auth_negotiation/model/cache_transaction/runs/2026-09-10-phase-witness/00-cache_transaction_phase_witness/cache_transaction_phase_witness.spthy +RTS -N2 -M6G -RTS

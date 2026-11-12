@@ -1,0 +1,241 @@
+{
+  "status": "COMPLETE",
+  "source": "/Users/sammo/Downloads/Research/thesis_pqc_tls/pq_auth_negotiation/model/overlap_policy/runs/2026-09-26-lifecycle-response-control/lifecycle_check.py",
+  "source_sha256": "acb510e10a7c203a009efc18a8a62f295c011b40b02c1990151ee097648cd729",
+  "scope": "Independent bounded policy model, not complete TLS or an IETF interpretation.",
+  "assumptions": {
+    "bound": "one endpoint and at most three full attempts; IDs follow start order",
+    "identity_quotient": "not-yet-started attempt identities are interchangeable",
+    "responses": [
+      "classical/absent",
+      "pq/absent[robustness-control:noncompliant-participating-server]",
+      "pq/commit[4-byte-nonzero]",
+      "pq/zero[4-byte]"
+    ],
+    "authentication": "responses are valid and authenticated; forgery is outside the model",
+    "policy": "current actual cache is checked before ready and atomically before acceptance",
+    "wire_operations": "absent, four-byte nonzero COMMIT, or four-byte ZERO; empty extension is distinct and excluded",
+    "pq_absence": "authenticated robustness control for a noncompliant participating server; continuity-02 requires a PQ server to send four octets",
+    "history_h": "H changes only on successfully completed PQ COMMIT or four-byte ZERO",
+    "actual_cache": "C_actual may diverge from H only through faulty snapshot restoration",
+    "acceptance_contract": "checks whether H is active immediately before acceptance, not whether a commitment was ever installed",
+    "omission": "absent operation changes neither C_actual nor H",
+    "withdrawal": "a successfully completed four-byte ZERO is authoritative in completion order, including when its attempt began before a later COMMIT",
+    "abort": "ready abort either preserves current cache or faultily restores its start snapshot",
+    "excluded": "PSK, expiry and a general interpretation of the analysed Internet-Draft",
+    "availability_query": "state-level blocking condition only; no fairness or liveness theorem"
+  },
+  "response_controls": {
+    "enforce_start_offer": true,
+    "pq_omission_enabled": false
+  },
+  "budget_per_profile": {
+    "states": 500000,
+    "transitions": 3000000
+  },
+  "profiles": {
+    "preserve": {
+      "status": "COMPLETE",
+      "states": 2905,
+      "transitions": 7360,
+      "verdicts": [
+        {
+          "query": "actual_cache_equals_authoritative_history",
+          "kind": "all",
+          "outcome": "VERIFIED",
+          "expected": "VERIFIED",
+          "matches_expected": true,
+          "shortest_decisive_trace": null
+        },
+        {
+          "query": "no_classical_acceptance_while_h_active_before_accept",
+          "kind": "all",
+          "outcome": "VERIFIED",
+          "expected": "VERIFIED",
+          "matches_expected": true,
+          "shortest_decisive_trace": null
+        },
+        {
+          "query": "classical_blocking_state_reachable",
+          "kind": "exists",
+          "outcome": "FALSIFIED",
+          "expected": "FALSIFIED",
+          "matches_expected": true,
+          "shortest_decisive_trace": null
+        },
+        {
+          "query": "legitimate_withdrawal_reachable",
+          "kind": "exists",
+          "outcome": "VERIFIED",
+          "expected": "VERIFIED",
+          "matches_expected": true,
+          "shortest_decisive_trace": [
+            "F0: begin [snapshot=none]",
+            "F1: begin [snapshot=none]",
+            "F0: receive authenticated pq/commit[4-byte-nonzero]",
+            "F0: current-policy check passes [actual=none]",
+            "F0: accept pq/commit[4-byte-nonzero] [none->pq]",
+            "F1: receive authenticated pq/zero[4-byte]",
+            "F1: current-policy check passes [actual=pq]",
+            "F1: accept pq/zero[4-byte] [pq->none]"
+          ]
+        },
+        {
+          "query": "omission_after_commit_keeps_active_cache",
+          "kind": "exists",
+          "outcome": "FALSIFIED",
+          "expected": "FALSIFIED",
+          "matches_expected": true,
+          "shortest_decisive_trace": null
+        },
+        {
+          "query": "stale_abort_drops_pq",
+          "kind": "exists",
+          "outcome": "FALSIFIED",
+          "expected": "FALSIFIED",
+          "matches_expected": true,
+          "shortest_decisive_trace": null
+        },
+        {
+          "query": "stale_abort_resurrects_withdrawn_pq",
+          "kind": "exists",
+          "outcome": "FALSIFIED",
+          "expected": "FALSIFIED",
+          "matches_expected": true,
+          "shortest_decisive_trace": null
+        }
+      ]
+    },
+    "restore": {
+      "status": "COMPLETE",
+      "states": 3183,
+      "transitions": 7630,
+      "verdicts": [
+        {
+          "query": "actual_cache_equals_authoritative_history",
+          "kind": "all",
+          "outcome": "FALSIFIED",
+          "expected": "FALSIFIED",
+          "matches_expected": true,
+          "shortest_decisive_trace": [
+            "F0: begin [snapshot=none]",
+            "F1: begin [snapshot=none]",
+            "F0: receive authenticated classical/absent",
+            "F0: current-policy check passes [actual=none]",
+            "F1: receive authenticated pq/commit[4-byte-nonzero]",
+            "F1: current-policy check passes [actual=none]",
+            "F1: accept pq/commit[4-byte-nonzero] [none->pq]",
+            "F0: abort [pq->none]"
+          ]
+        },
+        {
+          "query": "no_classical_acceptance_while_h_active_before_accept",
+          "kind": "all",
+          "outcome": "FALSIFIED",
+          "expected": "FALSIFIED",
+          "matches_expected": true,
+          "shortest_decisive_trace": [
+            "F0: begin [snapshot=none]",
+            "F1: begin [snapshot=none]",
+            "F2: begin [snapshot=none]",
+            "F0: receive authenticated classical/absent",
+            "F0: current-policy check passes [actual=none]",
+            "F1: receive authenticated classical/absent",
+            "F1: current-policy check passes [actual=none]",
+            "F2: receive authenticated pq/commit[4-byte-nonzero]",
+            "F2: current-policy check passes [actual=none]",
+            "F2: accept pq/commit[4-byte-nonzero] [none->pq]",
+            "F0: abort [pq->none]",
+            "F1: accept classical/absent [none->none]"
+          ]
+        },
+        {
+          "query": "classical_blocking_state_reachable",
+          "kind": "exists",
+          "outcome": "VERIFIED",
+          "expected": "VERIFIED",
+          "matches_expected": true,
+          "shortest_decisive_trace": [
+            "F0: begin [snapshot=none]",
+            "F1: begin [snapshot=none]",
+            "F0: receive authenticated pq/commit[4-byte-nonzero]",
+            "F0: current-policy check passes [actual=none]",
+            "F0: accept pq/commit[4-byte-nonzero] [none->pq]",
+            "F2: begin [snapshot=pq]",
+            "F1: receive authenticated pq/zero[4-byte]",
+            "F1: current-policy check passes [actual=pq]",
+            "F1: accept pq/zero[4-byte] [pq->none]",
+            "F2: receive authenticated pq/commit[4-byte-nonzero]",
+            "F2: current-policy check passes [actual=none]",
+            "F2: abort [none->pq]",
+            "monitor: a new classical attempt would fail the declared current-policy guard"
+          ]
+        },
+        {
+          "query": "legitimate_withdrawal_reachable",
+          "kind": "exists",
+          "outcome": "VERIFIED",
+          "expected": "VERIFIED",
+          "matches_expected": true,
+          "shortest_decisive_trace": [
+            "F0: begin [snapshot=none]",
+            "F1: begin [snapshot=none]",
+            "F0: receive authenticated pq/commit[4-byte-nonzero]",
+            "F0: current-policy check passes [actual=none]",
+            "F0: accept pq/commit[4-byte-nonzero] [none->pq]",
+            "F1: receive authenticated pq/zero[4-byte]",
+            "F1: current-policy check passes [actual=pq]",
+            "F1: accept pq/zero[4-byte] [pq->none]"
+          ]
+        },
+        {
+          "query": "omission_after_commit_keeps_active_cache",
+          "kind": "exists",
+          "outcome": "FALSIFIED",
+          "expected": "FALSIFIED",
+          "matches_expected": true,
+          "shortest_decisive_trace": null
+        },
+        {
+          "query": "stale_abort_drops_pq",
+          "kind": "exists",
+          "outcome": "VERIFIED",
+          "expected": "VERIFIED",
+          "matches_expected": true,
+          "shortest_decisive_trace": [
+            "F0: begin [snapshot=none]",
+            "F1: begin [snapshot=none]",
+            "F0: receive authenticated classical/absent",
+            "F0: current-policy check passes [actual=none]",
+            "F1: receive authenticated pq/commit[4-byte-nonzero]",
+            "F1: current-policy check passes [actual=none]",
+            "F1: accept pq/commit[4-byte-nonzero] [none->pq]",
+            "F0: abort [pq->none]"
+          ]
+        },
+        {
+          "query": "stale_abort_resurrects_withdrawn_pq",
+          "kind": "exists",
+          "outcome": "VERIFIED",
+          "expected": "VERIFIED",
+          "matches_expected": true,
+          "shortest_decisive_trace": [
+            "F0: begin [snapshot=none]",
+            "F1: begin [snapshot=none]",
+            "F0: receive authenticated pq/commit[4-byte-nonzero]",
+            "F0: current-policy check passes [actual=none]",
+            "F0: accept pq/commit[4-byte-nonzero] [none->pq]",
+            "F2: begin [snapshot=pq]",
+            "F1: receive authenticated pq/zero[4-byte]",
+            "F1: current-policy check passes [actual=pq]",
+            "F1: accept pq/zero[4-byte] [pq->none]",
+            "F2: receive authenticated pq/commit[4-byte-nonzero]",
+            "F2: current-policy check passes [actual=none]",
+            "F2: abort [none->pq]"
+          ]
+        }
+      ]
+    }
+  },
+  "all_expectations_met": true
+}
